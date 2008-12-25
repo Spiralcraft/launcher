@@ -1,0 +1,69 @@
+<project name="spiralcraft-launcher" basedir="." default="build">
+
+  <property name="classpath" 
+  	 value="lib/spiralcraft.jar:lib/spiralcraft-core.jar"
+  />
+  <property name="module" value="launcher"/>
+  <property name="buildVersion" value="0.3.1-dev"/>
+
+	
+  <target name="clean" depends="build-common.clean">
+    <mkdir dir="main-out"/>
+    <delete>
+      <fileset dir="main-out" includes="**/*"/>
+    </delete>
+  </target>
+
+	<target name="compile" depends="jar-main,build-common.compile"/>
+	
+  <target name="compile-main">
+    <echo message= "build-main: ${build.name}"/>
+    <javac 
+      srcdir="main-source" 
+      destdir="main-out"
+      debug="true"
+      deprecation="true"
+      compiler="modern"
+      fork="true"
+      >
+      <compilerarg value="-Xlint"/>
+    </javac>
+    
+    <copy toDir="main-out"
+      preservelastmodified="true"
+      failonerror="true"
+      >
+      <fileset
+        dir="main-source"
+        excludes="**/*.class,**/*.java"
+        >
+        
+      </fileset>
+    </copy>
+    
+    <propertyfile file="main-out/build-${build.name}"/>
+  </target>
+
+  <target name="jar-main" depends="compile-main">
+    <echo message= "jar-main: ${build.name}"/>
+    <jar 
+      destfile="lib/spiralcraft.jar" 
+      basedir="main-out"
+      level="9"
+      >
+      <Manifest>
+        <attribute name="Main-Class" value="spiralcraft.main.Spiralcraft"/>   
+      </Manifest>
+      <include name="build.name.local"/>
+      <include name="spiralcraft/**/*.class"/>
+      <include name="spiralcraft/**/*.xml"/>
+      <include name="spiralcraft/**/*.tgl"/>
+      <include name="spiralcraft/**/*.webui"/>
+      <include name="spiralcraft/**/*.ghtml"/>
+      <include name="spiralcraft/**/*.properties"/>
+    </jar>
+       
+  </target>
+	<import file="../../build/build-common.xml"/>
+  
+</project>
