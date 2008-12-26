@@ -132,6 +132,19 @@ public class Main
           printProperty("java.home");
           print(" ");
           printProperty("spiralcraft.home");
+          print(" ");
+          print("  Runtime.freeMemory = "
+            +Runtime.getRuntime().freeMemory()
+            );
+          print("  Runtime.totalMemory = "
+            +Runtime.getRuntime().totalMemory()
+            );
+          print("  Runtime.maxMemory = "
+            +Runtime.getRuntime().maxMemory()
+            );
+          print("  Runtime.availableProcessors = "
+            +Runtime.getRuntime().availableProcessors()
+            );
           
         }
         
