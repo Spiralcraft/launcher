@@ -28,14 +28,18 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.StringTokenizer;
 
 /**
- * Spiralcraft application mode launcher, for running Spiralcraft applications
+ * <p>Spiralcraft application mode launcher, for running Spiralcraft
+ *   applications
  *   associated with the filesystem such as "installed" applications, 
- *   servers, and command line tools.<P>
+ *   servers, and command line tools.
+ * </p>
  * 
- * This "main" class bootstraps the ApplicationManager in spiralcraft-core into
+ * <p>This "main" class bootstraps the ApplicationManager in spiralcraft-core
+ *   into
  *   its own classloader. The ApplicationManager will then load individual 
  *   applications into their own classloaders, in order to isolate applications
- *   from each other and from the management system.<P>
+ *   from each other and from the management system.
+ * </p>
  * 
  */
 public class Spiralcraft
@@ -214,7 +218,11 @@ public class Spiralcraft
       if (_spiralcraftHome!=null)
       { 
         if (DEBUG)
-        { debug("Creating JarClassLoader for "+_spiralcraftHome+File.separator+"lib/spiralcraft-core.jar");
+        { 
+          debug("Creating JarClassLoader for "
+                +_spiralcraftHome+File.separator
+                +"lib/spiralcraft-core.jar"
+                );
         }
         classLoader.addResource
           (new JarClassResource
@@ -231,7 +239,7 @@ public class Spiralcraft
       { System.setProperty("spiralcraft.codebase",_codebase);
       }
 
-      mainClass=classLoader.loadClass("spiralcraft.loader.Main");
+      mainClass=classLoader.loadClass("spiralcraft.launcher.Main");
       
       if (DEBUG)
       { debug("Loaded main class");

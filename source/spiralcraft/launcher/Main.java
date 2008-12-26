@@ -12,7 +12,7 @@
 // Unless otherwise agreed to in writing, this software is distributed on an
 // "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or implied.
 //
-package spiralcraft.loader;
+package spiralcraft.launcher;
 
 import spiralcraft.main.Spiralcraft;
 
@@ -28,6 +28,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 import java.net.URI;
+//import java.util.Map;
 
 
 /**
@@ -146,6 +147,19 @@ public class Main
             +Runtime.getRuntime().availableProcessors()
             );
           
+//          print(" ");
+//          print("External environment:");
+//          print(" ");
+//          for (Map.Entry<String,String> entry: System.getenv().entrySet())
+//          { print(entry.getKey()+" = "+entry.getValue());
+//          }
+
+//          print(" ");
+//          print("All system properties:");
+//          print(" ");
+//          for (Map.Entry<Object,Object> entry: System.getProperties().entrySet())
+//          { print(entry.getKey()+" = "+entry.getValue());
+//          }
         }
         
         
