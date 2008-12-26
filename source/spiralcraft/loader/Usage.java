@@ -34,10 +34,6 @@ public class Usage
     out.println("       Output debug messages to a file instead of the console");
     out.println("    -debug");
     out.println("       Output debugging information about the loading process");
-    out.println("    -core.source [directory]");
-    out.println("       The location of the source tree for the bootup spiralcraft-core module");
-    out.println("    -core.jar [filename.jar]");
-    out.println("       The location of the bootup spiralcraft-core.jar file");
     out.println("    -spiralcraft.home [directory]");
     out.println("       The root directory of bootup Spiralcraft resources");
     out.println("    -codebase [directory]");

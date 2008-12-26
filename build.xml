@@ -64,6 +64,17 @@
     </jar>
        
   </target>
+	
+	<target name="smoke">
+	  <java 
+		  jar="lib/spiralcraft.jar"
+		  fork="true"
+		  >
+	  	<arg value="-debug"/>
+		</java>
+		  
+	</target>
+		
 	<import file="../../build/build-common.xml"/>
   
 </project>

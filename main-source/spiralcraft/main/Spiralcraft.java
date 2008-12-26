@@ -45,8 +45,6 @@ public class Spiralcraft
   public static boolean DEBUG=false;
   public static PrintStream err=System.err;
 
-  private String _coreSource=null;
-  private String _coreJar=null;
   private String _spiralcraftHome=null;
   private String _codebase=null;
 
@@ -95,13 +93,7 @@ public class Spiralcraft
           DEBUG=true;
           debug("Spiralcraft boot debugging activated");
         }
-        else if (option=="core.source")
-        { _coreSource=args[++i];
-        }
-        else if (option=="core.jar")
-        { _coreJar=args[++i];
-        }
-        else if (option=="spiralcraft.home")
+        if (option=="spiralcraft.home")
         { _spiralcraftHome=args[++i];
         }
         else if (option=="codebase")
@@ -194,7 +186,7 @@ public class Spiralcraft
 
       for (String pathElement : pathElements)
       {
-        if (pathElement.endsWith("spiralcraft-main.jar"))
+        if (pathElement.endsWith("spiralcraft.jar"))
         { 
           File jarFile=new File(pathElement);
           jarFile=new File(jarFile.getAbsolutePath());
@@ -219,29 +211,20 @@ public class Spiralcraft
     LauncherClassLoader classLoader=new LauncherClassLoader();
     try
     {
-      if (_coreSource!=null)
-      { 
-        if (DEBUG)
-        { debug("Creating FileClassLoader for "+_coreSource);
-        }
-        classLoader.addResource(new FileClassResource(_coreSource));
-      }
-      else if (_coreJar!=null)
-      { 
-        if (DEBUG)
-        { debug("Creating JarClassLoader for "+_coreJar);
-        }
-        classLoader.addResource(new JarClassResource(_coreJar));
-      }
-      else if (_spiralcraftHome!=null)
+      if (_spiralcraftHome!=null)
       { 
         if (DEBUG)
         { debug("Creating JarClassLoader for "+_spiralcraftHome+File.separator+"lib/spiralcraft-core.jar");
         }
-        classLoader.addResource(new JarClassResource(_spiralcraftHome+File.separator+"lib/spiralcraft-core.jar"));
+        classLoader.addResource
+          (new JarClassResource
+            (_spiralcraftHome+File.separator+"lib/spiralcraft-core.jar"));
+        classLoader.addResource
+          (new JarClassResource
+            (_spiralcraftHome+File.separator+"lib/spiralcraft-launcher.jar"));
       }
       else
-      { throw new InstantiationException("Spiralcraft core library could not be found.");
+      { throw new InstantiationException("Spiralcraft home could not be found.");
       }
       
       if (_codebase!=null)

@@ -17,8 +17,10 @@ package spiralcraft.loader;
 import spiralcraft.main.Spiralcraft;
 
 import spiralcraft.util.ArrayUtil;
+
 import spiralcraft.vfs.StreamUtil;
 
+import java.io.Console;
 
 
 import java.io.File;
@@ -59,7 +61,7 @@ public class Main
   {
     if (Main.class.getClassLoader()==ClassLoader.getSystemClassLoader())
     { 
-      Spiralcraft.err.println
+      print
         ("WARNING: spiralcraft-core module should not in the system classpath "
         +" as this may interfere with some dynamic loading functionality"
         );
@@ -73,13 +75,17 @@ public class Main
 
     if (Spiralcraft.DEBUG)
     { 
-      Spiralcraft.err.println
-        ("spiralcraft.loader.Main.main("+ArrayUtil.format(args,",","\"")+")");
+      print
+        ("spiralcraft.loader.Main.main("
+        +ArrayUtil.format(args,",","\"")+")"
+        );
     }
      
     File codebase=findCodebaseContext();
     if (Spiralcraft.DEBUG)
-    { Spiralcraft.err.println("Using codebase "+codebase.toString());
+    { 
+      print("Using codebase "+codebase.toString());
+      print(" ");
     }
       
     ApplicationManager applicationManager
@@ -98,7 +104,38 @@ public class Main
         applicationManager.exec(args);
       }
       else
-      { Spiralcraft.err.println(new Usage().toString());
+      { 
+        
+        print(new Usage().toString());
+        
+        if (Spiralcraft.DEBUG)
+        {
+          print(" ");
+          print("Environment:");
+          print("");
+          print("  GraphicsEnvironment.isHeadless() = "
+              +java.awt.GraphicsEnvironment.isHeadless()
+              );
+          Console console=System.console();
+          print("  System.console() = "+console);
+          print(" ");
+          printProperty("os.name");
+          printProperty("os.arch");
+          printProperty("os.version");
+          print(" ");
+          printProperty("user.name");
+          printProperty("user.home");
+          printProperty("user.dir");
+          print(" ");
+          printProperty("java.io.tmpdir");
+          printProperty("java.class.path");
+          printProperty("java.home");
+          print(" ");
+          printProperty("spiralcraft.home");
+          
+        }
+        
+        
       }
     }
     catch (ExecutionTargetException x)
@@ -110,6 +147,17 @@ public class Main
       applicationManager.shutdown();
     }
     
+  }
+  
+  private static final void print(String message)
+  { Spiralcraft.err.println(message);
+  }
+  
+  private static final void printProperty(String name)
+  {
+    print("  System.getProperty(\""+name+"\") = "
+      +System.getProperty(name)
+      );
   }
   
   private static File findCodebaseContext()
