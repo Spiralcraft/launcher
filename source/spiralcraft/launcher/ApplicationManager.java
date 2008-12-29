@@ -125,7 +125,7 @@ public class ApplicationManager
       throw new IllegalArgumentException
         ("Please specify an application environment");
     }
-    else if (args[0].equals("start"))
+    else if (args[0].equals("exec"))
     {
       ApplicationEnvironment environment=new ApplicationEnvironment();
       environment.resolve(this);
@@ -137,12 +137,12 @@ public class ApplicationManager
     else
     {
 
-      URI applicationURI=findEnvironment(args[0]);
+      URI applicationURI=findEnvironment(args[0],".env.xml");
       if (applicationURI==null)
       { 
         // Show environments in-scope
         throw new IllegalArgumentException
-        ("Unknown application environment '"+args[0]+"'");
+          ("Unknown application environment '"+args[0]+"'");
       }
 
       args=(String[]) ArrayUtil.truncateBefore(args,1);
@@ -177,9 +177,9 @@ public class ApplicationManager
    *   3. The system environment path
    *
    */
-  private URI findEnvironment(String name)
+  private URI findEnvironment(String name,String suffix)
   {
-    URI nameURI=URI.create(name+".environment.xml");
+    URI nameURI=URI.create(name+suffix);
     URI searchURI=null;
     
     

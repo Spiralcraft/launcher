@@ -227,13 +227,9 @@ public class ApplicationEnvironment
           else if (option=="main")
           { 
             _mainClass=nextArgument();
-            //XXX Figure out what to do if null
             if (_mainMethodName==null)
             { _mainMethodName="main";
             }
-          }
-          else if (option=="exec")
-          { _mainClass="spiralcraft.exec.ClassExecutor";
           }
           else
           { return false;
