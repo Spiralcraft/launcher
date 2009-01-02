@@ -96,8 +96,9 @@ public class Spiralcraft
         { 
           DEBUG=true;
           debug("Spiralcraft boot debugging activated");
+          
         }
-        if (option=="spiralcraft.home")
+        else if (option=="spiralcraft.home")
         { _spiralcraftHome=args[++i];
         }
         else if (option=="codebase")

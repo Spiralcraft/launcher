@@ -1,11 +1,22 @@
 <project name="spiralcraft-launcher" basedir="." default="build">
 
+  <!-- Copy and customize the following local settings into build-local.xml 
+  -->
+  
+  <!-- 
+    <project name="build-local">
+      <property name="launch4j.dir" value=" PATH-TO-LAUNCH4J "/>
+    </project>  
+  -->
+
   <property name="classpath" 
   	 value="lib/spiralcraft.jar:lib/spiralcraft-core.jar"
   />
   <property name="module" value="launcher"/>
   <property name="buildVersion" value="0.3.1-dev"/>
+  
 
+  <import file="../../build/build-common.xml"/>
 	
   <target name="clean" depends="build-common.clean">
     <mkdir dir="main-out"/>
@@ -14,7 +25,7 @@
     </delete>
   </target>
 
-	<target name="compile" depends="jar-main,build-common.compile"/>
+  <target name="compile" depends="jar-main,build-common.compile,native"/>
 	
   <target name="compile-main">
     <echo message= "build-main: ${build.name}"/>
@@ -64,17 +75,47 @@
     </jar>
        
   </target>
+
+  <condition property="isLaunch4j">
+    <and>
+      <available file="${launch4j.dir}"/>
+      <available file="native-source"/>
+    </and>
+  </condition>
+
+
+  <target name="native" if="isLaunch4j" depends="native-console"/>
 	
-	<target name="smoke">
-	  <java 
-		  jar="lib/spiralcraft.jar"
-		  fork="true"
-		  >
-	  	<arg value="-debug"/>
-		</java>
-		  
-	</target>
+  <target name="native-console" >
+    <echo>Native Windows wrapper</echo>
+    <launch4j>
+      <config
+        headerType="console"
+        outfile="lib/spiralcraft.exe"
+        jarPath="spiralcraft.jar"
+        icon="native-source/favicon.ico"
+        dontWrapJar="true"
+        >
+        <jre
+          minVersion="1.6.0"
+          jdkPreference="preferJre"
+          >
+        </jre>
+      </config>
+    </launch4j>
+  </target>
+  
+  <target name="smoke">
+    <java 
+      jar="lib/spiralcraft.jar"
+      fork="true"
+      >
+      <arg value="-debug"/>
+    </java>
+ 
+  </target>
 		
-	<import file="../../build/build-common.xml"/>
+
+  
   
 </project>
