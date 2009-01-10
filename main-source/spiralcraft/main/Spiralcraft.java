@@ -70,7 +70,7 @@ public class Spiralcraft
   /**
    * Process arguments and run the application loader
    */
-  private int run(String[] args)
+  protected int run(String[] args)
   {
     String[] delegateArgs=processArguments(args);
     

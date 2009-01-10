@@ -86,7 +86,7 @@
 
   <target name="native" if="isLaunch4j" depends="native-console"/>
 	
-  <target name="native-console" >
+  <target name="native-console" if="isLaunch4j">
     <echo>Native Windows wrapper</echo>
     <launch4j>
       <config
