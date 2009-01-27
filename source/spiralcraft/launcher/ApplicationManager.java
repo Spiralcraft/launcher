@@ -127,6 +127,7 @@ public class ApplicationManager
     }
     else if (args[0].equals("exec"))
     {
+      // Default environment
       ApplicationEnvironment environment=new ApplicationEnvironment();
       environment.resolve(this);
       args[0]=args[1]; // Instance 
