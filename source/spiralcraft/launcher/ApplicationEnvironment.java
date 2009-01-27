@@ -232,7 +232,12 @@ public class ApplicationEnvironment
             }
           }
           else
-          { return false;
+          { 
+            // The arguments are pre-options for the Executor
+            _mainClass="spiralcraft.exec.Executor";
+            _mainMethodName="launch";
+            _mainArguments
+              =(String[]) ArrayUtil.append(_mainArguments,"-"+option);          
           }
         }
         else
