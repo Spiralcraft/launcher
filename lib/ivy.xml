@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="2.0">
+  <info organisation="spiralcraft" module="launcher" revision="0.3.1" status="integration" publication="20090325003558">
+  </info>
+  
+  
+  <publications>
+    <artifact name="spiralcraft-launcher" type="jar" ext="jar"/>
+    <artifact name="spiralcraft" type="jar" ext="jar"/>
+  </publications> 
+    
+  <dependencies>
+    <dependency org="spiralcraft" name="core" rev="0.3.1" revConstraint="latest.integration">
+      <exclude name="spiralcraft-core-test"/>
+    </dependency>
+  </dependencies>
+</ivy-module>
