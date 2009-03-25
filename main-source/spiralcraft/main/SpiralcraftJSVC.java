@@ -29,7 +29,7 @@ public class SpiralcraftJSVC
   
   private Thread mainThread;
   private String[] svcArguments;
-  private int exitCode;
+  // private int exitCode;
   
   /**
    * Here open the configuration files, create the trace file, create the 
@@ -53,7 +53,7 @@ public class SpiralcraftJSVC
   
   public void run()
   {
-    exitCode=run(svcArguments);
+    run(svcArguments);
   }
   
   /**
