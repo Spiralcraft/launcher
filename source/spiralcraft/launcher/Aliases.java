@@ -96,7 +96,7 @@ public class Aliases
     }
     else
     {
-      return (String[])  ArrayUtil.appendArrays
+      return (String[])  ArrayUtil.concat
         (StringUtil.tokenizeCommandLine(expansion)
         ,ArrayUtil.truncateBefore(source,1)
         );

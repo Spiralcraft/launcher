@@ -30,13 +30,13 @@ public class Usage
     out.println("  ... [debug-options] environment-name [args]");
     out.println("");
     out.println("debug-options include:");
-    out.println("    -log [filename]");
-    out.println("       Output debug messages to a file instead of the console");
-    out.println("    -debug");
+    out.println("    --log [filename]");
+    out.println("       Output debug messages (System.err) to a file instead of the console");
+    out.println("    --debug");
     out.println("       Output debugging information about the loading process");
-    out.println("    -spiralcraft.home [directory]");
+    out.println("    --spiralcraft.home [directory]");
     out.println("       The root directory of bootup Spiralcraft resources");
-    out.println("    -codebase [directory]");
+    out.println("    --codebase [directory]");
     out.println("       Look in ${codebase}/lib for application specific libraries/jars");
     out.println(" ");
     out.flush();

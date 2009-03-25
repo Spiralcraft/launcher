@@ -170,7 +170,8 @@ public class ApplicationEnvironment
       }
   
       Class<?> clazz=_classLoader.loadClass(_mainClass);
-      Method mainMethod=clazz.getMethod(_mainMethodName,new Class[] {String[].class});
+      Method mainMethod
+        =clazz.getMethod(_mainMethodName,new Class[] {String[].class});
       
       ClassLoader oldLoader=Thread.currentThread().getContextClassLoader();
       try
@@ -201,7 +202,7 @@ public class ApplicationEnvironment
   private void processArguments(String[] args)
   {
     _mainArguments
-      =(String[]) ArrayUtil.appendArrays(_mainArguments,_commandLineArguments);
+      =(String[]) ArrayUtil.concat(_mainArguments,_commandLineArguments);
     new Arguments()
     {
       @Override
@@ -221,10 +222,10 @@ public class ApplicationEnvironment
       { 
         if (_mainClass==null)
         {
-          if (option=="module")
+          if (option=="-module")
           { _modules=(String[]) ArrayUtil.append(_modules,nextArgument());
           }
-          else if (option=="main")
+          else if (option=="-main")
           { 
             _mainClass=nextArgument();
             if (_mainMethodName==null)

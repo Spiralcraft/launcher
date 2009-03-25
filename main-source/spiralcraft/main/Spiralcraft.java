@@ -92,19 +92,19 @@ public class Spiralcraft
       if (args[i].startsWith("-"))
       {
         String option=args[i].substring(1).intern();
-        if (option=="debug")
+        if (option=="-debug")
         { 
           DEBUG=true;
           debug("Spiralcraft boot debugging activated");
           
         }
-        else if (option=="spiralcraft.home")
+        else if (option=="-spiralcraft.home")
         { _spiralcraftHome=args[++i];
         }
-        else if (option=="codebase")
+        else if (option=="-codebase")
         { _codebase=args[++i];
         }
-        else if (option=="log")
+        else if (option=="-log")
         { logFile=args[++i];
         }
         else
