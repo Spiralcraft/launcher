@@ -17,7 +17,7 @@ package spiralcraft.launcher;
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
 
-import spiralcraft.util.Arguments;
+import spiralcraft.exec.Arguments;
 import spiralcraft.util.ArrayUtil;
 import spiralcraft.util.string.StringUtil;
 
@@ -247,7 +247,7 @@ public class ApplicationEnvironment
         return true;
       }
 
-    }.process(args,'-');
+    }.process(args);
   }    
   
 }
