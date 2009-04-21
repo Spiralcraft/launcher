@@ -151,7 +151,7 @@ public class ApplicationManager
       try
       {
         AbstractXmlObject<ApplicationEnvironment,?> environmentRef
-        =AbstractXmlObject.<ApplicationEnvironment>create
+        =AbstractXmlObject.<ApplicationEnvironment>activate
         (null
           ,applicationURI
           ,_registryNode.createChild(Integer.toString(_nextEnvironmentId++))
