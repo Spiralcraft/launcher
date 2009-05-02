@@ -16,6 +16,7 @@ package spiralcraft.launcher;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Enumeration;
 
 /**
  * Resolves class and resource data from a set of libraries
@@ -30,6 +31,9 @@ public interface LibraryClasspath
   URL getResource(String path)
     throws IOException;
 
+  Enumeration<URL> getResources(String path)
+    throws IOException;
+  
   void addLibrary(String path)
     throws IOException;
 

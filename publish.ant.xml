@@ -1,0 +1,3 @@
+<project name="spiralcraft-launcher-publish" basedir="." default="share">
+  <import file="build.xml"/>
+</project>

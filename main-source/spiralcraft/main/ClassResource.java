@@ -16,6 +16,7 @@ package spiralcraft.main;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 
 /**
  * Loads classes contained in a specific jar
@@ -41,4 +42,6 @@ public abstract class ClassResource
    * Close all resources
    */
   public abstract void shutdown();
+  
+  abstract URL getResource(String path);
 }

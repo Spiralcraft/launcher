@@ -2,6 +2,45 @@
   xmlns:scm="class:/spiralcraft/scm/meta/"
   >
   <scm:Change>
+    <revision>0.3.3
+    </revision>
+    
+    <authorId>miketoth
+    </authorId>
+
+
+    <date>2009-05-01
+    </date> 
+           
+    <notes>
+      <scm:Note>Complete implementation of ClassLoader.getResource() and
+        ClassLoader.getResources().
+      </scm:Note>
+    </notes>
+    
+    <path>/source/spiralcraft/
+    </path>
+    
+    <resources>
+      <URI>main/ClassResource.java
+      </URI>
+      <URI>main/FileClassResource.java
+      </URI>
+      <URI>main/JarClassResource.java
+      </URI>
+      <URI>main/LauncherClassLoader.java
+      </URI>
+      <URI>launcher/LibraryClasspath.java
+      </URI>
+      <URI>launcher/LibraryCatalog.java
+      </URI>
+      <URI>launcher/LibraryClassLoader.java
+      </URI>
+    </resources>
+    
+  </scm:Change>
+    
+  <scm:Change>
     <revision>0.3.2
     </revision>
     

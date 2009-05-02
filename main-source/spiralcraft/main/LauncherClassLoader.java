@@ -16,7 +16,11 @@ package spiralcraft.main;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -78,6 +82,47 @@ public class LauncherClassLoader
       }
     }
     return null;
+  }
+  
+  @Override
+  protected URL findResource(String path)
+  { 
+    for (ClassResource resource:resources)
+    {
+      URL url=resource.getResource(path);
+      if (url!=null)
+      { return url;
+      }
+    }
+    return null;
+    
+  }
+  
+  @Override
+  public Enumeration<URL> getResources(String path)
+    throws IOException
+  {
+    final LinkedList<URL> list=new LinkedList<URL>();
+    for (ClassResource resource:resources)
+    {
+      URL url=resource.getResource(path);
+      if (url!=null)
+      { list.add(url);
+      }
+    }
+    
+    return new Enumeration<URL>()
+    {
+      final Iterator<URL> iterator=list.iterator();
+      
+      public boolean hasMoreElements()
+      { return iterator.hasNext();
+      }
+      
+      public URL nextElement()
+      { return iterator.next();
+      }
+    };
   }
   
   /**

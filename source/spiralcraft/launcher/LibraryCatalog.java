@@ -19,6 +19,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.BufferedInputStream;
 
+import java.util.Map.Entry;
 import java.util.jar.JarFile;
 import java.util.jar.JarEntry;
 import java.util.jar.Manifest;
@@ -34,6 +35,8 @@ import java.util.List;
 import java.net.URL;
 
 import spiralcraft.log.ClassLog;
+import spiralcraft.util.IteratorEnumeration;
+import spiralcraft.util.ListMap;
 import spiralcraft.util.string.StringUtil;
 
 /**
@@ -181,8 +184,10 @@ public class LibraryCatalog
     private final ClassLog log
       =ClassLog.getInstance(LibraryClasspathImpl.class);
     
-    private final HashMap<String,Resource> resources
-      =new HashMap<String,Resource>();
+    private final ListMap<String,Resource> resources
+      =new ListMap<String,Resource>();
+
+    
     private final ArrayList<Library> classpathLibraries
       =new ArrayList<Library>();
 
@@ -217,7 +222,7 @@ public class LibraryCatalog
     public byte[] loadData(String path)
       throws IOException
     {
-      Resource resource=resources.get(path);
+      Resource resource=resources.getOne(path);
       if (resource==null)
       { throw new IOException("Not found: "+path);
       }
@@ -229,10 +234,11 @@ public class LibraryCatalog
       return resource.getData();
     }
 
+    @Override
     public URL getResource(String path)
       throws IOException
     {
-      Resource resource=resources.get(path);
+      Resource resource=resources.getOne(path);
       if (resource==null)
       { return null;
       }
@@ -244,6 +250,21 @@ public class LibraryCatalog
           );
       }
       return resource.getResource();
+    }
+    
+    @Override
+    public Enumeration<URL> getResources(String path)
+      throws IOException
+    {
+      List<Resource> resourceList=resources.get(path);
+      List<URL> urlList=new LinkedList<URL>();
+      if (resourceList!=null)
+      {
+        for (Resource resource:resourceList)
+        { urlList.add(resource.getResource());
+        }
+      }
+      return new IteratorEnumeration<URL>(urlList.iterator());
     }
 
     /**
@@ -320,7 +341,10 @@ public class LibraryCatalog
       
       library.open();
       classpathLibraries.add(library);
-      resources.putAll(library.resources);
+      
+      for (Entry<String, Resource> entry:library.resources.entrySet())
+      { resources.add(entry.getKey(),entry.getValue());
+      }
       
       String[] dependencies
         =library.getLibraryDependencies();
@@ -380,6 +404,8 @@ public class LibraryCatalog
       return null;
       
     }
+
+
   }
 
 }
@@ -472,6 +498,9 @@ class JarLibrary
           =new JarResource();
         resource.entry=jarEntry;
         resource.name=jarEntry.getName();
+        if (resource.name.endsWith("/"))
+        { resource.name=resource.name.substring(0,resource.name.length()-1);
+        }
         resource.library=this;
         resources.put(resource.name,resource);
       }

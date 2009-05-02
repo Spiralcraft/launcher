@@ -18,6 +18,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.BufferedInputStream;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
 
 import java.util.jar.JarFile;
 import java.util.jar.JarEntry;
@@ -58,6 +61,20 @@ public class JarClassResource
   }
 
 
+  @Override
+  public URL getResource(String path)
+  {
+    try
+    { 
+      return URI.create("jar:"+_file.toURI().toString()+"!/"+path)
+        .toURL();
+    }
+    catch (MalformedURLException x)
+    { x.printStackTrace();
+    }
+    return null;
+  }
+  
   @Override
   byte[] loadData(String path)
     throws IOException

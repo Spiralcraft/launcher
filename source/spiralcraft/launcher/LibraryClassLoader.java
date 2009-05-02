@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.io.ByteArrayInputStream;
 
 import java.net.URL;
+import java.util.Enumeration;
 
 import spiralcraft.main.LauncherClassLoader;
 
@@ -67,6 +68,12 @@ public class LibraryClassLoader
     { x.printStackTrace();
     }
     return null;
+  }
+  
+  @Override
+  public Enumeration<URL> getResources(String path)
+    throws IOException
+  { return libraryClasspath.getResources(path);
   }
   
   @Override

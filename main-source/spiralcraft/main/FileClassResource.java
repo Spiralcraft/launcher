@@ -18,6 +18,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * Loads classes contained in a specific directory tree
@@ -43,6 +45,17 @@ public class FileClassResource
     }
   }
   
+  @Override
+  public URL getResource(String path)
+  { 
+    try
+    { return _file.toURI().resolve(path).toURL();
+    }
+    catch (MalformedURLException x)
+    { x.printStackTrace();
+    }
+    return null;
+  }
 
   @Override
   byte[] loadData(String path)
