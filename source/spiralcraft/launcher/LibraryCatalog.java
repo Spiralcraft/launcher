@@ -27,7 +27,6 @@ import java.util.jar.Attributes;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -53,7 +52,8 @@ public class LibraryCatalog
 
   private final String codebaseRootPath;
 
-  private ArrayList<Library> codebaseLibraries=new ArrayList<Library>();
+  private ArrayList<Module> codebaseLibraries=new ArrayList<Module>();
+  private boolean closed;
   
   /**
    * Create a new LibraryCatalog for the library located at the specified
@@ -65,19 +65,27 @@ public class LibraryCatalog
     loadCatalog();
   }
   
-  public List<Library> listLibraries()
+  public List<Module> listModules()
   { return codebaseLibraries;
   }
   
   public void close()
   {
-    for (Library library: codebaseLibraries)
+    closed=true;
+    for (Module library: codebaseLibraries)
     { 
       try
       { library.forceClose();
       }
       catch (IOException x)
       { }
+    }
+  }
+  
+  protected void assertOpen()
+  {
+    if (closed)
+    { throw new IllegalStateException("Shutting down");
     }
   }
   
@@ -88,10 +96,10 @@ public class LibraryCatalog
   { return new LibraryClasspathImpl();
   }
 
-  public Library findLibrary(String fileName)
+  public Module findModule(String fileName)
   {
-    Library library
-      =getLibrary
+    Module library
+      =getModule
         (new File(codebaseRootPath+File.separator+fileName)
           .getAbsolutePath()
         );
@@ -99,9 +107,9 @@ public class LibraryCatalog
 
   }
 
-  private Library getLibrary(String fullPath)
+  private Module getModule(String fullPath)
   { 
-    for (Library library: codebaseLibraries)
+    for (Module library: codebaseLibraries)
     { 
       if (library.path.equals(fullPath))
       { return library;
@@ -159,9 +167,9 @@ public class LibraryCatalog
   private void catalogLibrary(File file)
     throws IOException
   {
-    Library lib;
+    Module lib;
     if (file.getName().endsWith(".jar"))
-    { lib=new JarLibrary(file);
+    { lib=new JarModule(file);
     }
     else if (file.getName().endsWith(".dll")
             || file.getName().endsWith(".so")
@@ -169,7 +177,7 @@ public class LibraryCatalog
     { lib=new NativeLibrary(file);
     }
     else
-    { lib=new FileLibrary(file);
+    { lib=new FileModule(file);
     }
     codebaseLibraries.add(lib);
   }
@@ -188,8 +196,8 @@ public class LibraryCatalog
       =new ListMap<String,Resource>();
 
     
-    private final ArrayList<Library> classpathLibraries
-      =new ArrayList<Library>();
+    private final ArrayList<Module> classpathLibraries
+      =new ArrayList<Module>();
 
     private boolean debug;
     
@@ -203,7 +211,7 @@ public class LibraryCatalog
       { log.fine("Releasing...");
       }
       
-      for (Library library: classpathLibraries)
+      for (Module library: classpathLibraries)
       {
         try
         { 
@@ -222,6 +230,7 @@ public class LibraryCatalog
     public byte[] loadData(String path)
       throws IOException
     {
+      assertOpen();
       Resource resource=resources.getOne(path);
       if (resource==null)
       { throw new IOException("Not found: "+path);
@@ -229,9 +238,14 @@ public class LibraryCatalog
       if (debug)
       { 
         log.fine
-          ("Loading data from  "+resource.library.path+"!"+resource.name);
+          ("Loading data from  "+resource.module.path+"!"+resource.name);
       }
-      return resource.getData();
+      try
+      { return resource.getData();
+      }
+      catch (IllegalStateException x)
+      { throw new IllegalStateException("Exception loading "+path,x);
+      }
     }
 
     @Override
@@ -246,7 +260,7 @@ public class LibraryCatalog
       {
         log.fine
           ("Returning reference to resource "
-          +resource.library.path+"!"+resource.name
+          +resource.module.path+"!"+resource.name
           );
       }
       return resource.getResource();
@@ -275,9 +289,9 @@ public class LibraryCatalog
     public void addModule(String name)
       throws IOException
     { 
-      LinkedList<Library> libraries
-        =new LinkedList<Library>();
-      for (Library library: codebaseLibraries)
+      LinkedList<Module> libraries
+        =new LinkedList<Module>();
+      for (Module library: codebaseLibraries)
       {
         if (library.isModule(name))
         { libraries.add(library);
@@ -298,13 +312,13 @@ public class LibraryCatalog
       throws IOException
     {
 
-      for (Library library: codebaseLibraries)
+      for (Module library: codebaseLibraries)
       { addLibrary(getLatestVersion(library));
       }
        
     }
 
-    public Library getLatestVersion(Library library)
+    public Module getLatestVersion(Module library)
     { return library;
     }
     
@@ -312,7 +326,7 @@ public class LibraryCatalog
       throws IOException
     { 
       boolean found=false;
-      for (Library library: codebaseLibraries)
+      for (Module library: codebaseLibraries)
       { 
         // Use versioning logic to find the best
         //   library in the future
@@ -328,7 +342,7 @@ public class LibraryCatalog
       }
     }
 
-    private void addLibrary(Library library)
+    private void addLibrary(Module library)
       throws IOException
     {
       if (classpathLibraries.contains(library))
@@ -353,7 +367,7 @@ public class LibraryCatalog
       {
         for (int i=0;i<dependencies.length;i++)
         { 
-          Library depends=findLibrary(dependencies[i]);
+          Module depends=findModule(dependencies[i]);
           if (depends!=null)
           { addLibrary(depends);
           }
@@ -370,12 +384,12 @@ public class LibraryCatalog
     public void resolveLibrariesForResource(String resourcePath)
       throws IOException
     { 
-      List<Library> libraries=new LinkedList<Library>();
+      List<Module> libraries=new LinkedList<Module>();
 
-      Iterator<Library> it=codebaseLibraries.iterator();
+      Iterator<Module> it=codebaseLibraries.iterator();
       while (it.hasNext())
       { 
-        Library library=it.next();
+        Module library=it.next();
 
         if (library.resources.get(resourcePath)!=null)
         { libraries.add(library);
@@ -393,7 +407,7 @@ public class LibraryCatalog
     public String findNativeLibrary(String name)
     {
 
-      for (Library library: codebaseLibraries)
+      for (Module library: codebaseLibraries)
       { 
         if ((library instanceof NativeLibrary)
             && library.name.equals(name)
@@ -413,62 +427,20 @@ public class LibraryCatalog
 class CatalogEntry
 {
   String name;
-  Library library;
+  Module library;
   
 }
 
-abstract class Library
-{
-  String path;
-  String name;
-  long lastModified;
-  HashMap<String,Resource> resources
-    =new HashMap<String,Resource>();
 
-  public Library(File file)
-    throws IOException
-  { 
-    path=file.getAbsolutePath();
-    name=file.getName();
-    lastModified=file.lastModified();
-    catalogResources();
-  }
-
-  /**
-   * Indicate whether the library is a release of the
-   *   specified module
-   */
-  public boolean isModule(String moduleName)
-  { 
-    // XXX For now, use exact name = HACK
-    return name.equals(moduleName) && !(this instanceof NativeLibrary);
-  }
-
-  public abstract String[] getLibraryDependencies();
-
-  public abstract void open()
-    throws IOException;
-
-  public abstract void close()
-    throws IOException;
-
-  public abstract void forceClose()
-    throws IOException;
-
-  public abstract void catalogResources()
-    throws IOException;
-
-}
-
-class JarLibrary
-  extends Library
+class JarModule
+  extends Module
 {
 
   int openCount=0;
   JarFile jarFile;
   Manifest manifest;
 
-  public JarLibrary(File file)
+  public JarModule(File file)
     throws IOException
   { 
     super(file);
@@ -501,7 +473,7 @@ class JarLibrary
         if (resource.name.endsWith("/"))
         { resource.name=resource.name.substring(0,resource.name.length()-1);
         }
-        resource.library=this;
+        resource.module=this;
         resources.put(resource.name,resource);
       }
     }
@@ -551,12 +523,20 @@ class JarLibrary
     BufferedInputStream in=null;
     try
     {
-      in = new BufferedInputStream(jarFile.getInputStream(entry));
+      open();
+      try
+      {
+        in = new BufferedInputStream(jarFile.getInputStream(entry));
 
-      byte[] data = new byte[(int) entry.getSize()];
-      in.read(data);
-      in.close();
-      return data;
+        byte[] data = new byte[(int) entry.getSize()];
+        in.read(data);
+        in.close();
+        return data;
+      }
+      finally
+      { close();
+      }
+      
     }
     catch (IOException x)
     { 
@@ -602,7 +582,7 @@ class JarLibrary
 }
 
 class NativeLibrary
-  extends Library
+  extends Module
 {
 
 
@@ -650,10 +630,10 @@ class NativeLibrary
 
 }
 
-class FileLibrary
-  extends Library
+class FileModule
+  extends Module
 {
-  public FileLibrary(File file)
+  public FileModule(File file)
     throws IOException
   { super(file);
   }
@@ -684,17 +664,7 @@ class FileLibrary
   }
 }
 
-abstract class Resource
-{
-  Library library;
-  String name;
 
-  public abstract byte[] getData()
-    throws IOException;
-
-  public abstract URL getResource()
-    throws IOException;
-}
 
 class JarResource
   extends Resource
@@ -704,13 +674,13 @@ class JarResource
   @Override
   public byte[] getData()
     throws IOException
-  { return ((JarLibrary) library).getData(entry);
+  { return ((JarModule) module).getData(entry);
   }
 
   @Override
   public URL getResource()
     throws IOException
-  { return new URL("jar:file:///"+library.path.replace('\\','/')+"!/"+name);
+  { return new URL("jar:file:///"+module.path.replace('\\','/')+"!/"+name);
   }
 }
 
@@ -727,7 +697,7 @@ class FileResource
   @Override
   public URL getResource()
     throws IOException
-  { return new URL("file:/"+library.path+"/"+name);
+  { return new URL("file:/"+module.path+"/"+name);
   }
 
 }

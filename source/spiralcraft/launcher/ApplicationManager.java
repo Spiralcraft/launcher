@@ -117,7 +117,7 @@ public class ApplicationManager
   }
 
   public void exec(String[] args)
-    throws ExecutionTargetException
+    throws LaunchException
   { 
     if (args.length==0)
     { 
@@ -162,10 +162,19 @@ public class ApplicationManager
         ApplicationEnvironment environment=environmentRef.get();
         environment.resolve(this);
 
-        environment.exec(args);
+        try
+        { environment.exec(args);
+        }
+        catch (LaunchTargetException x)
+        { 
+          throw new LaunchException
+            ("Error launching "+applicationURI+": "+x.getMessage()
+            ,x.getCause()
+            );
+        }
       }
       catch (BindException x)
-      { throw new ExecutionTargetException(x);
+      { throw new LaunchException("Error binding "+applicationURI,x);
       }
     }
   }
@@ -175,7 +184,8 @@ public class ApplicationManager
    *   
    *   1. The user directory
    *   2. The user environment path
-   *   3. The system environment path
+   *   3. The codebase location
+   *   4. Built-ins
    *
    */
   private URI findEnvironment(String name,String suffix)
@@ -204,7 +214,11 @@ public class ApplicationManager
     { return searchURI;
     }
 
-
+    searchURI=URI.create
+      ("class:/spiralcraft/launcher/builtins/").resolve(nameURI);
+    if (isEnvironment(searchURI))
+    { return searchURI;
+    }
 
     return null;
   }

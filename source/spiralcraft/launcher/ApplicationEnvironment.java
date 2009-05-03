@@ -65,8 +65,8 @@ import spiralcraft.util.string.StringUtil;
  */
 public class ApplicationEnvironment
 {
-  private LibraryClassLoader _classLoader;
-  // private ApplicationManager _applicationManager;
+  protected LibraryClassLoader _classLoader;
+  protected ApplicationManager _applicationManager;
   private String _mainClass;
   private String _mainMethodName;
   private String[] _mainArguments=new String[0];
@@ -80,7 +80,7 @@ public class ApplicationEnvironment
    */
   void resolve(ApplicationManager manager)
   { 
-    // _applicationManager=manager;
+    _applicationManager=manager;
     _classLoader=new LibraryClassLoader(manager.getLibraryCatalog());
     _classLoader.setDebug(debug);
   }
@@ -141,7 +141,7 @@ public class ApplicationEnvironment
    * Load the codebase and execute a command. 
    */
   public void exec(String[] args)
-    throws ExecutionTargetException
+    throws LaunchException
   { 
     processArguments(args);
 
@@ -188,10 +188,10 @@ public class ApplicationEnvironment
       while (x.getTargetException() instanceof InvocationTargetException)
       { x=(InvocationTargetException) x.getTargetException();
       }
-      throw new ExecutionTargetException(x.getTargetException());
+      throw new LaunchTargetException(x.getTargetException());
     }
     catch (Exception x)
-    { throw new ExecutionTargetException(x);
+    { throw new LaunchTargetException(x);
     }
       
   }

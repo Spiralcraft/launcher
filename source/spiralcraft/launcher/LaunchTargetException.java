@@ -1,5 +1,5 @@
 //
-// Copyright (c) 1998,2005 Michael Toth
+// Copyright (c) 1998,2009 Michael Toth
 // Spiralcraft Inc., All Rights Reserved
 //
 // This package is part of the Spiralcraft project and is licensed under
@@ -14,33 +14,22 @@
 //
 package spiralcraft.launcher;
 
-import spiralcraft.exec.ExecutionException;
-
 /**
  * Thrown when something goes wrong during execution
  */
-public class ExecutionTargetException
-  extends ExecutionException
+public class LaunchTargetException
+  extends LaunchException
 {
   private static final long serialVersionUID=1;
   
-  private final Throwable _targetException;
-  
-  public ExecutionTargetException(Throwable targetException)
+  public LaunchTargetException(String message,Throwable targetException)
   { 
-    super("");
-    _targetException=targetException;
-    if (_targetException!=null)
-    { initCause(_targetException);
-    }
+    super(message,targetException);
   }
   
-  public Throwable getTargetException()
-  { return _targetException;
+  public LaunchTargetException(Throwable targetException)
+  { 
+    super(targetException);
   }
   
-  @Override
-  public String toString()
-  { return super.toString()+" caused by "+_targetException.toString();
-  }
 }

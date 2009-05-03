@@ -70,7 +70,7 @@ public class Main
     // System.setSecurityManager(new SystemSecurityManager());
   }
 
-  public static void exec(String[] args)
+  public static void exec(final String[] args)
     throws Throwable
   {
 
@@ -89,7 +89,7 @@ public class Main
       print(" ");
     }
       
-    ApplicationManager applicationManager
+    final ApplicationManager applicationManager
       =new ApplicationManager("root",codebase);
       
 
@@ -101,8 +101,27 @@ public class Main
     {
       if (args.length>0)
       { 
-        // Execute a single command, then exit
-        applicationManager.exec(args);
+        LauncherThreadGroup group
+          =new LauncherThreadGroup();
+        
+        group.run
+          (new Runnable()
+          {
+            public void run()
+            { 
+              // Execute a single command, then exit
+              try
+              { applicationManager.exec(args);
+              }
+              catch (LaunchException x)
+              { x.printStackTrace();
+              }
+
+            }
+          }
+          );
+        
+        group.join();
       }
       else
       { 
@@ -165,12 +184,14 @@ public class Main
         
       }
     }
-    catch (ExecutionTargetException x)
-    { throw x.getTargetException();
-    }
+//    catch (ExecutionTargetException x)
+//    { throw x.getTargetException();
+//    }
     finally
     { 
-      // XXX Make sure this runs on the ExecutionTargetException rethrow
+      // XXX There may be threads still running that were spawned by
+      //   Class inits in the LibraryClassLoader instance that will
+      //   throw exceptions if they try to load classes past this point
       applicationManager.shutdown();
     }
     

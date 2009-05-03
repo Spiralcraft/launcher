@@ -51,7 +51,11 @@
       </fileset>
     </copy>
     
-    <propertyfile file="main-out/build-${build.name}"/>
+  	<mkdir dir="main-out/META-INF/spiralcraft-scm"/>
+    <propertyfile file="main-out/META-INF/spiralcraft-scm/build-${build.name}"/>
+    <propertyfile file="main-out/META-INF/spiralcraft-scm/version.properties">
+      <entry key="build.name" value="${build.name}"/>
+    </propertyfile>  	
   </target>
 
   <target name="jar-main" depends="compile-main">
@@ -64,13 +68,6 @@
       <Manifest>
         <attribute name="Main-Class" value="spiralcraft.main.Spiralcraft"/>   
       </Manifest>
-      <include name="build.name.local"/>
-      <include name="spiralcraft/**/*.class"/>
-      <include name="spiralcraft/**/*.xml"/>
-      <include name="spiralcraft/**/*.tgl"/>
-      <include name="spiralcraft/**/*.webui"/>
-      <include name="spiralcraft/**/*.ghtml"/>
-      <include name="spiralcraft/**/*.properties"/>
     </jar>
        
   </target>
@@ -105,13 +102,30 @@
   </target>
   
   <target name="smoke">
+  	<echo message="--debug"/>
     <java 
       jar="lib/spiralcraft.jar"
       fork="true"
       >
-      <arg value="-debug"/>
+      <arg value="--debug"/>
     </java>
- 
+
+    <echo message="jvminfo"/>
+    <java 
+      jar="lib/spiralcraft.jar"
+      fork="true"
+      >
+      <arg value="jvminfo"/>
+    </java>
+  
+    <echo message="versions"/>
+  	<java 
+      jar="lib/spiralcraft.jar"
+      fork="true"
+      >
+      <arg value="versions"/>
+    </java>
+
   </target>
 		
 
