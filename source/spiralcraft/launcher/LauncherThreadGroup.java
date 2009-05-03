@@ -17,6 +17,8 @@ package spiralcraft.launcher;
 public class LauncherThreadGroup
   extends ThreadGroup
 {
+  private static volatile int NEXT_ID=0;
+  
   public LauncherThreadGroup()
   { super("spiralcraft-launcher");
   }
@@ -24,7 +26,7 @@ public class LauncherThreadGroup
   
   public void run(Runnable runnable)
   {
-    Thread thread=new Thread(this,runnable);
+    Thread thread=new Thread(this,runnable,"launch-"+(NEXT_ID++));
     thread.setDaemon(true);
     thread.start();
     try

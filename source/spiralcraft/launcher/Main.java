@@ -121,7 +121,6 @@ public class Main
           }
           );
         
-        group.join();
       }
       else
       { 
