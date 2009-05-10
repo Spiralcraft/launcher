@@ -52,12 +52,9 @@ public class Versions
     for (Module module : modules)
     { 
       out.println
-        (module.getName());
+        ("Module: "+module.getName());
       
-      out.println("       path: "
-        +module.getPath());
-      out.println("       time: "
-        +new Date(module.getLastModified()));
+      out.println(" ");
       
       Resource versionResource
         =module.getResource("META-INF/spiralcraft-scm/version.properties");
@@ -67,12 +64,19 @@ public class Versions
         try
         { 
           properties.load(new ByteArrayInputStream(versionResource.getData()));
-          out.println("    version: "+properties.getProperty("build.name"));
+          out.println("    version: "+properties.getProperty("version"));
+          out.println("      stamp: "+properties.getProperty("build.name"));
         }
         catch (IOException x)
         { 
         }
       }
+      out.println("       path: "
+        +module.getPath());
+      out.println("       time: "
+        +new Date(module.getLastModified()));
+      out.println(" ");
+      
     }
     
     
