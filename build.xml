@@ -51,11 +51,7 @@
       </fileset>
     </copy>
     
-  	<mkdir dir="main-out/META-INF/spiralcraft-scm"/>
-    <propertyfile file="main-out/META-INF/spiralcraft-scm/build-${build.name}"/>
-    <propertyfile file="main-out/META-INF/spiralcraft-scm/version.properties">
-      <entry key="build.name" value="${build.name}"/>
-    </propertyfile>  	
+    <stampVersion dir="main-out/META-INF/spiralcraft-scm"/>
   </target>
 
   <target name="jar-main" depends="compile-main">
@@ -102,7 +98,7 @@
   </target>
   
   <target name="smoke">
-  	<echo message="--debug"/>
+    <echo message="--debug"/>
     <java 
       jar="lib/spiralcraft.jar"
       fork="true"
