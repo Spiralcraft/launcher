@@ -2,6 +2,34 @@
   xmlns:scm="class:/spiralcraft/scm/meta/"
   >
   <scm:Change>
+    <revision>0.3.4
+    </revision>
+    
+    <authorId>miketoth
+    </authorId>
+    
+    <date>2009-05-27
+    </date>
+    
+    <notes>
+      <scm:Note>Updates for refactored ArrayUtil (generics)
+      </scm:Note>
+    </notes>
+    
+    <path>source/spiralcraft/launcher/
+    </path>
+    
+    <resources>
+      <URI>Aliases.java
+      </URI>
+      <URI>ApplicationEnvironment.java
+      </URI>
+      <URI>ApplicationManager.java
+      </URI>
+    </resources>
+  </scm:Change>
+
+  <scm:Change>
     <revision>0.3.3
     </revision>
     

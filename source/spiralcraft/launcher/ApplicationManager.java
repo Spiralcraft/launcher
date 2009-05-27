@@ -132,7 +132,7 @@ public class ApplicationManager
       environment.resolve(this);
       args[0]=args[1]; // Instance 
       
-      args=(String[]) ArrayUtil.truncateBefore(args,1);
+      args=ArrayUtil.truncateBefore(args,1);
       environment.exec(args);
     }
     else
@@ -146,7 +146,7 @@ public class ApplicationManager
           ("Unknown application environment '"+args[0]+"'");
       }
 
-      args=(String[]) ArrayUtil.truncateBefore(args,1);
+      args=ArrayUtil.truncateBefore(args,1);
 
       try
       {

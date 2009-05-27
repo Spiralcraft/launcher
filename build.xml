@@ -13,7 +13,7 @@
   	 value="lib/spiralcraft.jar:lib/spiralcraft-core.jar"
   />
   <property name="module" value="launcher"/>
-  <property name="buildVersion" value="0.3.3"/>
+  <property name="buildVersion" value="0.3.4"/>
   
 
 	

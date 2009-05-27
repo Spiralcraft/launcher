@@ -202,7 +202,7 @@ public class ApplicationEnvironment
   private void processArguments(String[] args)
   {
     _mainArguments
-      =(String[]) ArrayUtil.concat(_mainArguments,_commandLineArguments);
+      =ArrayUtil.concat(_mainArguments,_commandLineArguments);
     new Arguments()
     {
       @Override
@@ -213,7 +213,7 @@ public class ApplicationEnvironment
           _mainClass="spiralcraft.exec.Executor";
           _mainMethodName="launch";
         }
-        _mainArguments=(String[]) ArrayUtil.append(_mainArguments,argument);
+        _mainArguments=ArrayUtil.append(_mainArguments,argument);
         return true;
       }
 
@@ -223,7 +223,7 @@ public class ApplicationEnvironment
         if (_mainClass==null)
         {
           if (option=="-module")
-          { _modules=(String[]) ArrayUtil.append(_modules,nextArgument());
+          { _modules=ArrayUtil.append(_modules,nextArgument());
           }
           else if (option=="-main")
           { 
@@ -238,11 +238,11 @@ public class ApplicationEnvironment
             _mainClass="spiralcraft.exec.Executor";
             _mainMethodName="launch";
             _mainArguments
-              =(String[]) ArrayUtil.append(_mainArguments,"-"+option);          
+              =ArrayUtil.append(_mainArguments,"-"+option);          
           }
         }
         else
-        { _mainArguments=(String[]) ArrayUtil.append(_mainArguments,"-"+option);
+        { _mainArguments=ArrayUtil.append(_mainArguments,"-"+option);
         }
         return true;
       }
