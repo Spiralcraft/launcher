@@ -13,9 +13,10 @@
   	 value="lib/spiralcraft.jar:lib/spiralcraft-core.jar"
   />
   <property name="module" value="launcher"/>
-  <property name="buildVersion" value="0.3.5"/>
+  <property name="buildVersion" value="0.4.2"/>
   
 
+  <import file="../../build/build-spiralcraft-common.xml"/>
 	
   <target name="clean" depends="build-common.clean">
     <mkdir dir="main-out"/>
@@ -75,19 +76,59 @@
     </and>
   </condition>
 
-
-  <target name="native" if="isLaunch4j" depends="native-console"/>
+  <condition property="noLaunch4j">
+    <not>
+      <available file="${launch4j.dir}"/>
+    </not>
+  </condition>
+      
+  <target name="native"  depends="launch4j-error,native-console,native-gui"/>
 	
-  <target name="native-console" if="isLaunch4j">
-    <echo>Native Windows wrapper</echo>
+  <target name="launch4j-error" if="noLaunch4j">
+    <echo>Property "launch4j.dir" (${launch4j.dir}) 
+        does not point to a launch4j install
+    </echo>
+  </target>
+      
+  <target name="native-gui" >
+    <echo>Native Windows gui wrapper</echo>
     <launch4j>
       <config
-        headerType="console"
+        headerType="gui"
         outfile="lib/spiralcraft.exe"
         jarPath="spiralcraft.jar"
         icon="native-source/favicon.ico"
         dontWrapJar="true"
         >
+        <splash
+          file="native-source/Spiralcraft Logo.captioned.256w.rgb.bmp"
+        />
+        <jre
+          minVersion="1.6.0"
+          jdkPreference="preferJre"
+          >
+        </jre>
+      </config>
+    </launch4j>
+  </target>
+
+  <target name="native-console" >
+    <echo>Native Windows console wrapper</echo>
+    <launch4j>
+      <config
+        headerType="console"
+        outfile="lib/sc.exe"
+        jarPath="spiralcraft.jar"
+        icon="native-source/favicon.ico"
+        dontWrapJar="true"
+        >
+        <!--
+        <classPath mainClass="org.demo.DemoApp">
+          <cp>./lib/looks.jar</cp>
+          <cp>%USER_LIBS%/*.jar</cp>
+        </classPath>
+        -->
+          
         <jre
           minVersion="1.6.0"
           jdkPreference="preferJre"
@@ -125,7 +166,6 @@
   </target>
 		
 
-  <import file="../../build/build-spiralcraft-common.xml"/>
   
   
 </project>
