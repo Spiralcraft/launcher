@@ -3,6 +3,23 @@
   >
   
   <scm:Change>
+    <revision>0.4.4
+    </revision>
+    
+    <authorId>miketoth
+    </authorId>
+    
+    <date>2010-02-03
+    </date>
+    
+    <notes>
+      <scm:Note>Sync with core 0.4.4
+      </scm:Note>
+    </notes>
+
+  </scm:Change>
+
+  <scm:Change>
     <revision>0.3.5
     </revision>
     
