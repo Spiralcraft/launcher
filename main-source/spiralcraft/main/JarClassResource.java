@@ -35,7 +35,12 @@ public class JarClassResource
   private JarFile _jarFile;
 
   public JarClassResource(String file)
-  { _file=new File(file);
+    throws IOException
+  { 
+    _file=new File(file);
+    if (!_file.exists())
+    { throw new IOException("File "+file+" does not exist");
+    }
   }
 
   @Override
