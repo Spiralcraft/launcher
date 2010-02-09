@@ -10,11 +10,7 @@
   </publications> 
     
   <dependencies>
-    <dependency
-      org="spiralcraft" 
-      name="core" 
-      rev="[0.3.7,)"
-      >
+    <dependency org="spiralcraft" name="core" rev="[0.4.4.3,)">
       <exclude name="spiralcraft-core-test"/>
     </dependency>
   </dependencies>
