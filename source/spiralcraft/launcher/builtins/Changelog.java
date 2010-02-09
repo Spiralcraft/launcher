@@ -56,11 +56,28 @@ public class Changelog
       if (changeLog!=null)
       { 
         try
-        { System.out.write(changeLog.getData());
+        { 
+          byte[] data=changeLog.getData();
+          if (data!=null && data.length>0)
+          { 
+            System.out.print(new String(data));
+            System.out.flush();
+          }
+          else
+          { 
+            throw new LaunchException
+              ("Module "+args[0]+" changeLog does not exist");
+          }
         }
         catch (IOException x)
         { throw new LaunchException(x);
         }
+      }
+      else
+      { 
+        throw new LaunchException
+          ("Module "+args[0]+" does not contain resource "+changeLog);
+        
       }
     }
   }
