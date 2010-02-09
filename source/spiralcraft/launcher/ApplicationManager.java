@@ -131,9 +131,15 @@ public class ApplicationManager
       // Default environment
       ApplicationEnvironment environment=new ApplicationEnvironment();
       environment.resolve(this);
-      args[0]=args[1]; // Instance 
+      if (args.length>1)
+      {
+        args[0]=args[1]; // Instance 
       
-      args=ArrayUtil.truncateBefore(args,1);
+        args=ArrayUtil.truncateBefore(args,1);
+      }
+      else
+      { args=new String[0];
+      }
       environment.exec(args);
     }
     else
