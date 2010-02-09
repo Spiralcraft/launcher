@@ -18,6 +18,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
 
 import spiralcraft.exec.Arguments;
+import spiralcraft.log.ClassLog;
 import spiralcraft.util.ArrayUtil;
 import spiralcraft.util.string.StringUtil;
 
@@ -65,6 +66,9 @@ import spiralcraft.util.string.StringUtil;
  */
 public class ApplicationEnvironment
 {
+  protected final ClassLog log
+    =ClassLog.getInstance(getClass());
+  
   protected LibraryClassLoader _classLoader;
   protected ApplicationManager _applicationManager;
   private String _mainClass;

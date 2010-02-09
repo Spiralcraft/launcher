@@ -72,6 +72,7 @@ public class ApplicationManager
   private static RegistryNode _REGISTRY_ROOT
     =Registry.getLocalRoot().createChild("applicationManager");
 
+  private URI[] searchPath;
     
   private final File _codebase;
       
@@ -143,7 +144,9 @@ public class ApplicationManager
       { 
         // Show environments in-scope
         throw new IllegalArgumentException
-          ("Unknown application environment '"+args[0]+"'");
+          ("Unknown application environment '"+args[0]+"', searched:\r\n  "
+          +ArrayUtil.format(searchPath,"\r\n  ,","[","]")
+          );
       }
 
       args=ArrayUtil.truncateBefore(args,1);
@@ -182,10 +185,11 @@ public class ApplicationManager
   /**
    * Search for the named environment, in order of priority:
    *   
-   *   1. The user directory
-   *   2. The user environment path
-   *   3. The codebase location
-   *   4. Built-ins
+   *   1. An absolute resource if specified, whether or not it exists
+   *   2. A resource relative to the user's "current directory" (user.dir)
+   *   3. Launcher built-ins
+   *   4. codebase environment path 
+   *   5. user home directory/.spiralcraft/env/* 
    *
    */
   private URI findEnvironment(String name,String suffix)
@@ -195,30 +199,40 @@ public class ApplicationManager
     
     
     if (nameURI.isAbsolute() && isEnvironment(nameURI))
-    { return nameURI;
+    { 
+      searchPath=new URI[] {nameURI};
+      return nameURI;
+    }
+    else
+    { searchPath=new URI[] {};
     }
 
-    
     searchURI=new File(System.getProperty("user.dir")).toURI().resolve(nameURI);
     if (isEnvironment(searchURI))
     { return searchURI;
     }
-
-    searchURI=_userHomeEnvironmentURI.resolve(nameURI);
-    if (isEnvironment(searchURI))
-    { return searchURI;
-    }
-
-    searchURI=_codebaseEnvironmentURI.resolve(nameURI);
-    if (isEnvironment(searchURI))
-    { return searchURI;
-    }
+    searchPath=ArrayUtil.append(searchPath,searchURI);
 
     searchURI=URI.create
       ("class:/spiralcraft/launcher/builtins/").resolve(nameURI);
     if (isEnvironment(searchURI))
     { return searchURI;
     }
+    searchPath=ArrayUtil.append(searchPath,searchURI);
+
+    searchURI=_codebaseEnvironmentURI.resolve(nameURI);
+    if (isEnvironment(searchURI))
+    { return searchURI;
+    }
+    searchPath=ArrayUtil.append(searchPath,searchURI);
+    
+
+    searchURI=_userHomeEnvironmentURI.resolve(nameURI);
+    if (isEnvironment(searchURI))
+    { return searchURI;
+    }
+    searchPath=ArrayUtil.append(searchPath,searchURI);
+
 
     return null;
   }
