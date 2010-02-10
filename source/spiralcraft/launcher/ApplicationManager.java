@@ -194,8 +194,9 @@ public class ApplicationManager
    *   1. An absolute resource if specified, whether or not it exists
    *   2. A resource relative to the user's "current directory" (user.dir)
    *   3. Launcher built-ins
-   *   4. codebase environment path 
-   *   5. user home directory/.spiralcraft/env/* 
+   *   4. Codebase built-ins
+   *   5. codebase environment path 
+   *   6. user home directory/.spiralcraft/env/* 
    *
    */
   private URI findEnvironment(String name,String suffix)
@@ -226,6 +227,13 @@ public class ApplicationManager
     }
     searchPath=ArrayUtil.append(searchPath,searchURI);
 
+    searchURI=URI.create
+      ("sclib:/META-INF/spiralcraft.env/").resolve(nameURI);
+    if (isEnvironment(searchURI))
+    { return searchURI;
+    }
+    searchPath=ArrayUtil.append(searchPath,searchURI);
+    
     searchURI=_codebaseEnvironmentURI.resolve(nameURI);
     if (isEnvironment(searchURI))
     { return searchURI;

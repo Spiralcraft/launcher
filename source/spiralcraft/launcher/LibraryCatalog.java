@@ -37,6 +37,7 @@ import spiralcraft.log.ClassLog;
 import spiralcraft.util.IteratorEnumeration;
 import spiralcraft.util.ListMap;
 import spiralcraft.util.string.StringUtil;
+import spiralcraft.vfs.AlreadyRegisteredException;
 
 /**
  * <P>Catalog of the code and resource Libraries available for use by a
@@ -49,6 +50,7 @@ import spiralcraft.util.string.StringUtil;
 public class LibraryCatalog
 {
 
+  
 
   private final String codebaseRootPath;
 
@@ -58,9 +60,19 @@ public class LibraryCatalog
   /**
    * Create a new LibraryCatalog for the library located at the specified
    *   File path.
+   * @throws AlreadyRegisteredException 
    */
-  public LibraryCatalog(File path)
+  public LibraryCatalog(File path) 
   { 
+    try
+    {
+      spiralcraft.vfs.Resolver.getInstance()
+        .registerResourceFactory("sclib",new VfsResourceFactory(this));
+    }
+    catch (AlreadyRegisteredException x)
+    { throw new RuntimeException("Error registering 'sclib'",x);
+    }
+    
     codebaseRootPath=path.getAbsolutePath();
     loadCatalog();
   }
@@ -107,6 +119,43 @@ public class LibraryCatalog
 
   }
 
+  /**
+   * Find a resource across discovered libraries.
+   */
+  public Resource findResource(String name)
+  { 
+    for (Module library: codebaseLibraries)
+    { 
+      Resource resource=library.getResource(name);
+      if (resource!=null)
+      { return resource;
+      }
+    }
+    return null;
+    
+  }
+  
+  /**
+   * Find a set of resources for the given path
+   * 
+   * @param path
+   * @return
+   */
+  public Iterator<Resource> findResources(String name)
+  {
+    ArrayList<Resource> list=new ArrayList<Resource>();
+    
+    for (Module library: codebaseLibraries)
+    { 
+      Resource resource=library.getResource(name);
+      if (resource!=null)
+      { list.add(resource);
+      }
+    }
+    return list.iterator();
+  }
+  
+    
   private Module getModule(String fullPath)
   { 
     for (Module library: codebaseLibraries)

@@ -26,4 +26,5 @@ public abstract class Resource
 
   public abstract URL getResource()
     throws IOException;
+  
 }
