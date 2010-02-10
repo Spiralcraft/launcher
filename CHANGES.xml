@@ -17,7 +17,9 @@
       </scm:Note>
       <scm:Note>Fix changelog generating empty output
       </scm:Note>
-      <scm:Note>Enhance ApplicationEnvironment resolution
+      <scm:Note>Enhance ApplicationEnvironment resolution- environment
+        search re-ordered, and now includes built-ins available in the
+        library modules.
       </scm:Note>
       <scm:Note>Fail fast when local jar not found for launcher Classloader
       </scm:Note>
@@ -30,6 +32,14 @@
       <URI>source/spiralcraft/launcher/ApplicationEnvironment.java
       </URI>
       <URI>source/spiralcraft/launcher/ApplicationManager.java
+      </URI>
+      <URI>source/spiralcraft/launcher/LibraryCatalog.java
+      </URI>
+      <URI>source/spiralcraft/launcher/Resource.java
+      </URI>
+      <URI>source/spiralcraft/launcher/VfsResource.java
+      </URI>
+      <URI>source/spiralcraft/launcher/VfsResourceFactory.java
       </URI>
       <URI>source/spiralcraft/launcher/builtins/Changelog.java
       </URI>
