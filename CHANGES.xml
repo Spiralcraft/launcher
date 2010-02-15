@@ -3,7 +3,7 @@
   >
   
   <scm:Change>
-    <revision>0.4.4.3
+    <revision>0.4.5
     </revision>
     
     <authorId>miketoth
@@ -13,7 +13,7 @@
     </date>
     
     <notes>
-      <scm:Note>Sync with core 0.4.4.3
+      <scm:Note>Sync with core 0.4.5
       </scm:Note>
       <scm:Note>Fix changelog generating empty output
       </scm:Note>
