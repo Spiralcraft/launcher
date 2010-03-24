@@ -3,6 +3,43 @@
   >
   
   <scm:Change>
+    <revision>0.4.7
+    </revision>
+    
+    <authorId>miketoth
+    </authorId>
+    
+    <date>2010-03-24
+    </date>
+    
+    <notes>
+      <scm:Note>Sync with core 0.4.7
+      </scm:Note>
+      <scm:Note>Default no-args behavior is to search for default 
+        environment spiralcraft.env
+      </scm:Note>
+      <scm:Note>New 'help' built-in
+      </scm:Note>
+    </notes>
+
+    <path>
+    </path>
+    
+    <resources>
+      <URI>source/spiralcraft/launcher/ApplicationManager.java
+      </URI>
+      <URI>source/spiralcraft/launcher/Main.java
+      </URI>
+      <URI>source/spiralcraft/launcher/builtins/Help.java
+      </URI>
+      <URI>source/spiralcraft/launcher/builtins/help.env.xml
+      </URI>
+      <URI>source/spiralcraft/launcher/builtins/usage.txt
+      </URI>
+    </resources>
+  </scm:Change>
+
+  <scm:Change>
     <revision>0.4.5
     </revision>
     
