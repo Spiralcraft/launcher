@@ -94,98 +94,71 @@ public class Main
       
 
     if (Spiralcraft.DEBUG)
-    { applicationManager.setDebug(true);
+    { 
+      
+      applicationManager.setDebug(true);
+      print(" ");
+      print("Environment:");
+      print("");
+      print("  GraphicsEnvironment.isHeadless() = "
+          +java.awt.GraphicsEnvironment.isHeadless()
+          );
+      Console console=System.console();
+      print("  System.console() = "+console);
+      print(" ");
+      printProperty("os.name");
+      printProperty("os.arch");
+      printProperty("os.version");
+      print(" ");
+      printProperty("user.name");
+      printProperty("user.home");
+      printProperty("user.dir");
+      print(" ");
+      printProperty("java.io.tmpdir");
+      printProperty("java.class.path");
+      printProperty("java.home");
+      print(" ");
+      printProperty("spiralcraft.home");
+      print(" ");
+      print("  Runtime.freeMemory = "
+        +Runtime.getRuntime().freeMemory()
+        );
+      print("  Runtime.totalMemory = "
+        +Runtime.getRuntime().totalMemory()
+        );
+      print("  Runtime.maxMemory = "
+        +Runtime.getRuntime().maxMemory()
+        );
+      print("  Runtime.availableProcessors = "
+        +Runtime.getRuntime().availableProcessors()
+        );
+
+    
     }
     
     try
     {
-      if (args.length>0)
-      { 
-        LauncherThreadGroup group
-          =new LauncherThreadGroup();
+      LauncherThreadGroup group
+        =new LauncherThreadGroup();
         
-        group.run
-          (new Runnable()
-          {
-            public void run()
-            { 
-              // Execute a single command, then exit
-              try
-              { applicationManager.exec(args);
-              }
-              catch (LaunchException x)
-              { x.printStackTrace();
-              }
-
-            }
-          }
-          );
-        
-      }
-      else
-      { 
-        
-        print(new Usage().toString());
-        
-        if (Spiralcraft.DEBUG)
+      group.run
+        (new Runnable()
         {
-          print(" ");
-          print("Environment:");
-          print("");
-          print("  GraphicsEnvironment.isHeadless() = "
-              +java.awt.GraphicsEnvironment.isHeadless()
-              );
-          Console console=System.console();
-          print("  System.console() = "+console);
-          print(" ");
-          printProperty("os.name");
-          printProperty("os.arch");
-          printProperty("os.version");
-          print(" ");
-          printProperty("user.name");
-          printProperty("user.home");
-          printProperty("user.dir");
-          print(" ");
-          printProperty("java.io.tmpdir");
-          printProperty("java.class.path");
-          printProperty("java.home");
-          print(" ");
-          printProperty("spiralcraft.home");
-          print(" ");
-          print("  Runtime.freeMemory = "
-            +Runtime.getRuntime().freeMemory()
-            );
-          print("  Runtime.totalMemory = "
-            +Runtime.getRuntime().totalMemory()
-            );
-          print("  Runtime.maxMemory = "
-            +Runtime.getRuntime().maxMemory()
-            );
-          print("  Runtime.availableProcessors = "
-            +Runtime.getRuntime().availableProcessors()
-            );
-          
-//          print(" ");
-//          print("External environment:");
-//          print(" ");
-//          for (Map.Entry<String,String> entry: System.getenv().entrySet())
-//          { print(entry.getKey()+" = "+entry.getValue());
-//          }
+          public void run()
+          { 
+            // Execute a single command, then exit
+            try
+            { applicationManager.exec(args);
+            }
+            catch (LaunchException x)
+            { x.printStackTrace();
+            }
 
-//          print(" ");
-//          print("All system properties:");
-//          print(" ");
-//          for (Map.Entry<Object,Object> entry: System.getProperties().entrySet())
-//          { print(entry.getKey()+" = "+entry.getValue());
-//          }
+          }
         }
+        );
         
-        
-      }
     }
-//    catch (ExecutionTargetException x)
-//    { throw x.getTargetException();
-//    }
     finally
     { 
       // XXX There may be threads still running that were spawned by

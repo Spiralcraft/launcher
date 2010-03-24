@@ -122,9 +122,17 @@ public class ApplicationManager
   { 
     if (args.length==0)
     { 
-      // Show environments in-scope
-      throw new IllegalArgumentException
-        ("Please specify an application environment");
+      URI applicationURI=findDefaultEnvironment();
+      if (applicationURI==null)
+      { 
+        // Show environments in-scope
+        throw new LaunchException
+          ("Could not find default application environment 'spiralcraft.env',"
+          +" searched:\r\n "+ArrayUtil.format(searchPath,"\r\n ,","[","]")
+          );
+      }
+      launch(applicationURI,args);
+      
     }
     else if (args[0].equals("exec"))
     {
@@ -156,38 +164,59 @@ public class ApplicationManager
       }
 
       args=ArrayUtil.truncateBefore(args,1);
-
-      try
-      {
-        AbstractXmlObject<ApplicationEnvironment,?> environmentRef
-        =AbstractXmlObject.<ApplicationEnvironment>activate
-        (null
-          ,applicationURI
-          ,_registryNode.createChild(Integer.toString(_nextEnvironmentId++))
-          ,null
-        );
-
-
-        ApplicationEnvironment environment=environmentRef.get();
-        environment.resolve(this);
-
-        try
-        { environment.exec(args);
-        }
-        catch (LaunchTargetException x)
-        { 
-          throw new LaunchException
-            ("Error launching "+applicationURI+": "+x.getMessage()
-            ,x.getCause()
-            );
-        }
-      }
-      catch (BindException x)
-      { throw new LaunchException("Error binding "+applicationURI,x);
-      }
+      launch(applicationURI,args);
     }
   }
 
+  private void launch(URI applicationURI,String[] args)
+    throws LaunchException
+  {
+    try
+    {
+      AbstractXmlObject<ApplicationEnvironment,?> environmentRef
+      =AbstractXmlObject.<ApplicationEnvironment>activate
+      (null
+        ,applicationURI
+        ,_registryNode.createChild(Integer.toString(_nextEnvironmentId++))
+        ,null
+      );
+
+
+      ApplicationEnvironment environment=environmentRef.get();
+      environment.resolve(this);
+
+      try
+      { environment.exec(args);
+      }
+      catch (LaunchTargetException x)
+      { 
+        throw new LaunchException
+          ("Error launching "+applicationURI+": "+x.getMessage()
+          ,x.getCause()
+          );
+      }
+    }
+    catch (BindException x)
+    { throw new LaunchException("Error binding "+applicationURI,x);
+    }
+    
+  }
+  
+  
+  private URI findDefaultEnvironment()
+  {
+    URI nameURI=URI.create("spiralcraft.env");
+    URI searchURI=new File(System.getProperty("user.dir")).toURI()
+      .resolve(nameURI);
+    searchPath=new URI[0];
+    
+    if (isEnvironment(searchURI))
+    { return searchURI;
+    }
+    searchPath=ArrayUtil.append(searchPath,searchURI);
+    return null;
+  }
+    
   /**
    * Search for the named environment, in order of priority:
    *   
