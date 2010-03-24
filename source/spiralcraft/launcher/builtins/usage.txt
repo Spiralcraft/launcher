@@ -1,0 +1,14 @@
+Usage:
+  ... [debug-options] environment-name [args]
+    
+  debug-options include:
+    --log [filename]
+       Output debug messages (System.err) to a file instead of the console
+    --debug
+       Output debugging information about the loading process
+    --spiralcraft.home [directory]
+       The root directory of bootup Spiralcraft resources
+    --codebase [directory]
+       Look in ${codebase}/lib for application specific libraries/jars
+       
+       
