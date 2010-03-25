@@ -26,6 +26,7 @@ import spiralcraft.vfs.Resource;
 import spiralcraft.vfs.UnresolvableURIException;
 
 import spiralcraft.data.persist.AbstractXmlObject;
+import spiralcraft.exec.ExecutionContext;
 
 import java.io.File;
 import java.io.IOException;
@@ -126,7 +127,7 @@ public class ApplicationManager
       if (applicationURI==null)
       { 
         System.err.println("Could not find default application environment "
-          +" 'spiralcraft.env',"
+          +" 'spiralcraft.env.xml',"
           +" searched:\r\n "+ArrayUtil.format(searchPath,"\r\n ,","[","]")
           );
         System.err.println(" ");
@@ -208,9 +209,19 @@ public class ApplicationManager
   
   private URI findDefaultEnvironment()
   {
-    URI nameURI=URI.create("spiralcraft.env");
-    URI searchURI=new File(System.getProperty("user.dir")).toURI()
-      .resolve(nameURI);
+    URI nameURI=URI.create("spiralcraft.env.xml");
+    ExecutionContext context=ExecutionContext.getInstance();
+
+    URI searchURI;
+    if (context==null)
+    {
+      searchURI=new File(System.getProperty("user.dir")).toURI()
+        .resolve(nameURI);
+    }
+    else
+    { searchURI=context.canonicalize(nameURI);
+    }
+    
     searchPath=new URI[0];
     
     if (isEnvironment(searchURI))
