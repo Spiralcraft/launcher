@@ -125,13 +125,16 @@ public class ApplicationManager
       URI applicationURI=findDefaultEnvironment();
       if (applicationURI==null)
       { 
-        // Show environments in-scope
-        throw new LaunchException
-          ("Could not find default application environment 'spiralcraft.env',"
+        System.err.println("Could not find default application environment "
+          +" 'spiralcraft.env',"
           +" searched:\r\n "+ArrayUtil.format(searchPath,"\r\n ,","[","]")
           );
+        System.err.println(" ");
+        launch(URI.create("class:/spiralcraft/launcher/builtins/help.env.xml"),args);
       }
-      launch(applicationURI,args);
+      else
+      { launch(applicationURI,args);
+      }
       
     }
     else if (args[0].equals("exec"))
