@@ -1,5 +1,5 @@
 //
-// Copyright (c) 1998,2005 Michael Toth
+// Copyright (c) 1998,2010 Michael Toth
 // Spiralcraft Inc., All Rights Reserved
 //
 // This package is part of the Spiralcraft project and is licensed under
@@ -25,44 +25,44 @@ import spiralcraft.util.string.StringUtil;
 
 
 /**
- * <P>Provides necessary context for running application code. 
+ * <p>Provides necessary context for running application code. 
  * </P>
  * 
- * <P>Specifically, the ApplicationEnvironment creates a ClassLoader which
+ * <p>Specifically, the ApplicationEnvironment creates a ClassLoader which
  *   references an appropriate set of code libraries, and resolves and executes
  *   a suitable entry point.
  * </P>
  * 
- * <P>The standard and default Spiralcraft entry point is the 
+ * <p>The standard and default Spiralcraft entry point is the 
  *  spiralcraft.exec.Executor class, which loads and executes an application
  *  specified by a URI.
  * </P>
  * 
- * <P>An alternate class with the Java standard "main" method can be invoked
+ * <p>An alternate class with the Java standard "main" method can be invoked
  *   using the "-main &lt;classname&gt;" option.
  * </P>
  * 
- * <P>The "-exec &lt;classname&gt;" option invokes the 
+ * <p>The "-exec &lt;classname&gt;" option invokes the 
  *   spiralcraft.exec.ClassExecutor entry point, which accepts a class name
  *   as an argument. The specified class must implement 
  *   the spiralcraft.exec.Executable interface.
  * </P>
  * 
- * <P>The "-module" option specifies one or more code libraries (.jar names or
+ * <p>The "-module" option specifies one or more code libraries (.jar names or
  *   directories containing code) which will be available to the target
  *   application ClassLoader. 
  * </P>
  * 
- * <P>An ApplicationEnvironment must be associated with an ApplicationManager,
+ * <p>An ApplicationEnvironment must be associated with an ApplicationManager,
  *   which provides access to the available codebase.
  * </P>
  *  
- * <P>Note: The ClassLoader created by the ApplicationEnvironment is constructed
+ * <p>Note: The ClassLoader created by the ApplicationEnvironment is constructed
  *   so that it's parent is the Java system application classloader. 
  *   This preserves forward compatability by allowing the target
  *   application to use different versions of the libraries which compose this
  *   "boot" loading system. 
- * </P>
+ * </p>
  */
 public class ApplicationEnvironment
 {
@@ -139,7 +139,6 @@ public class ApplicationEnvironment
   public void setModules(String[] val)
   { _modules=val;
   }
-  
   
   /**
    * Load the codebase and execute a command. 
