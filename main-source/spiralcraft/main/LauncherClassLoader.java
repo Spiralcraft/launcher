@@ -24,7 +24,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Loads classes contained in a specific jar
+ * <p>Loads classes contained in a specific set of resources
+ * </p>
  */
 public class LauncherClassLoader
   extends ClassLoader
@@ -34,8 +35,24 @@ public class LauncherClassLoader
   private List<ClassResource> resources
     =new ArrayList<ClassResource>();
 
+  /**
+   * <p>Construct a LauncherClassLoader that delegates to the default
+   *   application ClassLoader which loaded this class.
+   * </p>
+   */
   public LauncherClassLoader()
   { super(LauncherClassLoader.class.getClassLoader());
+  }
+
+  /**
+   * <p>Construct a LauncherClassLoader that delegates to a specific parent
+   *   ClassLoader
+   * </p>
+   * 
+   * @param parent
+   */
+  public LauncherClassLoader(ClassLoader parent)
+  { super(parent);
   }
   
   public void addResource(ClassResource resource)
