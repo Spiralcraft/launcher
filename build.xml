@@ -13,7 +13,7 @@
   	 value="lib/spiralcraft.jar:lib/spiralcraft-core.jar"
   />
   <property name="module" value="launcher"/>
-  <property name="buildVersion" value="0.4.7"/>
+  <property name="buildVersion" value="0.4.8"/>
   
 
   <import file="../../build/build-spiralcraft-common.xml"/>
@@ -117,7 +117,7 @@
     <launch4j>
       <config
         headerType="console"
-        outfile="lib/scraft.exe"
+        outfile="lib/scc.exe"
         jarPath="../lib/spiralcraft.jar"
         icon="native-source/favicon.ico"
         dontWrapJar="true"
@@ -135,6 +135,7 @@
           jdkPreference="preferJre"
           >
           <opt>-Dspiralcraft.home="%EXEDIR%\\.."</opt>
+          <opt>-Dspiralcraft.launcher.default.env="class:/spiralcraft/launcher/builtins/help"</opt>
         </jre>
       </config>
     </launch4j>
