@@ -3,6 +3,46 @@
   >
   
   <scm:Change>
+    <revision>0.4.8
+    </revision>
+    
+    <authorId>miketoth
+    </authorId>
+    
+    <date>2010-04-09
+    </date>
+    
+    <notes>
+      <scm:Note>Sync with core 0.4.8
+      </scm:Note>
+      <scm:Note>Default environment is reconfigurable via the runtime
+        property spiralcraft.launcher.default.env. When set to an empty
+        string, as it is in the command launcher, the default environment will
+        not be invoked.
+      </scm:Note>
+      <scm:Note>"exec" is now a built-in instead of being hardcoded
+      </scm:Note>
+      <scm:Note>The launcher classloader can be constructed with a 
+        specific parent classloader.
+      </scm:Note>
+      <scm:Note>The windows command executable is now scc.exe
+      </scm:Note>
+    </notes>
+
+    <path>
+    </path>
+    
+    <resources>
+      <URI>source/spiralcraft/launcher/ApplicationManager.java
+      </URI>
+      <URI>source/spiralcraft/launcher/builtins/exec.env.xml
+      </URI>
+      <URI>main-source/spiralcraft/main/LauncherClassLoader.java
+      </URI>
+    </resources>
+  </scm:Change>
+
+  <scm:Change>
     <revision>0.4.7
     </revision>
     
