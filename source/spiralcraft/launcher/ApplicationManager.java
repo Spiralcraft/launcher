@@ -126,33 +126,19 @@ public class ApplicationManager
       URI applicationURI=findDefaultEnvironment();
       if (applicationURI==null)
       { 
-        System.err.println("Could not find default application environment "
-          +" 'spiralcraft.env.xml',"
-          +" searched:\r\n "+ArrayUtil.format(searchPath,"\r\n ,","[","]")
-          );
-        System.err.println(" ");
+        if (searchPath.length>0)
+        {
+          System.err.println("Could not find default application environment "
+            +" "+ArrayUtil.format(searchPath,"\r\n ,","[","]")
+            );
+          System.err.println(" ");
+        }
         launch(URI.create("class:/spiralcraft/launcher/builtins/help.env.xml"),args);
       }
       else
       { launch(applicationURI,args);
       }
       
-    }
-    else if (args[0].equals("exec"))
-    {
-      // Default environment
-      ApplicationEnvironment environment=new ApplicationEnvironment();
-      environment.resolve(this);
-      if (args.length>1)
-      {
-        args[0]=args[1]; // Instance 
-      
-        args=ArrayUtil.truncateBefore(args,1);
-      }
-      else
-      { args=new String[0];
-      }
-      environment.exec(args);
     }
     else
     {
@@ -209,7 +195,19 @@ public class ApplicationManager
   
   private URI findDefaultEnvironment()
   {
-    URI nameURI=URI.create("spiralcraft.env.xml");
+    searchPath=new URI[0];
+    String defaultEnvironment
+      =System.getProperty("spiralcraft.launcher.default.env");
+    
+    if (defaultEnvironment==null)
+    { defaultEnvironment="spiralcraft";
+    }
+    else if (defaultEnvironment.trim().equals(""))
+    { 
+      return null;
+    }
+    
+    URI nameURI=URI.create(defaultEnvironment+".env.xml");
     ExecutionContext context=ExecutionContext.getInstance();
 
     URI searchURI;
@@ -222,7 +220,6 @@ public class ApplicationManager
     { searchURI=context.canonicalize(nameURI);
     }
     
-    searchPath=new URI[0];
     
     if (isEnvironment(searchURI))
     { return searchURI;
