@@ -15,10 +15,11 @@
 package spiralcraft.launcher;
 
 import spiralcraft.log.ClassLog;
-import spiralcraft.vfs.AbstractResource;
 import spiralcraft.vfs.Container;
 import spiralcraft.vfs.Resolver;
 import spiralcraft.vfs.UnresolvableURIException;
+
+import spiralcraft.vfs.spi.AbstractResource;
 
 import java.net.URI;
 import java.net.URISyntaxException;
