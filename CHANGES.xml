@@ -27,6 +27,8 @@
       </scm:Note>
       <scm:Note>The windows command executable is now scc.exe
       </scm:Note>
+      <scm:Note>VfsResource syncs with 0.4.8 vfs refactoring
+      </scm:Note>
     </notes>
 
     <path>
@@ -36,6 +38,8 @@
       <URI>source/spiralcraft/launcher/ApplicationManager.java
       </URI>
       <URI>source/spiralcraft/launcher/builtins/exec.env.xml
+      </URI>
+      <URI>source/spiralcraft/launcher/VfsResource.java
       </URI>
       <URI>main-source/spiralcraft/main/LauncherClassLoader.java
       </URI>
