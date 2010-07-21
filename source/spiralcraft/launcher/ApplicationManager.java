@@ -14,8 +14,6 @@
 //
 package spiralcraft.launcher;
 
-import spiralcraft.registry.Registry;
-import spiralcraft.registry.RegistryNode;
 
 import spiralcraft.lang.BindException;
 //import spiralcraft.log.ClassLogger;
@@ -70,8 +68,6 @@ public class ApplicationManager
 //  private static final Logger log
 //    =ClassLogger.getInstance(ApplicationManager.class);
   
-  private static RegistryNode _REGISTRY_ROOT
-    =Registry.getLocalRoot().createChild("applicationManager");
 
   private URI[] searchPath;
     
@@ -79,8 +75,7 @@ public class ApplicationManager
       
   private final LibraryCatalog _catalog;
   
-  private final String _userId;
-  private final RegistryNode _registryNode;
+//  private final String _userId;
 
   private final URI _codebaseEnvironmentURI;
 
@@ -89,21 +84,20 @@ public class ApplicationManager
     =new File(System.getProperty("user.home"))
       .toURI().resolve(".spiralcraft/env/");
 
-  private int _nextEnvironmentId=0;
+//  private int _nextEnvironmentId=0;
 
   private boolean debug=false;
   
 
   public ApplicationManager(String userId,File codebase)
   { 
-    _userId=userId;
+//    _userId=userId;
     _codebase=codebase;
     _codebaseEnvironmentURI=_codebase.toURI().resolve("env/");
     _catalog=
       new LibraryCatalog
         (new File(_codebase,"lib")
         );
-    _registryNode=_REGISTRY_ROOT.createChild(_userId);
   }
   
   public void setDebug(boolean val)
@@ -167,7 +161,6 @@ public class ApplicationManager
       =AbstractXmlObject.<ApplicationEnvironment>activate
       (null
         ,applicationURI
-        ,_registryNode.createChild(Integer.toString(_nextEnvironmentId++))
         ,null
       );
 
