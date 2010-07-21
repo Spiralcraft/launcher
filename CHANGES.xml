@@ -1,6 +1,35 @@
 <scm:Change.list
   xmlns:scm="class:/spiralcraft/scm/meta/"
   >
+
+  <scm:Change>
+    <revision>0.4.8
+    </revision>
+    
+    <authorId>miketoth
+    </authorId>
+    
+    <date>2010-07-21
+    </date>
+    
+    <notes>
+      <scm:Note>Sync with core 0.4.10
+      </scm:Note>
+      <scm:Note>Removed spiralcraft.registry package and all dependencies
+      </scm:Note>
+    </notes>
+
+    <path>
+    </path>
+    
+    <resources>
+      <URI>source/spiralcraft/launcher/ApplicationManager.java
+      </URI>
+      <URI>source/spiralcraft/launcher/Aliases.java
+      </URI>
+    </resources>
+  </scm:Change>
+
   
   <scm:Change>
     <revision>0.4.8
