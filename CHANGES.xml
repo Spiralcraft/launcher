@@ -1,6 +1,34 @@
 <scm:Change.list
   xmlns:scm="class:/spiralcraft/scm/meta/"
   >
+  
+
+  <scm:Change>
+    <revision>0.4.11
+    </revision>
+    
+    <authorId>miketoth
+    </authorId>
+    
+    <date>2010-09-24
+    </date>
+    
+    <notes>
+      <scm:Note>Sync with core 0.4.11
+      </scm:Note>
+      <scm:Note>Allow LibraryCatalog to be accessed during shutdown while
+        ensuring that any archives are re-closed.
+      </scm:Note>
+    </notes>
+
+    <path>
+    </path>
+    
+    <resources>
+      <URI>source/spiralcraft/launcher/LibraryCatalog.java
+      </URI>
+    </resources>
+  </scm:Change>
 
   <scm:Change>
     <revision>0.4.10
