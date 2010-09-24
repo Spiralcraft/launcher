@@ -184,6 +184,7 @@ public class VfsResource
   }
 
   
+  @Override
   public void renameTo(URI name)
   { 
     throw new UnsupportedOperationException
@@ -196,6 +197,7 @@ public class VfsResource
   { return catalog.findResource(_path)!=null;
   }
   
+  @Override
   public void delete()
     throws IOException
   { throw new IOException("ClasspathResource is read-only");

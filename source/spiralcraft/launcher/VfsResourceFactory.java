@@ -30,6 +30,7 @@ public class VfsResourceFactory
   { this.catalog=catalog;
   }
   
+  @Override
   public VfsResource resolve(URI uri)
     throws UnresolvableURIException
   { return new VfsResource(uri,catalog);

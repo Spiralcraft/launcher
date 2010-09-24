@@ -132,10 +132,12 @@ public class LauncherClassLoader
     {
       final Iterator<URL> iterator=list.iterator();
       
+      @Override
       public boolean hasMoreElements()
       { return iterator.hasNext();
       }
       
+      @Override
       public URL nextElement()
       { return iterator.next();
       }
