@@ -56,6 +56,7 @@ public class LibraryCatalog
 
   private ArrayList<Module> codebaseLibraries=new ArrayList<Module>();
   private boolean closed;
+  private ClassLog log=ClassLog.getInstance(LibraryCatalog.class);
   
   /**
    * Create a new LibraryCatalog for the library located at the specified
@@ -97,7 +98,7 @@ public class LibraryCatalog
   protected void assertOpen()
   {
     if (closed)
-    { throw new IllegalStateException("Shutting down");
+    { log.warning("Classloader accessed after shutdown");
     }
   }
   
@@ -191,6 +192,7 @@ public class LibraryCatalog
         .listFiles
           (new FilenameFilter()
           {
+            @Override
             public boolean accept(File dir,String name)
             { 
               return name.endsWith(".jar")
@@ -250,10 +252,12 @@ public class LibraryCatalog
 
     private boolean debug;
     
+    @Override
     public void setDebug(boolean debug)
     { this.debug=debug;
     }
     
+    @Override
     public void release()
     {
       if (debug)
@@ -276,6 +280,7 @@ public class LibraryCatalog
       resources.clear();
     }
     
+    @Override
     public byte[] loadData(String path)
       throws IOException
     {
@@ -335,6 +340,7 @@ public class LibraryCatalog
      *   and its dependents to the set of libraries available
      *   to the classloader.
      */
+    @Override
     public void addModule(String name)
       throws IOException
     { 
@@ -357,6 +363,7 @@ public class LibraryCatalog
       addLibrary(libraries.get(0));
     }
     
+    @Override
     public void addAllModules()
       throws IOException
     {
@@ -371,6 +378,7 @@ public class LibraryCatalog
     { return library;
     }
     
+    @Override
     public void addLibrary(String path)
       throws IOException
     { 
@@ -430,6 +438,7 @@ public class LibraryCatalog
             
     }
 
+    @Override
     public void resolveLibrariesForResource(String resourcePath)
       throws IOException
     { 
@@ -453,6 +462,7 @@ public class LibraryCatalog
       
     }
     
+    @Override
     public String findNativeLibrary(String name)
     {
 
@@ -562,7 +572,12 @@ class JarModule
     throws IOException
   { 
     if (jarFile!=null)
-    { jarFile.close();
+    { 
+      jarFile.close();
+      if (openCount>0)
+      { openCount--;
+      }
+        
     }
   }
   
