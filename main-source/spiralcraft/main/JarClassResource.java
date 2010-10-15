@@ -33,6 +33,7 @@ public class JarClassResource
 {
   private final File _file;
   private JarFile _jarFile;
+  private boolean closed;
 
   public JarClassResource(String file)
     throws IOException
@@ -62,6 +63,12 @@ public class JarClassResource
     }
     catch (IOException x)
     { return null;
+    }
+    finally
+    {
+      if (closed)
+      { shutdown();
+      }
     }
   }
 
@@ -112,6 +119,9 @@ public class JarClassResource
         catch (IOException y)
         { }
       }
+      if (closed)
+      { shutdown();
+      }
     }
   }
   
@@ -120,9 +130,12 @@ public class JarClassResource
   { 
     try
     { 
+
+      closed=true;
       if (_jarFile!=null)
       { _jarFile.close();
       }
+      _jarFile=null;
     }
     catch (IOException x)
     { }
