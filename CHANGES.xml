@@ -2,6 +2,28 @@
   xmlns:scm="class:/spiralcraft/scm/meta/"
   >
   
+  <scm:Change>
+    <revision>0.4.12
+    </revision>
+    
+    <authorId>miketoth
+    </authorId>
+    
+    <date>2010-10-14
+    </date>
+    
+    <notes>
+      <scm:Note>Sync with core 0.4.12
+      </scm:Note>
+      <scm:Note>Allow JarClassResource to operate after it is "closed" to
+        support shutdown logic.
+      </scm:Note>
+    </notes>
+
+    <path>main-source/spiralcraft/main/JarClassResource.java
+    </path>
+    
+  </scm:Change>  
 
   <scm:Change>
     <revision>0.4.11
