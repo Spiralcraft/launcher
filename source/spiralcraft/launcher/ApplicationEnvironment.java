@@ -14,14 +14,20 @@
 //
 package spiralcraft.launcher;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
 
+import spiralcraft.classloader.Loader;
 import spiralcraft.exec.Arguments;
 import spiralcraft.log.ClassLog;
 import spiralcraft.util.ArrayUtil;
 import spiralcraft.util.string.StringUtil;
 
+import spiralcraft.vfs.Container;
+import spiralcraft.vfs.Resolver;
+import spiralcraft.vfs.Resource;
+import spiralcraft.vfs.UnresolvableURIException;
 
 
 /**
@@ -77,6 +83,7 @@ public class ApplicationEnvironment
   private String[] _commandLineArguments=new String[0];
   private String[] _modules;
   private boolean debug;
+  private Resource[] _additionalClasspath;
 
   /**
    * The ApplicationManager provides access to the entire installed
@@ -140,6 +147,20 @@ public class ApplicationEnvironment
   { _modules=val;
   }
   
+  public void setClassLibs(String[] classLibs)
+  {
+    for (String classLib:classLibs)
+    { processClasslib(classLib);
+    }
+  }
+
+  public void setLibDirs(String[] libDirs)
+  {
+    for (String libDir:libDirs)
+    { processLibDir(libDir);
+    }
+  }
+  
   /**
    * Load the codebase and execute a command. 
    */
@@ -172,14 +193,20 @@ public class ApplicationEnvironment
         // _classLoader.resolveLibrariesForClass(_mainClass);
       }
   
-      Class<?> clazz=_classLoader.loadClass(_mainClass);
+      ClassLoader classLoader=_classLoader;
+      if (_additionalClasspath!=null)
+      { classLoader=new Loader(_classLoader,_additionalClasspath);
+      }
+      
+      
+      Class<?> clazz=classLoader.loadClass(_mainClass);
       Method mainMethod
         =clazz.getMethod(_mainMethodName,new Class[] {String[].class});
       
       ClassLoader oldLoader=Thread.currentThread().getContextClassLoader();
       try
       {
-        Thread.currentThread().setContextClassLoader(_classLoader);
+        Thread.currentThread().setContextClassLoader(classLoader);
         mainMethod.invoke(null,new Object[] {_mainArguments});
       }
       finally
@@ -228,6 +255,12 @@ public class ApplicationEnvironment
           if (option=="-module")
           { _modules=ArrayUtil.append(_modules,nextArgument());
           }
+          else if (option=="-classlib")
+          { processClasslib(nextArgument());
+          }
+          else if (option=="-libdir")
+          { processLibDir(nextArgument());
+          }
           else if (option=="-main")
           { 
             _mainClass=nextArgument();
@@ -252,6 +285,54 @@ public class ApplicationEnvironment
 
     }.process(args);
   }    
+  
+  private void processClasslib(String classlib)
+  { 
+    try
+    { 
+      Resource resource=Resolver.getInstance().resolve(classlib);
+      _additionalClasspath
+        =ArrayUtil.append
+          (_additionalClasspath==null?new Resource[0]:_additionalClasspath
+          ,resource
+          );
+
+    }
+    catch (UnresolvableURIException x)
+    { throw new IllegalArgumentException(classlib,x);
+    }
+    
+  }
+  
+  private void processLibDir(String libdir)
+  { 
+    try
+    { 
+      Resource resource=Resolver.getInstance().resolve(libdir);
+      Container container=resource.asContainer();
+      if (container==null)
+      { throw new IllegalArgumentException("Expected a directory of jar files");
+      }
+      
+      for (Resource jar:container.getChildren())
+      {
+        if (jar.getURI().getPath().endsWith(".jar"))
+        {
+          _additionalClasspath
+            =ArrayUtil.append
+              (_additionalClasspath==null?new Resource[0]:_additionalClasspath
+              ,jar
+              );
+          
+        }
+      }
+      
+    }
+    catch (IOException x)
+    { throw new IllegalArgumentException(libdir,x);
+    }    
+  }
+  
   
 }
 
