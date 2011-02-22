@@ -3,6 +3,30 @@
   >
   
   <scm:Change>
+    <revision>0.4.13
+    </revision>
+    
+    <authorId>miketoth
+    </authorId>
+    
+    <date></date>
+    
+    <detail>
+      <scm:Change>
+        <notes>
+          <scm:Note>Allow for environment-specific classpaths (e.g. for
+            running web app data models outside the web container)
+          </scm:Note>
+        </notes>
+        
+        <path>source/spiralcraft/launcher/ApplicationEnvironment.java
+        </path>
+      
+      </scm:Change>
+    </detail>
+  </scm:Change>
+  
+  <scm:Change>
     <revision>0.4.12
     </revision>
     
