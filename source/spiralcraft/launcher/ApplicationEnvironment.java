@@ -15,11 +15,16 @@
 package spiralcraft.launcher;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URI;
+import java.util.HashMap;
 
 import spiralcraft.classloader.Loader;
 import spiralcraft.exec.Arguments;
+import spiralcraft.exec.ExecutionContext;
 import spiralcraft.log.ClassLog;
 import spiralcraft.util.ArrayUtil;
 import spiralcraft.util.string.StringUtil;
@@ -84,6 +89,15 @@ public class ApplicationEnvironment
   private String[] _modules;
   private boolean debug;
   private Resource[] _additionalClasspath;
+  
+  // Stream redirects- will be closed when done
+  protected URI out;
+  protected URI err;
+  protected URI in;
+  
+  private InputStream inStream;
+  private PrintStream outStream;
+  private PrintStream errStream;
 
   /**
    * The ApplicationManager provides access to the entire installed
@@ -141,12 +155,19 @@ public class ApplicationEnvironment
   /**
    * A list of additional modules to load. These modules will normally contain
    *   classes that are to be dynamically loaded but cannot be resolved
-   *   automatically by the LibraryClassloader.
+   *   automatically by the LibraryClassloader. Modules are always contained
+   *   in the codebase lib directory.
    */
   public void setModules(String[] val)
   { _modules=val;
   }
   
+  /**
+   * A list of additional class libraries to use. A class library is either
+   *   a File directory tree containing source code, or a Jar file reference.
+   * 
+   * @param classLibs
+   */
   public void setClassLibs(String[] classLibs)
   {
     for (String classLib:classLibs)
@@ -154,11 +175,41 @@ public class ApplicationEnvironment
     }
   }
 
+  /**
+   * A list of additional library directories to use. A library directory
+   *   contains a collection of jar files to be used in this application.
+   * 
+   * @param libDirs
+   */
   public void setLibDirs(String[] libDirs)
   {
     for (String libDir:libDirs)
     { processLibDir(libDir);
     }
+  }
+
+  public void setIn(URI in)
+  { this.in=in;
+  }
+  
+  public void setOut(URI out)
+  { this.out=out;
+  }
+  
+  public void setErr(URI err)
+  { this.err=err;
+  }
+  
+  public void setInStream(InputStream inStream)
+  { this.inStream=inStream;
+  }
+
+  public void setOutStream(PrintStream outStream)
+  { this.outStream=outStream;
+  }
+
+  public void setErrStream(PrintStream errStream)
+  { this.errStream=errStream;
   }
   
   /**
@@ -200,14 +251,77 @@ public class ApplicationEnvironment
       
       
       Class<?> clazz=classLoader.loadClass(_mainClass);
-      Method mainMethod
-        =clazz.getMethod(_mainMethodName,new Class[] {String[].class});
+      
       
       ClassLoader oldLoader=Thread.currentThread().getContextClassLoader();
       try
       {
         Thread.currentThread().setContextClassLoader(classLoader);
-        mainMethod.invoke(null,new Object[] {_mainArguments});
+        
+        
+        try
+        {
+          Method mainMethod
+            =clazz.getMethod
+              (_mainMethodName,new Class[] {HashMap.class,String[].class});
+
+          ExecutionContext exContext=ExecutionContext.getInstance();
+          
+          HashMap<String,Object> contextMap=new HashMap<String,Object>();
+          contextMap.put("in",exContext.in());
+          contextMap.put("out",exContext.out());
+          contextMap.put("err",exContext.err());
+          try
+          {
+            Resolver resolver=Resolver.getInstance();
+            if (in!=null)
+            { 
+              inStream
+                =resolver.resolve(in).getInputStream();
+              contextMap.put("in",inStream);
+            }            
+            if (out!=null)
+            { 
+              outStream
+                =new PrintStream(resolver.resolve(out).getOutputStream(),true);
+              contextMap.put("out",outStream);
+            }
+            if (err!=null)
+            { 
+              errStream
+                =new PrintStream(resolver.resolve(err).getOutputStream(),true);
+              contextMap.put("err",errStream);
+            }
+            
+
+            mainMethod.invoke(null,new Object[] {contextMap,_mainArguments});
+          }
+          finally
+          {
+            if (in!=null)
+            { inStream.close();
+            }
+            if (out!=null)
+            {
+              outStream.flush();
+              outStream.close();
+            }
+            if (err!=null)
+            { 
+              errStream.flush();
+              errStream.close();
+            }
+          }
+        }
+        catch (NoSuchMethodException x)
+        {
+          log.warning("Not using Executor.exec(contextMap,args)");
+          Method mainMethod
+          =clazz.getMethod(_mainMethodName,new Class[] {String[].class});
+
+          mainMethod.invoke(null,new Object[] {_mainArguments});
+          
+        }
       }
       finally
       { Thread.currentThread().setContextClassLoader(oldLoader);
@@ -220,12 +334,33 @@ public class ApplicationEnvironment
       }
       throw new LaunchTargetException(x.getTargetException());
     }
+    catch (ClassNotFoundException x)
+    { 
+      throw new LaunchTargetException
+        (_mainClass+" not found in "+_classLoader.getClassPath()
+        +(_additionalClasspath!=null?(":"+classpathString(_additionalClasspath)):"")
+        ,x
+        );
+    }
     catch (Exception x)
     { throw new LaunchTargetException(x);
     }
       
   }
 
+  private String classpathString(Resource[] classpath)
+  {
+    StringBuffer buf=new StringBuffer();
+    for (Resource resource:classpath)
+    {
+      if (buf.length()>0)
+      { buf.append(":");
+      }
+      buf.append(resource.getURI());
+    }
+    return buf.toString();
+  }
+  
   /**
    * Process arguments. Any options specified
    */
@@ -291,6 +426,9 @@ public class ApplicationEnvironment
     try
     { 
       Resource resource=Resolver.getInstance().resolve(classlib);
+      // XXX Relative to what?
+      
+      
       _additionalClasspath
         =ArrayUtil.append
           (_additionalClasspath==null?new Resource[0]:_additionalClasspath
