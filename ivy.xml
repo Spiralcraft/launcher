@@ -3,6 +3,10 @@
   <info organisation="spiralcraft" module="launcher" status="integration">
   </info>
   
+  <configurations>
+    <conf name="default"/>
+    <conf name="compile"/>
+  </configurations>  
   
   <publications>
     <artifact name="spiralcraft-launcher" type="jar" ext="jar"/>
@@ -10,8 +14,13 @@
   </publications> 
     
   <dependencies>
-    <dependency org="spiralcraft" name="core" rev="[0.4.13-rc,0.4.14-dev[">
+    <dependency org="spiralcraft" name="core" rev="[0.4.14-dev1,0.5-dev[">
+    
       <exclude name="spiralcraft-core-test"/>
     </dependency>
+
+    <dependency org="spiralcraft" name="gui" rev="[0.4.14-dev1,0.5-dev[" 
+      conf="compile->default"
+    />
   </dependencies>
 </ivy-module>

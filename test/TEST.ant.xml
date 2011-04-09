@@ -1,0 +1,51 @@
+<project name="spiralcraft-launcher-test" basedir="." default="test">
+  <target name="test">
+
+    <echo message="--debug"/>
+    <java 
+      jar="../lib/spiralcraft.jar"
+      fork="true"
+      >
+      <arg value="--debug"/>
+    </java>
+
+    <echo message="jvminfo"/>
+    <java 
+      jar="../lib/spiralcraft.jar"
+      fork="true"
+      >
+      <arg value="jvminfo"/>
+    </java>
+  
+    <echo message="versions"/>
+    <java 
+      jar="../lib/spiralcraft.jar"
+      fork="true"
+      >
+      <arg value="versions"/>
+    </java>  
+    
+    <echo message="redirection"/>
+    <java
+      jar="../lib/spiralcraft.jar"
+      fork="true"
+      >
+      <arg value="--out"/>
+      <arg value="test.out"/>
+      <arg value="--err"/>
+      <arg value="test.err"/>
+      <arg value="--"/>
+      <arg value="versions"/>
+    </java>
+
+    <echo message="redirection-gui"/>
+    <java
+      jar="../lib/spiralcraft.jar"
+      fork="true"
+      >
+      <arg value="--gui"/>
+      <arg value="versions"/>
+    </java>
+    
+  </target>
+</project>

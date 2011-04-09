@@ -2,6 +2,140 @@
   xmlns:scm="class:/spiralcraft/scm/meta/"
   >
   
+  
+  <scm:Change>
+    <revision>0.4.14
+    </revision>
+    
+    <authorId>miketoth
+    </authorId>
+    
+    <date>
+    </date>
+    
+    <detail>
+    
+      <scm:Change>
+      
+        <revision>-dev1
+        </revision>
+        
+        <notes>
+          <scm:Note>ApplicationManager accepts command line options
+            for configuring ApplicationEnvironment if command line starts
+            with an argument and not an environment reference.
+          </scm:Note>
+        </notes>
+        
+        <path>source/spiralcraft/launcher/ApplicationManager.java
+        </path>
+        
+      </scm:Change>
+
+      <scm:Change>
+      
+        <revision>-dev1
+        </revision>
+        
+        <notes>
+          <scm:Note>ClassLoaders provide classpath information for debug
+            purposes.
+          </scm:Note>
+          <scm:Note>JarClassResource.getResource() checks JarEntry before
+            returning a URL.
+          </scm:Note>
+        </notes>
+                
+        <resources>
+          <URI>source/spiralcraft/main/JarClassResource.java
+          </URI>
+          <URI>source/spiralcraft/main/FileClassResource.java
+          </URI>
+          <URI>source/spiralcraft/main/ClassResource.java
+          </URI>
+          <URI>source/spiralcraft/main/LauncherClassLoader.java
+          </URI>
+          <URI>source/spiralcraft/launcher/LibraryClassLoader.java
+          </URI>
+          <URI>source/spiralcraft/launcher/LibraryClasspath.java
+          </URI>
+          <URI>source/spiralcraft/launcher/LibraryCatalog.java
+          </URI>
+        </resources>
+      
+      </scm:Change>
+
+      <scm:Change>
+      
+        <revision>-dev1
+        </revision>
+        
+        <notes>
+          <scm:Note>Add mechanism to support pluggable ExecutionContext
+            (e.g. a GUI console) when using Main (process level singleton) 
+            launch.
+          </scm:Note>
+          <scm:Note>Add --gui launcher command line argument to trigger launch
+            of GUI console to provide ExecutionContext.
+          </scm:Note>
+        </notes>
+                
+        <resources>
+          <URI>source/spiralcraft/launcher/Main.java
+          </URI>
+          <URI>source/spiralcraft/launcher/ExecutionContextProvider.java
+          </URI>
+          <URI>source/spiralcraft/launcher/ExecutionContextService.java
+          </URI>
+          <URI>source/spiralcraft/launcher/RootGuiConsole.assy.xml
+          </URI>
+          <URI>main-source/spiralcraft/launcher/Spiralcraft.java
+          </URI>
+        
+        </resources>
+      
+      </scm:Change>
+
+      <scm:Change>
+      
+        <revision>-dev1
+        </revision>
+        
+        <notes>
+          <scm:Note>Pass context map containing err,out,in streams and
+            context URI through ClassLoader boundary to Executor.
+          </scm:Note>
+          <scm:Note>Support overriding err,in,out streams in
+            ApplicationEnvironment config.
+          </scm:Note>
+          <scm:Note>Update built-ins to handle new ApplicationEnvironment
+            streams support.
+          </scm:Note>
+        </notes>
+        
+        <path>source/spiralcraft/launcher
+        </path>
+        
+        <resources>
+          <URI>ApplicationEnvironment.java
+          </URI>
+          <URI>BuiltInReportEnvironment.java
+          </URI>
+          <URI>builtins/Changelog.java
+          </URI>
+          <URI>builtins/Help.java
+          </URI>
+          <URI>builtins/JVMInfo.java
+          </URI>
+          <URI>builtins/Versions.java
+          </URI>
+        
+        </resources>
+      
+      </scm:Change>
+    </detail>
+  </scm:Change>
+    
   <scm:Change>
     <revision>0.4.13
     </revision>
