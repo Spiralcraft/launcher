@@ -253,6 +253,20 @@ public class LibraryCatalog
     private boolean debug;
     
     @Override
+    public String getClassPath()
+    {
+      StringBuffer buf=new StringBuffer();
+      for (Module module:classpathLibraries)
+      { 
+        if (buf.length()>0)
+        { buf.append(":");
+        }
+        buf.append(module.getPath());
+      }
+      return buf.toString();
+    }
+
+    @Override
     public void setDebug(boolean debug)
     { this.debug=debug;
     }

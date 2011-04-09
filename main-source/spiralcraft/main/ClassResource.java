@@ -30,6 +30,8 @@ public abstract class ClassResource
   { this.debug=debug;
   }
   
+  abstract String getClassPath();
+  
   abstract InputStream getResourceAsStream(String path);
   
   /**

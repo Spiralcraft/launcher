@@ -34,6 +34,11 @@ public class FileClassResource
   }
 
   @Override
+  public String getClassPath()
+  { return _file.getPath();
+  }
+  
+  @Override
   InputStream getResourceAsStream(String path)
   {
 

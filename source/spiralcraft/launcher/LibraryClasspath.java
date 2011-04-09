@@ -70,5 +70,6 @@ public interface LibraryClasspath
    */
   void addAllModules()
     throws IOException;
-  
+ 
+  String getClassPath();
 }

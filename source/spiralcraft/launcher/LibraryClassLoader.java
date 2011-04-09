@@ -39,6 +39,18 @@ public class LibraryClassLoader
   }
 
   @Override
+  public String getClassPath()
+  {
+    StringBuffer buf=new StringBuffer();
+    buf.append(super.getClassPath());
+    if (buf.length()>0)
+    { buf.append(":");
+    }
+    buf.append(libraryClasspath.getClassPath());
+    return buf.toString();
+  }
+  
+  @Override
   public void setDebug(boolean debug)
   { 
     super.setDebug(debug);

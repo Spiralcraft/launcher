@@ -55,6 +55,19 @@ public class LauncherClassLoader
   { super(parent);
   }
   
+  public String getClassPath()
+  {
+    StringBuffer buf=new StringBuffer();
+    for (ClassResource resource:resources)
+    { 
+      if (buf.length()>0)
+      { buf.append(":");
+      }
+      buf.append(resource.getClassPath());
+    }
+    return buf.toString();
+  }
+  
   public void addResource(ClassResource resource)
   { resources.add(resource);
   }
