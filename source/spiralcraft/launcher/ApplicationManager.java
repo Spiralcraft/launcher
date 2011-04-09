@@ -24,6 +24,7 @@ import spiralcraft.vfs.Resource;
 import spiralcraft.vfs.UnresolvableURIException;
 
 import spiralcraft.data.persist.AbstractXmlObject;
+import spiralcraft.exec.BeanArguments;
 import spiralcraft.exec.ExecutionContext;
 
 import java.io.File;
@@ -115,9 +116,42 @@ public class ApplicationManager
   public void exec(String[] args)
     throws LaunchException
   { 
-    if (args.length==0)
+    int commandPos=0;
+    String[] envArgs=new String[0];
+    if (args.length>0 && args[0].startsWith("-"))
+    {
+      // Skip all the options until we find "--"
+      while (commandPos++<args.length)
+      { 
+        if (args[commandPos-1].equals("--"))
+        { 
+          envArgs=ArrayUtil.truncate(args,commandPos-1);
+          break;
+        }
+      }
+    }
+      
+      
+      
+    URI applicationURI=null;
+    if (commandPos<args.length)
+    {
+      applicationURI=findEnvironment(args[commandPos],".env.xml");
+      if (applicationURI==null)
+      { 
+        // Show environments in-scope
+        throw new IllegalArgumentException
+          ("Unknown application environment '"+args[commandPos]+"', searched:\r\n  "
+          +ArrayUtil.format(searchPath,"\r\n  ,","[","]")
+          );
+      }
+      args=ArrayUtil.truncateBefore(args,commandPos+1);
+    }
+    else
     { 
-      URI applicationURI=findDefaultEnvironment();
+      applicationURI=findDefaultEnvironment();
+      envArgs=args;
+      args=new String[0];
       if (applicationURI==null)
       { 
         if (searchPath.length>0)
@@ -127,32 +161,15 @@ public class ApplicationManager
             );
           System.err.println(" ");
         }
-        launch(URI.create("class:/spiralcraft/launcher/builtins/help.env.xml"),args);
+        launch(URI.create("class:/spiralcraft/launcher/builtins/help.env.xml"),new String[0],args);
+        return;
       }
-      else
-      { launch(applicationURI,args);
-      }
-      
     }
-    else
-    {
 
-      URI applicationURI=findEnvironment(args[0],".env.xml");
-      if (applicationURI==null)
-      { 
-        // Show environments in-scope
-        throw new IllegalArgumentException
-          ("Unknown application environment '"+args[0]+"', searched:\r\n  "
-          +ArrayUtil.format(searchPath,"\r\n  ,","[","]")
-          );
-      }
-
-      args=ArrayUtil.truncateBefore(args,1);
-      launch(applicationURI,args);
-    }
+    launch(applicationURI,envArgs,args);
   }
 
-  private void launch(URI applicationURI,String[] args)
+  private void launch(URI applicationURI,String[] envArgs,String[] args)
     throws LaunchException
   {
     try
@@ -166,8 +183,9 @@ public class ApplicationManager
 
 
       ApplicationEnvironment environment=environmentRef.get();
+      new BeanArguments(environment).process(envArgs);
       environment.resolve(this);
-
+      
       try
       { environment.exec(args);
       }
