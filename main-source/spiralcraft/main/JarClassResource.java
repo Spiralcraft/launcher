@@ -18,7 +18,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.BufferedInputStream;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 
@@ -44,6 +43,11 @@ public class JarClassResource
     }
   }
 
+  @Override
+  public String getClassPath()
+  { return _file.getPath();
+  }
+  
   @Override
   InputStream getResourceAsStream(String path)
   { 
@@ -78,13 +82,21 @@ public class JarClassResource
   {
     try
     { 
+      if (_jarFile==null)
+      { _jarFile=new JarFile(_file);
+      }
+      
+      JarEntry jarEntry=_jarFile.getJarEntry(path);
+      
+      if (jarEntry==null)
+      { return null;
+      }
       return URI.create("jar:"+_file.toURI().toString()+"!/"+path)
         .toURL();
     }
-    catch (MalformedURLException x)
-    { x.printStackTrace();
+    catch (IOException x)
+    { return null;
     }
-    return null;
   }
   
   @Override
