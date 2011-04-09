@@ -1,0 +1,67 @@
+<ExecutionContextService>
+  <services>
+    <awt:AWTService 
+      xmlns:swing="class:/spiralcraft/gui/swing/"
+      xmlns:awt="class:/spiralcraft/gui/awt/"
+      xmlns:task="class:/spiralcraft/task/"
+      xmlns:j="class:/java/lang/"
+      xmlns:launcher="class:/spiralcraft/launcher/"
+      xmlns:console="class:/spiralcraft/gui/swing/console/"
+      xmlns:jawt="class:/java/awt/"
+      >
+      <views>
+        <swing:FrameControl>
+          <title>Spiralcraft Launcher Console
+          </title>
+          <minimumSize>
+            <awt:Dimension>
+              <width>800
+              </width>
+              <height>600
+              </height>
+            </awt:Dimension>
+          </minimumSize>
+
+         
+          <autoCenter>true
+          </autoCenter>
+<!--           
+          <menuBar>
+            <swing:MenuBarControl>
+              <menus>
+                <swing:MenuControl>
+                  <text>File</text>
+                </swing:MenuControl>
+                <swing:MenuControl>
+                  <text>Edit</text>
+                </swing:MenuControl>
+              </menus>
+            </swing:MenuBarControl>
+          </menuBar>
+-->
+          <content>
+            <swing:ScrollPaneControl>
+              
+              <content>
+                <console:OutputPanelControl>
+                  <afterStartX>
+                    { [launcher:ExecutionContextService].outStream=createStream()
+                    , [launcher:ExecutionContextService].errStream=createStream([@jawt:Color].(128,0,0))
+                    }
+                  </afterStartX>
+                </console:OutputPanelControl>
+              
+              </content>
+            </swing:ScrollPaneControl>
+          </content>
+          <onWindowClosing x="[*task:Eval{`[@j:System].@exit(0)`}]"/>
+          <debug>true
+          </debug>
+        </swing:FrameControl>
+      </views>
+      <debug>true
+      </debug>
+    </awt:AWTService>
+  
+  </services>
+</ExecutionContextService>

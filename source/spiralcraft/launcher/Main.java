@@ -14,7 +14,12 @@
 //
 package spiralcraft.launcher;
 
+import spiralcraft.data.persist.AbstractXmlObject;
+import spiralcraft.exec.ExecutionContext;
 import spiralcraft.main.Spiralcraft;
+
+import spiralcraft.lang.BindException;
+import spiralcraft.lang.reflect.BeanFocus;
 
 import spiralcraft.util.ArrayUtil;
 
@@ -26,6 +31,7 @@ import java.io.Console;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+
 
 import java.net.URI;
 //import java.util.Map;
@@ -70,6 +76,12 @@ public class Main
     // System.setSecurityManager(new SystemSecurityManager());
   }
 
+  /**
+   * Standard entry point
+   * 
+   * @param args
+   * @throws Throwable
+   */
   public static void exec(final String[] args)
     throws Throwable
   {
@@ -149,11 +161,46 @@ public class Main
           { 
             // Execute a single command, then exit
             try
-            { applicationManager.exec(args);
+            { 
+              AbstractXmlObject<ExecutionContextProvider,?> exContext=null;
+              if (Spiralcraft.EXECUTION_CONTEXT_URI!=null)
+              { 
+                exContext
+                  =AbstractXmlObject.<ExecutionContextProvider>activate
+                    (Spiralcraft.EXECUTION_CONTEXT_URI
+                    ,null
+                    ,new BeanFocus<ApplicationManager>(applicationManager)
+                    );
+                exContext.get().push();
+                
+              }
+            
+              try
+              { applicationManager.exec(args);
+              }
+              finally
+              {
+                if (Spiralcraft.EXECUTION_CONTEXT_URI!=null)
+                { 
+                  exContext.get().pop();
+                  try
+                  { exContext.stop();
+                  }
+                  catch (Exception x)
+                  { x.printStackTrace(ExecutionContext.getInstance().err());
+                  }
+                }
+                
+              }
+              
+            }
+            catch (BindException x)
+            { x.printStackTrace(ExecutionContext.getInstance().err());
             }
             catch (LaunchException x)
-            { x.printStackTrace();
+            { x.printStackTrace(ExecutionContext.getInstance().err());
             }
+
 
           }
         }

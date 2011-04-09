@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URI;
 
 import java.util.StringTokenizer;
 
@@ -48,10 +49,15 @@ public class Spiralcraft
   // Debug flag for use by loader infrastructure
   public static boolean DEBUG=false;
   public static PrintStream err=System.err;
+  public static boolean GUI_REQUESTED;
+  public static URI EXECUTION_CONTEXT_URI;
+  public static URI GUI_EXECUTION_CONTEXT_URI
+    =URI.create("class:/spiralcraft/launcher/RootGuiConsole");
 
   private String _spiralcraftHome=null;
   private String _codebase=null;
-
+  
+  
   private String logFile=null;
   
   
@@ -106,6 +112,11 @@ public class Spiralcraft
         }
         else if (option=="-log")
         { logFile=args[++i];
+        }
+        else if (option=="-gui")
+        { 
+          GUI_REQUESTED=true;
+          EXECUTION_CONTEXT_URI=GUI_EXECUTION_CONTEXT_URI;
         }
         else
         { extraArgs.add(args[i]);
@@ -225,12 +236,22 @@ public class Spiralcraft
                 +"lib/spiralcraft-core.jar"
                 );
         }
+        
         classLoader.addResource
           (new JarClassResource
             (_spiralcraftHome+File.separator+"lib/spiralcraft-core.jar"));
         classLoader.addResource
           (new JarClassResource
             (_spiralcraftHome+File.separator+"lib/spiralcraft-launcher.jar"));
+        if (GUI_REQUESTED)
+        {
+          classLoader.addResource
+            (new JarClassResource
+              (_spiralcraftHome+File.separator+"lib/spiralcraft-gui.jar"));
+//          classLoader.addResource
+//            (new JarClassResource
+//              (_spiralcraftHome+File.separator+"lib/spiralcraft-shell.jar"));
+        }
       }
       else
       { throw new InstantiationException("Spiralcraft home could not be found.");
