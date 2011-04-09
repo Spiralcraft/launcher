@@ -95,9 +95,9 @@ public class ApplicationEnvironment
   protected URI err;
   protected URI in;
   
-  private InputStream inStream;
-  private PrintStream outStream;
-  private PrintStream errStream;
+  protected InputStream inStream;
+  protected PrintStream outStream;
+  protected PrintStream errStream;
 
   /**
    * The ApplicationManager provides access to the entire installed
@@ -265,52 +265,20 @@ public class ApplicationEnvironment
             =clazz.getMethod
               (_mainMethodName,new Class[] {HashMap.class,String[].class});
 
-          ExecutionContext exContext=ExecutionContext.getInstance();
-          
-          HashMap<String,Object> contextMap=new HashMap<String,Object>();
-          contextMap.put("in",exContext.in());
-          contextMap.put("out",exContext.out());
-          contextMap.put("err",exContext.err());
           try
           {
-            Resolver resolver=Resolver.getInstance();
-            if (in!=null)
-            { 
-              inStream
-                =resolver.resolve(in).getInputStream();
-              contextMap.put("in",inStream);
-            }            
-            if (out!=null)
-            { 
-              outStream
-                =new PrintStream(resolver.resolve(out).getOutputStream(),true);
-              contextMap.put("out",outStream);
-            }
-            if (err!=null)
-            { 
-              errStream
-                =new PrintStream(resolver.resolve(err).getOutputStream(),true);
-              contextMap.put("err",errStream);
-            }
-            
+            pushStreams();
+
+            HashMap<String,Object> contextMap=new HashMap<String,Object>();
+            contextMap.put("in",inStream);
+            contextMap.put("out",outStream);
+            contextMap.put("err",errStream);
+            contextMap.put("focusURI",ExecutionContext.getInstance().focusURI());
 
             mainMethod.invoke(null,new Object[] {contextMap,_mainArguments});
           }
           finally
-          {
-            if (in!=null)
-            { inStream.close();
-            }
-            if (out!=null)
-            {
-              outStream.flush();
-              outStream.close();
-            }
-            if (err!=null)
-            { 
-              errStream.flush();
-              errStream.close();
-            }
+          { popStreams();
           }
         }
         catch (NoSuchMethodException x)
@@ -346,6 +314,59 @@ public class ApplicationEnvironment
     { throw new LaunchTargetException(x);
     }
       
+  }
+  
+  protected void pushStreams()
+    throws IOException
+  {
+    ExecutionContext exContext=ExecutionContext.getInstance();
+    
+    // Use the current ExecutionContext for any unsupplied streams
+    if (inStream==null)
+    { inStream=exContext.in();
+    }
+    if (outStream==null)
+    { outStream=exContext.out();
+    }
+    if (errStream==null)
+    { errStream=exContext.err();
+    }
+    
+    // Override default or supplied streams with locally specified URI
+    Resolver resolver=Resolver.getInstance();
+    if (in!=null)
+    { 
+      inStream
+        =resolver.resolve(in).getInputStream();
+    }            
+    if (out!=null)
+    { 
+      outStream
+        =new PrintStream(resolver.resolve(out).getOutputStream(),true);
+    }
+    if (err!=null)
+    { 
+      errStream
+        =new PrintStream(resolver.resolve(err).getOutputStream(),true);
+    }
+  }
+  
+  protected void popStreams()
+    throws IOException
+  {
+    if (in!=null)
+    { inStream.close();
+    }
+    if (out!=null)
+    {
+      outStream.flush();
+      outStream.close();
+    }
+    if (err!=null)
+    { 
+      errStream.flush();
+      errStream.close();
+    }
   }
 
   private String classpathString(Resource[] classpath)
