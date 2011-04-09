@@ -23,8 +23,7 @@ import java.util.Properties;
 import java.util.TimeZone;
 import java.util.TreeMap;
 
-import spiralcraft.launcher.ApplicationEnvironment;
-import spiralcraft.launcher.LaunchException;
+import spiralcraft.launcher.BuiltInReportEnvironment;
 
 /**
  * Info about running JVM
@@ -33,18 +32,18 @@ import spiralcraft.launcher.LaunchException;
  *
  */
 public class JVMInfo
-  extends ApplicationEnvironment
+  extends BuiltInReportEnvironment
 {
 
+  
   @Override
-  public void exec(String[] args)
-    throws LaunchException
-  { 
-    dumpRuntime(System.out);
-    System.out.println(" ");
-    dumpProperties(System.out);
-    System.out.println(" ");
-    dumpEnvironment(System.out);
+  protected void report(PrintStream out,String[] args)
+  {
+    dumpRuntime(out);
+    out.println(" ");
+    dumpProperties(out);
+    out.println(" ");
+    dumpEnvironment(out);
   }
   
   public void dumpRuntime(PrintStream out)

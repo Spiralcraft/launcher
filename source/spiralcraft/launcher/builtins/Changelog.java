@@ -14,40 +14,44 @@
 //
 package spiralcraft.launcher.builtins;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.Date;
-import java.util.List;
-import java.util.Properties;
 
-import spiralcraft.launcher.ApplicationEnvironment;
-import spiralcraft.launcher.LaunchException;
+import spiralcraft.launcher.BuiltInReportEnvironment;
 import spiralcraft.launcher.Module;
 import spiralcraft.launcher.LibraryCatalog;
 import spiralcraft.launcher.Resource;
 
 /**
- * Extract the Changelog a codebase module
+ * Extract the Changelog from a codebase module
  * 
  * @author mike
  *
  */
 public class Changelog
-  extends ApplicationEnvironment
+  extends BuiltInReportEnvironment
 {
 
   @Override
-  public void exec(String[] args)
-    throws LaunchException
+  protected void report(PrintStream out,String[] args)
   { 
     LibraryCatalog catalog=_applicationManager.getLibraryCatalog();
     if (args.length<1)
-    { throw new LaunchException("A module name argument is required");
+    { 
+      out.println("A module name argument is required:");
+      for (Module module: catalog.listModules())
+      { out.println(module.getName());
+      }
+      return;
     }
     Module module=catalog.findModule(args[0]);
     if (module==null)
-    { throw new LaunchException("Could not find module "+args[0]);
+    { 
+      out.println("Could not find module "+args[0]+":");
+      for (Module candidate: catalog.listModules())
+      { out.println("  "+candidate.getName());
+      }
+      return;
     }
     else
     { 
@@ -60,60 +64,24 @@ public class Changelog
           byte[] data=changeLog.getData();
           if (data!=null && data.length>0)
           { 
-            System.out.print(new String(data));
-            System.out.flush();
+            out.print(new String(data));
           }
           else
-          { 
-            throw new LaunchException
-              ("Module "+args[0]+" changeLog does not exist");
+          { out.print("Module "+args[0]+" changeLog does not exist");
           }
         }
         catch (IOException x)
-        { throw new LaunchException(x);
+        { out.print("Error reading changelog for module "+args[0]+": "+x.toString());
         }
       }
       else
       { 
-        throw new LaunchException
-          ("Module "+args[0]+" does not contain resource "+changeLog);
+        out.print("Module "+args[0]+" does not contain resource "+changeLog);
         
       }
     }
   }
   
-  public void dump(PrintStream out)
-  {
-    LibraryCatalog catalog=_applicationManager.getLibraryCatalog();
-    
-    List<Module> modules=catalog.listModules();
-    for (Module module : modules)
-    { 
-      out.println
-        (module.getName());
-      
-      out.println("       path: "
-        +module.getPath());
-      out.println("       time: "
-        +new Date(module.getLastModified()));
-      
-      Resource versionResource
-        =module.getResource("META-INF/spiralcraft-scm/version.properties");
-      if (versionResource!=null)
-      { 
-        Properties properties=new Properties();
-        try
-        { 
-          properties.load(new ByteArrayInputStream(versionResource.getData()));
-          out.println("    version: "+properties.getProperty("build.name"));
-        }
-        catch (IOException x)
-        { 
-        }
-      }
-    }
-    
-    
-  }
+
   
 }

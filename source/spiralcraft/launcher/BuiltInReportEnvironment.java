@@ -12,43 +12,41 @@
 // Unless otherwise agreed to in writing, this software is distributed on an
 // "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or implied.
 //
-package spiralcraft.launcher.builtins;
+package spiralcraft.launcher;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintStream;
 
-import spiralcraft.launcher.BuiltInReportEnvironment;
-import spiralcraft.vfs.StreamUtil;
+import spiralcraft.launcher.ApplicationEnvironment;
+import spiralcraft.launcher.LaunchException;
 
 /**
- * Help info for launcher
+ * <p>Runs a routine that outputs information to the standard output
+ * </p>
  * 
  * @author mike
  *
  */
-public class Help
-  extends BuiltInReportEnvironment
+public abstract class BuiltInReportEnvironment
+  extends ApplicationEnvironment
 {
 
   @Override
-  protected void report(PrintStream out,String[] args)
+  public void exec(String[] args)
+    throws LaunchException
   { 
-    InputStream in=Help.class.getResourceAsStream("usage.txt");
     try
     {
-      try
-      {
-        StreamUtil.copyRaw(in,out,8192,-1);
-      }
-      finally
-      { in.close();
-      }
+      pushStreams();
+      report(outStream,args);
+      outStream.flush();
+      popStreams();
     }
-    catch (IOException x)
-    { x.printStackTrace();
+    catch (IOException e)
+    { throw new LaunchException(e);
     }
-    out.println(" ");
   }
+  
+  protected abstract void report(PrintStream out,String[] args);
   
 }

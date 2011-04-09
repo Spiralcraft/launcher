@@ -21,8 +21,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
-import spiralcraft.launcher.ApplicationEnvironment;
-import spiralcraft.launcher.LaunchException;
+import spiralcraft.launcher.BuiltInReportEnvironment;
 import spiralcraft.launcher.Module;
 import spiralcraft.launcher.LibraryCatalog;
 import spiralcraft.launcher.Resource;
@@ -34,17 +33,11 @@ import spiralcraft.launcher.Resource;
  *
  */
 public class Versions
-  extends ApplicationEnvironment
+  extends BuiltInReportEnvironment
 {
 
   @Override
-  public void exec(String[] args)
-    throws LaunchException
-  { 
-    dump(System.out);
-  }
-  
-  public void dump(PrintStream out)
+  protected void report(PrintStream out,String[] args)
   {
     LibraryCatalog catalog=_applicationManager.getLibraryCatalog();
     
