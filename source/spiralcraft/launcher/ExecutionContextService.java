@@ -17,7 +17,7 @@ package spiralcraft.launcher;
 import java.io.InputStream;
 import java.io.PrintStream;
 
-import spiralcraft.app.spi.AbstractComponent;
+import spiralcraft.app.kit.AbstractComponent;
 import spiralcraft.exec.ExecutionContext;
 import spiralcraft.service.Service;
 

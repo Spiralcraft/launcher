@@ -15,7 +15,6 @@
 package spiralcraft.launcher;
 
 
-import spiralcraft.lang.BindException;
 //import spiralcraft.log.ClassLogger;
 
 import spiralcraft.util.ArrayUtil;
@@ -23,6 +22,7 @@ import spiralcraft.vfs.Resolver;
 import spiralcraft.vfs.Resource;
 import spiralcraft.vfs.UnresolvableURIException;
 
+import spiralcraft.common.ContextualException;
 import spiralcraft.data.persist.AbstractXmlObject;
 import spiralcraft.exec.BeanArguments;
 import spiralcraft.exec.ExecutionContext;
@@ -197,7 +197,7 @@ public class ApplicationManager
           );
       }
     }
-    catch (BindException x)
+    catch (ContextualException x)
     { throw new LaunchException("Error binding "+applicationURI,x);
     }
     

@@ -14,11 +14,11 @@
 //
 package spiralcraft.launcher;
 
+import spiralcraft.common.ContextualException;
 import spiralcraft.data.persist.AbstractXmlObject;
 import spiralcraft.exec.ExecutionContext;
 import spiralcraft.main.Spiralcraft;
 
-import spiralcraft.lang.BindException;
 import spiralcraft.lang.reflect.BeanFocus;
 
 import spiralcraft.util.ArrayUtil;
@@ -194,7 +194,7 @@ public class Main
               }
               
             }
-            catch (BindException x)
+            catch (ContextualException x)
             { x.printStackTrace(ExecutionContext.getInstance().err());
             }
             catch (LaunchException x)
