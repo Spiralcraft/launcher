@@ -17,6 +17,32 @@
     
       <scm:Change>
       
+        <revision>-dev2
+        </revision>
+        
+        <notes>
+          <scm:Note>Core refactor: Contextual.bind() now throws 
+            ContextualException, spiralcraft.app.spi moved to
+            spiralcraft.app.kit.
+          </scm:Note>
+        </notes>
+        
+        <path>source/spiralcraft/launcher
+        </path>
+        
+        <resources>
+          <URI>ApplicationManager.java
+          </URI>
+          <URI>ExecutionContextService.java
+          </URI>
+          <URI>Main.java
+          </URI>
+        </resources>
+        
+      </scm:Change>
+
+      <scm:Change>
+      
         <revision>-dev1
         </revision>
         
