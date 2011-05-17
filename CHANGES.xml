@@ -21,6 +21,30 @@
         </revision>
         
         <notes>
+          <scm:Note>Application manager exposes a title for UI purposes
+          </scm:Note>
+        </notes>
+        
+        <path>source/spiralcraft/launcher
+        </path>
+        
+        <resources>
+          <URI>ApplicationManager.java
+          </URI>
+          <URI>Main.java
+          </URI>
+          <URI>RootGuiConsole.assy.xml
+          </URI>
+        </resources>
+        
+      </scm:Change>
+
+      <scm:Change>
+      
+        <revision>-dev2
+        </revision>
+        
+        <notes>
           <scm:Note>Core refactor: Contextual.bind() now throws 
             ContextualException, spiralcraft.app.spi moved to
             spiralcraft.app.kit.
