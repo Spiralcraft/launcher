@@ -80,6 +80,7 @@ public class ApplicationManager
 
   private final URI _codebaseEnvironmentURI;
 
+  private String title;
 
   private final URI _userHomeEnvironmentURI
     =new File(System.getProperty("user.home"))
@@ -99,6 +100,14 @@ public class ApplicationManager
       new LibraryCatalog
         (new File(_codebase,"lib")
         );
+  }
+  
+  public void setViewTitle(String title)
+  { this.title=title;
+  }
+  
+  public String getViewTitle()
+  { return title;
   }
   
   public void setDebug(boolean val)

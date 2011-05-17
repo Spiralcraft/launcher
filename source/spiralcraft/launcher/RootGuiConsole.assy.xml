@@ -11,7 +11,7 @@
       >
       <views>
         <swing:FrameControl>
-          <title>Spiralcraft Launcher Console
+          <title>{|[launcher:ApplicationManager].viewTitle|} : Spiralcraft Launcher
           </title>
           <minimumSize>
             <awt:Dimension>

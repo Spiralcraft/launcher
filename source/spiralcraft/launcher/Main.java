@@ -103,7 +103,7 @@ public class Main
       
     final ApplicationManager applicationManager
       =new ApplicationManager("root",codebase);
-      
+    applicationManager.setViewTitle(ArrayUtil.format(args," "," ")+" : "+codebase.toURI());
 
     if (Spiralcraft.DEBUG)
     { 
