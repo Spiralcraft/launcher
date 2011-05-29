@@ -21,12 +21,13 @@ import java.io.ByteArrayInputStream;
 
 import java.net.URL;
 import java.util.Enumeration;
+import java.util.LinkedList;
 
 import spiralcraft.main.LauncherClassLoader;
 
 /**
- * <P>Loads classes contained in the Library
- * </P>
+ * <p>Loads classes contained in the Library
+ * </p>
  * 
  */
 public class LibraryClassLoader
@@ -85,17 +86,17 @@ public class LibraryClassLoader
   @Override
   public Enumeration<URL> getResources(String path)
     throws IOException
-  { return libraryClasspath.getResources(path);
+  { 
+    LinkedList<URL> list=new LinkedList<URL>();
+    enumerationToList(list,super.getResources(path));
+    enumerationToList(list,libraryClasspath.getResources(path));
+    return listToEnumeration(list);
   }
   
   @Override
   public InputStream getResourceAsStream(String path)
   { 
-    InputStream in=null;
-    ClassLoader parent=getParent();
-    if (parent!=null)
-    { in=parent.getResourceAsStream(path);
-    }
+    InputStream in=super.getResourceAsStream(path);
     if (in==null)
     { 
       try

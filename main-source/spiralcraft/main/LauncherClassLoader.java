@@ -31,6 +31,36 @@ public class LauncherClassLoader
   extends ClassLoader
 {
   
+  public static final <X> void enumerationToList(List<X> list,Enumeration<X> enumeration)
+  {
+    if (enumeration!=null)
+    {
+      while (enumeration.hasMoreElements())
+      { list.add(enumeration.nextElement());
+      }
+    }
+  
+  }
+
+  public static final <X> Enumeration<X> listToEnumeration(final List<X> list)
+  {
+    return new Enumeration<X>()
+    {
+      final Iterator<X> iterator=list.iterator();
+      
+      @Override
+      public boolean hasMoreElements()
+      { return iterator.hasNext();
+      }
+      
+      @Override
+      public X nextElement()
+      { return iterator.next();
+      }
+    };
+  
+  }
+  
   protected boolean debug;
   private List<ClassResource> resources
     =new ArrayList<ClassResource>();
@@ -102,8 +132,31 @@ public class LauncherClassLoader
   }
 
   @Override
+  public URL getResource(String path)
+  {
+    // System.err.println("gr:"+path);
+    return super.getResource(path);
+  }
+  
+  @Override
   public InputStream getResourceAsStream(String path)
   {
+    // System.err.println("gras:"+path);
+    if (getParent()!=null)
+    { 
+      InputStream in=getParent().getResourceAsStream(path);
+      if (in!=null)
+      { return in;
+      }
+    }
+    else
+    {
+      InputStream in=ClassLoader.getSystemClassLoader().getResourceAsStream(path);
+      if (in!=null)
+      { return in;
+      }
+    }
+    
     for (ClassResource resource:resources)
     {
       InputStream data=resource.getResourceAsStream(path);
@@ -111,12 +164,15 @@ public class LauncherClassLoader
       { return data;
       }
     }
+    
+
     return null;
   }
   
   @Override
   protected URL findResource(String path)
   { 
+    // System.err.println("fr:"+path);
     for (ClassResource resource:resources)
     {
       URL url=resource.getResource(path);
@@ -132,6 +188,8 @@ public class LauncherClassLoader
   public Enumeration<URL> getResources(String path)
     throws IOException
   {
+    // System.err.println("grs:"+path);
+    
     final LinkedList<URL> list=new LinkedList<URL>();
     for (ClassResource resource:resources)
     {
@@ -141,20 +199,14 @@ public class LauncherClassLoader
       }
     }
     
-    return new Enumeration<URL>()
-    {
-      final Iterator<URL> iterator=list.iterator();
-      
-      @Override
-      public boolean hasMoreElements()
-      { return iterator.hasNext();
-      }
-      
-      @Override
-      public URL nextElement()
-      { return iterator.next();
-      }
-    };
+    if (getParent()!=null)
+    { enumerationToList(list,getParent().getResources(path));
+    }
+    else 
+    { enumerationToList(list,ClassLoader.getSystemClassLoader().getResources(path));
+    }
+
+    return listToEnumeration(list);
   }
   
   /**
@@ -183,3 +235,5 @@ public class LauncherClassLoader
     }
   }
 }
+
+

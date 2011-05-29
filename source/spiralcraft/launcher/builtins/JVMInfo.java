@@ -23,6 +23,9 @@ import java.util.Properties;
 import java.util.TimeZone;
 import java.util.TreeMap;
 
+import javax.sound.midi.MidiDevice;
+import javax.sound.midi.MidiSystem;
+
 import spiralcraft.launcher.BuiltInReportEnvironment;
 
 /**
@@ -134,6 +137,13 @@ public class JVMInfo
     for (Map.Entry<String,String> entry: map.entrySet())
     { 
       out.println("    "+entry.getKey()+" = "+entry.getValue());
+    }
+    
+    out.println("Midi Devices");
+    out.println(" ");
+    MidiDevice.Info[] info=MidiSystem.getMidiDeviceInfo();
+    for (MidiDevice.Info device:info)
+    { out.println("    "+device);
     }
     
   }
