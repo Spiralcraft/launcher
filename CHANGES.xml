@@ -17,6 +17,29 @@
     
       <scm:Change>
       
+        <revision>-dev4
+        </revision>
+        
+        <notes>
+          <scm:Note>Fix ClassLoader contract violation which prevented 
+            some JVM system services from being resolved
+          </scm:Note>
+        </notes>
+       
+        
+        <resources>
+          <URI>main-source/spiralcraft/main/LauncherClassLoader.java
+          </URI>
+          <URI>source/spiralcraft/launcher/LibraryClassLoader.java
+          </URI>
+          <URI>source/spiralcraft/launcher/builtins/JVMInfo.java
+          </URI>
+        </resources>
+        
+      </scm:Change>
+          
+      <scm:Change>
+      
         <revision>-dev2
         </revision>
         
