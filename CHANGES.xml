@@ -4,6 +4,38 @@
   
   
   <scm:Change>
+    <revision>0.4.15
+    </revision>
+    
+    <authorId>miketoth
+    </authorId>
+    
+    <date>
+    </date>
+    
+    <detail>
+    
+      <scm:Change>
+      
+        <revision>-dev1
+        </revision>
+        
+        <notes>
+          <scm:Note>Core CLI Arguments code moved into its own package.
+          </scm:Note>
+        </notes>
+       
+        
+        <resources>
+          <URI>source/spiralcraft/launcher/ApplicationEnvironment.java
+          </URI>
+        </resources>
+        
+      </scm:Change>
+    </detail>
+  </scm:Change>
+
+  <scm:Change>
     <revision>0.4.14
     </revision>
     
