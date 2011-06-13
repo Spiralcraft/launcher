@@ -25,12 +25,16 @@
           </scm:Note>
         </notes>
        
+        <path>source/spiralcraft/launcher/
+        </path>
         
         <resources>
-          <URI>source/spiralcraft/launcher/ApplicationEnvironment.java
+          <URI>ApplicationEnvironment.java
+          </URI>
+          <URI>ApplicationManager.java
           </URI>
         </resources>
-        
+
       </scm:Change>
     </detail>
   </scm:Change>
