@@ -24,7 +24,7 @@ import spiralcraft.vfs.UnresolvableURIException;
 
 import spiralcraft.common.ContextualException;
 import spiralcraft.data.persist.AbstractXmlObject;
-import spiralcraft.exec.BeanArguments;
+import spiralcraft.cli.BeanArguments;
 import spiralcraft.exec.ExecutionContext;
 
 import java.io.File;
@@ -192,7 +192,7 @@ public class ApplicationManager
 
 
       ApplicationEnvironment environment=environmentRef.get();
-      new BeanArguments(environment).process(envArgs);
+      new BeanArguments<ApplicationEnvironment>(environment).process(envArgs);
       environment.resolve(this);
       
       try

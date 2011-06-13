@@ -23,7 +23,7 @@ import java.net.URI;
 import java.util.HashMap;
 
 import spiralcraft.classloader.Loader;
-import spiralcraft.exec.Arguments;
+import spiralcraft.cli.Arguments;
 import spiralcraft.exec.ExecutionContext;
 import spiralcraft.log.ClassLog;
 import spiralcraft.util.ArrayUtil;
