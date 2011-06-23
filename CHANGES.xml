@@ -21,6 +21,20 @@
         </revision>
         
         <notes>
+          <scm:Note>MultiMap.getOne() renamed to getFirst()
+          </scm:Note>
+        </notes>
+       
+        <path>source/spiralcraft/launcher/LibraryCatalog.java
+        </path>
+      </scm:Change>
+      
+      <scm:Change>
+      
+        <revision>-dev1
+        </revision>
+        
+        <notes>
           <scm:Note>Core CLI Arguments code moved into its own package.
           </scm:Note>
         </notes>
