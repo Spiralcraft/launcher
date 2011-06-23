@@ -299,7 +299,7 @@ public class LibraryCatalog
       throws IOException
     {
       assertOpen();
-      Resource resource=resources.getOne(path);
+      Resource resource=resources.getFirst(path);
       if (resource==null)
       { throw new IOException("Not found: "+path);
       }
@@ -320,7 +320,7 @@ public class LibraryCatalog
     public URL getResource(String path)
       throws IOException
     {
-      Resource resource=resources.getOne(path);
+      Resource resource=resources.getFirst(path);
       if (resource==null)
       { return null;
       }
