@@ -21,6 +21,20 @@
         </revision>
         
         <notes>
+          <scm:Note>VfsResourceFactory implements handlesScheme() 
+          </scm:Note>
+        </notes>
+       
+        <path>source/spiralcraft/launcher/VfsResourceFactory
+        </path>
+      </scm:Change>
+          
+      <scm:Change>
+      
+        <revision>-dev1
+        </revision>
+        
+        <notes>
           <scm:Note>MultiMap.getOne() renamed to getFirst()
           </scm:Note>
         </notes>
