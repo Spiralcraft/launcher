@@ -35,6 +35,11 @@ public class VfsResourceFactory
     throws UnresolvableURIException
   { return new VfsResource(uri,catalog);
   }
+  
+  @Override
+  public boolean handlesScheme(String scheme)
+  { return scheme.equals("sclib");
+  }
 
 
 }
