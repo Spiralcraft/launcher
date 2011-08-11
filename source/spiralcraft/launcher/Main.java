@@ -24,6 +24,7 @@ import spiralcraft.lang.reflect.BeanFocus;
 import spiralcraft.util.ArrayUtil;
 
 import spiralcraft.vfs.StreamUtil;
+import spiralcraft.vfs.context.ContextResourceMap;
 
 import java.io.Console;
 
@@ -94,7 +95,7 @@ public class Main
         );
     }
      
-    File codebase=findCodebaseContext();
+    final File codebase=findCodebaseContext();
     if (Spiralcraft.DEBUG)
     { 
       print("Using codebase "+codebase.toString());
@@ -160,6 +161,11 @@ public class Main
           public void run()
           { 
             // Execute a single command, then exit
+            ContextResourceMap contextResourceMap
+              =new ContextResourceMap();
+            contextResourceMap.put("codebase",codebase.toURI());
+            contextResourceMap.push();
+            
             try
             { 
               AbstractXmlObject<ExecutionContextProvider,?> exContext=null;
@@ -175,6 +181,7 @@ public class Main
                 
               }
             
+              
               try
               { applicationManager.exec(args);
               }
@@ -190,6 +197,7 @@ public class Main
                   { x.printStackTrace(ExecutionContext.getInstance().err());
                   }
                 }
+
                 
               }
               
@@ -200,7 +208,9 @@ public class Main
             catch (LaunchException x)
             { x.printStackTrace(ExecutionContext.getInstance().err());
             }
-
+            finally
+            { contextResourceMap.pop();
+            }
 
           }
         }
