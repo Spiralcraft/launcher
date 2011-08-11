@@ -34,6 +34,7 @@ import java.util.List;
 import java.net.URL;
 
 import spiralcraft.log.ClassLog;
+import spiralcraft.log.Level;
 import spiralcraft.util.IteratorEnumeration;
 import spiralcraft.util.ListMap;
 import spiralcraft.util.string.StringUtil;
@@ -57,6 +58,8 @@ public class LibraryCatalog
   private ArrayList<Module> codebaseLibraries=new ArrayList<Module>();
   private boolean closed;
   private ClassLog log=ClassLog.getInstance(LibraryCatalog.class);
+  private Level logLevel
+    =ClassLog.getInitialDebugLevel(LibraryCatalog.class,null);
   
   /**
    * Create a new LibraryCatalog for the library located at the specified
@@ -97,8 +100,8 @@ public class LibraryCatalog
   
   protected void assertOpen()
   {
-    if (closed)
-    { log.warning("Classloader accessed after shutdown");
+    if (closed && logLevel.isDebug())
+    { log.debug("Classloader accessed after close");
     }
   }
   
@@ -588,9 +591,7 @@ class JarModule
     if (jarFile!=null)
     { 
       jarFile.close();
-      if (openCount>0)
-      { openCount--;
-      }
+      openCount=0;
         
     }
   }
