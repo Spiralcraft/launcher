@@ -14,7 +14,49 @@
     </date>
     
     <detail>
+      <scm:Change>
+        <notes>
+          <scm:Note>Removed debug message when LibraryCatalog is accessed
+            after resource close.
+          </scm:Note>
+        </notes>
+       
+        <path>source/spiralcraft/launcher/LibraryCatalog.java
+        </path>
+      </scm:Change>
+
+      <scm:Change>
+        <notes>
+          <scm:Note>The codebase directory is now made available to the paths
+            used in the ApplicationEnvironment via context://codebase/
+          </scm:Note>
+        </notes>
+       
+        <path>source/spiralcraft/launcher/Main.java
+        </path>
+      </scm:Change>
+
     
+      <scm:Change>
+      
+        
+        <notes>
+          <scm:Note>New setting ApplicationEnvironment.contextURI to specify
+            the contextual root of the application via the ExecutionContext
+          </scm:Note>
+        </notes>
+       
+        <path>source/spiralcraft/launcher/
+        </path>
+        
+        <resources>
+          <URI>ApplicationEnvironment.java
+          </URI>
+          <URI>BuiltInReportEnvironment.java
+          </URI>
+        </resources>
+      </scm:Change>
+
       <scm:Change>
       
         <revision>-dev1
