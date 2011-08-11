@@ -98,6 +98,7 @@ public class ApplicationEnvironment
   protected InputStream inStream;
   protected PrintStream outStream;
   protected PrintStream errStream;
+  protected URI focusURI;
 
   /**
    * The ApplicationManager provides access to the entire installed
@@ -212,6 +213,10 @@ public class ApplicationEnvironment
   { this.errStream=errStream;
   }
   
+  public void setContextURI(URI contextURI)
+  { this.focusURI=contextURI;
+  }
+  
   /**
    * Load the codebase and execute a command. 
    */
@@ -267,18 +272,27 @@ public class ApplicationEnvironment
 
           try
           {
-            pushStreams();
+            pushExecutionContext();
 
             HashMap<String,Object> contextMap=new HashMap<String,Object>();
             contextMap.put("in",inStream);
             contextMap.put("out",outStream);
             contextMap.put("err",errStream);
-            contextMap.put("focusURI",ExecutionContext.getInstance().focusURI());
+            if (focusURI==null)
+            { contextMap.put("focusURI",ExecutionContext.getInstance().focusURI());
+            }
+            else
+            { 
+              contextMap.put
+                ("focusURI"
+                ,Resolver.getInstance().resolve(focusURI).getURI()
+                );
+            }
 
             mainMethod.invoke(null,new Object[] {contextMap,_mainArguments});
           }
           finally
-          { popStreams();
+          { popExecutionContext();
           }
         }
         catch (NoSuchMethodException x)
@@ -316,7 +330,7 @@ public class ApplicationEnvironment
       
   }
   
-  protected void pushStreams()
+  protected void pushExecutionContext()
     throws IOException
   {
     ExecutionContext exContext=ExecutionContext.getInstance();
@@ -351,7 +365,7 @@ public class ApplicationEnvironment
     }
   }
   
-  protected void popStreams()
+  protected void popExecutionContext()
     throws IOException
   {
     if (in!=null)

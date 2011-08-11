@@ -37,10 +37,10 @@ public abstract class BuiltInReportEnvironment
   { 
     try
     {
-      pushStreams();
+      pushExecutionContext();
       report(outStream,args);
       outStream.flush();
-      popStreams();
+      popExecutionContext();
     }
     catch (IOException e)
     { throw new LaunchException(e);
