@@ -250,8 +250,16 @@ public class ApplicationEnvironment
       }
   
       ClassLoader classLoader=_classLoader;
+
+      Loader additionalLoader=null;   
       if (_additionalClasspath!=null)
-      { classLoader=new Loader(_classLoader,_additionalClasspath);
+      { 
+        additionalLoader=new Loader(_classLoader,_additionalClasspath);   
+        if (debug)
+        { additionalLoader.setDebug(true);
+        }
+        additionalLoader.start();
+        classLoader=additionalLoader;
       }
       
       
@@ -306,7 +314,11 @@ public class ApplicationEnvironment
         }
       }
       finally
-      { Thread.currentThread().setContextClassLoader(oldLoader);
+      { 
+        Thread.currentThread().setContextClassLoader(oldLoader);
+        if (additionalLoader!=null)
+        { additionalLoader.stop();
+        }
       }
     }
     catch (InvocationTargetException x)
