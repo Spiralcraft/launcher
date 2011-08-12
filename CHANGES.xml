@@ -14,6 +14,10 @@
     </date>
     
     <detail>
+    
+      <revision>-dev1
+      </revision>
+      
       <scm:Change>
         <notes>
           <scm:Note>Fix bug where additional jars specified by classLibs and
