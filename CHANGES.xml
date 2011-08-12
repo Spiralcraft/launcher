@@ -4,6 +4,31 @@
   
   
   <scm:Change>
+    <revision>0.4.15.1
+    </revision>
+    
+    <authorId>miketoth
+    </authorId>
+    
+    <date>
+    </date>
+    
+    <detail>
+      <scm:Change>
+        <notes>
+          <scm:Note>Fix bug where additional jars specified by classLibs and
+            libDirs didn't load by making sure the ClassLoader for additional
+            classes is opened. 
+          </scm:Note>
+        </notes>
+       
+        <path>source/spiralcraft/launcher/ApplicationEnvironment.java
+        </path>
+      </scm:Change>
+    </detail>
+  </scm:Change>
+
+  <scm:Change>
     <revision>0.4.15
     </revision>
     
