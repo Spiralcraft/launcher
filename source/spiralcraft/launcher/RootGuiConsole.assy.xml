@@ -8,6 +8,8 @@
       xmlns:launcher="class:/spiralcraft/launcher/"
       xmlns:console="class:/spiralcraft/gui/swing/console/"
       xmlns:jawt="class:/java/awt/"
+      xmlns:appkit="class:/spiralcraft/app/kit/"
+      xmlns:app="class:/spiralcraft/app/"
       >
       <views>
         <swing:FrameControl>
@@ -44,11 +46,16 @@
               
               <content>
                 <console:OutputPanelControl>
-                  <afterStartX>
-                    { [launcher:ExecutionContextService].outStream=createStream()
-                    , [launcher:ExecutionContextService].errStream=createStream([@jawt:Color].(128,0,0))
-                    }
-                  </afterStartX>
+                  <messageHandlers>
+                    <appkit:TriggerHandler>
+                      <messageType x="[@app:InitializeMessage].@TYPE"/>
+                      <x>
+                        { [launcher:ExecutionContextService].outStream=[console:OutputPanelControl].createStream()
+                        , [launcher:ExecutionContextService].errStream=[console:OutputPanelControl].createStream([@jawt:Color].(128,0,0))
+                        }
+                      </x>
+                    </appkit:TriggerHandler>
+                  </messageHandlers>
                 </console:OutputPanelControl>
               
               </content>
