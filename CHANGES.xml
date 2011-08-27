@@ -15,10 +15,25 @@
     
     <detail>
     
-      <revision>-dev1
-      </revision>
       
       <scm:Change>
+        <revision>-dev2
+        </revision>
+    
+        <notes>
+          <scm:Note>Update method for binding gui output panel streams to 
+            execution context
+          </scm:Note>
+        </notes>
+       
+        <path>source/spiralcraft/launcher/RootGuiConsole.assy.xml
+        </path>
+      </scm:Change>
+
+      <scm:Change>
+        <revision>-dev1
+        </revision>
+    
         <notes>
           <scm:Note>Fix bug where additional jars specified by classLibs and
             libDirs didn't load by making sure the ClassLoader for additional
