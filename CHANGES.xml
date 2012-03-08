@@ -4,6 +4,33 @@
   
   
   <scm:Change>
+    <revision>0.4.17
+    </revision>
+    
+    <authorId>miketoth
+    </authorId>
+    
+    <date>
+    </date>
+    
+    <detail>
+      <scm:Change>
+        <revision>-dev1
+        </revision>
+    
+        <notes>
+          <scm:Note>Don't shut down the classloader more than once
+          </scm:Note>
+        </notes>
+       
+        <path>main-source/spiralcraft/main/Spiralcraft.java
+        </path>
+      </scm:Change>
+    
+    </detail>
+  </scm:Change>
+
+  <scm:Change>
     <revision>0.4.15.1
     </revision>
     
