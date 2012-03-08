@@ -322,8 +322,11 @@ public class Spiralcraft
       { classLoader.shutdown();
       }
     }
-    classLoader.shutdown();
-    return 1;
+    else
+    { 
+      classLoader.shutdown();
+      return 1;
+    }
     
   }
   
