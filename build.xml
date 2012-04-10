@@ -13,7 +13,7 @@
   	 value="lib/spiralcraft.jar:lib/spiralcraft-core.jar"
   />
   <property name="module" value="launcher"/>
-  <property name="buildVersion" value="0.4.15.1"/>
+  <property name="buildVersion" value="0.4.17-dev1"/>
   <property name="build-build.target" value="native-build"/>
   <property name="ivy-resolve-conf" value="compile"/>
 

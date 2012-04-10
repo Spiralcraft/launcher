@@ -19,6 +19,40 @@
         </revision>
     
         <notes>
+          <scm:Note>Make sure that Nimbus is always used as the default l&f
+          </scm:Note>
+        </notes>
+       
+        <path>main-source/spiralcraft/main/Spiralcraft.java
+        </path>
+        
+      </scm:Change>
+
+      <scm:Change>
+        <revision>-dev1
+        </revision>
+    
+        <notes>
+          <scm:Note>Update console model for spiralcraft.gui api changes
+          </scm:Note>
+        </notes>
+       
+        <path>source/spiralcraft/launcher
+        </path>
+        
+        <resources>
+          <URI>ExecutionContextService.java
+          </URI>
+          <URI>RootGuiConsole.assy.xml
+          </URI>
+        </resources>
+      </scm:Change>
+    
+      <scm:Change>
+        <revision>-dev1
+        </revision>
+    
+        <notes>
           <scm:Note>Don't shut down the classloader more than once
           </scm:Note>
         </notes>
