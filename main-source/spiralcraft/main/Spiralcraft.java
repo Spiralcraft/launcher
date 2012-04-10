@@ -53,6 +53,8 @@ public class Spiralcraft
   public static URI EXECUTION_CONTEXT_URI;
   public static URI GUI_EXECUTION_CONTEXT_URI
     =URI.create("class:/spiralcraft/launcher/RootGuiConsole");
+  public static String defaultlaf
+    ="com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel";
 
   private String _spiralcraftHome=null;
   private String _codebase=null;
@@ -60,7 +62,12 @@ public class Spiralcraft
   
   private String logFile=null;
   
-  
+  static
+  {
+    if (System.getProperty("swing.defaultlaf")==null)
+    { System.setProperty("swing.defaultlaf",defaultlaf);
+    }
+  }
   
   /**
    * Instantiate a new instance and delegate to instance main
