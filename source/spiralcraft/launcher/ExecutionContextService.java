@@ -17,7 +17,13 @@ package spiralcraft.launcher;
 import java.io.InputStream;
 import java.io.PrintStream;
 
+import spiralcraft.app.DisposeMessage;
+import spiralcraft.app.InitializeMessage;
+import spiralcraft.app.StateFrame;
 import spiralcraft.app.kit.AbstractComponent;
+import spiralcraft.app.kit.SimpleState;
+import spiralcraft.app.kit.StandardDispatcher;
+import spiralcraft.common.LifecycleException;
 import spiralcraft.exec.ExecutionContext;
 import spiralcraft.service.Service;
 
@@ -37,7 +43,11 @@ public class ExecutionContextService
   private PrintStream outStream;
   private PrintStream errStream;
   private InputStream inStream;
+  
+  private SimpleState rootState;
 
+  private volatile boolean stopped=false;
+  
   public void setOutStream(PrintStream outStream)
   { this.outStream=outStream;
   }
@@ -82,5 +92,53 @@ public class ExecutionContextService
 
   public void setServices(Service[] services)
   { setContents(services);
+  }
+  
+  @Override
+  public void start()
+    throws LifecycleException
+  {
+    super.start();
+    rootState=new SimpleState(this.asContainer().getChildCount(),this.id);
+    new StandardDispatcher(true,new StateFrame())
+      .dispatch(InitializeMessage.INSTANCE,this,rootState,null);
+    
+    Runtime.getRuntime().addShutdownHook
+      (new Thread
+        (new Runnable() 
+          {
+            @Override 
+            public void run() 
+            {shutdownHook();
+            } 
+          }
+        )
+      );
+    
+    stopped=false;
+  }
+  
+  private void shutdownHook()
+  {
+    try
+    { stop();
+    }
+    catch (LifecycleException x)
+    { throw new RuntimeException(x);
+    }
+  }
+  
+  @Override
+  public synchronized void stop()
+    throws LifecycleException
+  { 
+    if (!stopped)
+    {
+      new StandardDispatcher(true,new StateFrame())
+        .dispatch(DisposeMessage.INSTANCE,this,rootState,null);
+      super.stop();
+      stopped=true;
+    }
+    
   }
 }

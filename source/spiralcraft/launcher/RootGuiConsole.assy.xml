@@ -11,21 +11,30 @@
       xmlns:appkit="class:/spiralcraft/app/kit/"
       xmlns:app="class:/spiralcraft/app/"
       >
+      
+      <preferencesURI>.spiralcraft-launcher/gui-console.prefs.xml
+      </preferencesURI>
+      
+      <logLevel>INFO
+      </logLevel>
+      
       <views>
         <swing:FrameControl>
+          <preferencesPath>frame
+          </preferencesPath>
           <title>{|[launcher:ApplicationManager].viewTitle|} : Spiralcraft Launcher
           </title>
-          <minimumSize>
+          <preferredSize>
             <awt:Dimension>
-              <width>800
+              <width>768
               </width>
-              <height>600
+              <height>480
               </height>
             </awt:Dimension>
-          </minimumSize>
+          </preferredSize>
 
          
-          <autoCenter>true
+          <autoCenter>false
           </autoCenter>
 <!--           
           <menuBar>
@@ -42,32 +51,36 @@
           </menuBar>
 -->
           <content>
-            <swing:ScrollPaneControl>
+            <swing:BoxControl>
+              <contents>
+                <console:ConsoleOutputUI>
+                  <contents>
+                    <console:DocumentIO>
+                      <documentX>[console:ConsoleOutputUI].document
+                      </documentX>
+                      <messageHandlers>
+                        <appkit:TriggerHandler>
+                          <messageType x="[@app:InitializeMessage].@TYPE"/>
+                          <x>
+                            { [launcher:ExecutionContextService].outStream=[console:DocumentIO].createStream()
+                            , [launcher:ExecutionContextService].errStream=[console:DocumentIO].createStream([@jawt:Color].(128,0,0))
+                            }
+                          </x>
+                        </appkit:TriggerHandler>
+                      
+                      </messageHandlers>
+                    </console:DocumentIO>
+                  </contents>
+                </console:ConsoleOutputUI>
+              </contents>
+            </swing:BoxControl>
               
-              <content>
-                <console:OutputPanelControl>
-                  <messageHandlers>
-                    <appkit:TriggerHandler>
-                      <messageType x="[@app:InitializeMessage].@TYPE"/>
-                      <x>
-                        { [launcher:ExecutionContextService].outStream=[console:OutputPanelControl].createStream()
-                        , [launcher:ExecutionContextService].errStream=[console:OutputPanelControl].createStream([@jawt:Color].(128,0,0))
-                        }
-                      </x>
-                    </appkit:TriggerHandler>
-                  </messageHandlers>
-                </console:OutputPanelControl>
-              
-              </content>
-            </swing:ScrollPaneControl>
           </content>
           <onWindowClosing x="[*task:Eval{`[@j:System].@exit(0)`}]"/>
-          <debug>true
+          <debug>false
           </debug>
         </swing:FrameControl>
       </views>
-      <debug>true
-      </debug>
     </awt:AWTService>
   
   </services>
