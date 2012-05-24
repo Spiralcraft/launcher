@@ -213,11 +213,6 @@ public class VfsResource
       );
   }
   
-  @Override
-  @Deprecated
-  public VfsResource asResource()
-  { return this;
-  }
   
   @Override
   public VfsResource createLink(
