@@ -15,11 +15,46 @@
     
     <detail>
       <scm:Change>
+        <revision>-dev2
+        </revision>
+    
+        <notes>
+          <scm:Note>Remove deprecated Container.asResource() implementation
+          </scm:Note>
+        </notes>
+       
+        <path>source/spiralcraft/launcher/VfsResource.java
+        </path>
+        
+      </scm:Change>
+
+      <scm:Change>
+        <revision>-dev2
+        </revision>
+    
+        <notes>
+          <scm:Note>Properly escape getResource() URLs in Library classloader
+          </scm:Note>
+        </notes>
+       
+        <path>source/spiralcraft/launcher
+        </path>
+        
+        <resources>
+          <URI>LibraryCatalog.java
+          </URI>
+          <URI>Module.java
+          </URI>
+        </resources>
+        
+      </scm:Change>
+
+      <scm:Change>
         <revision>-dev1
         </revision>
     
         <notes>
-          <scm:Note>Make sure that Nimbus is always used as the default l&f
+          <scm:Note>Make sure that Nimbus is always used as the default l&amp;f
           </scm:Note>
         </notes>
        
