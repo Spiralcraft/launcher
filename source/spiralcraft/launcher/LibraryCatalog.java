@@ -37,6 +37,7 @@ import spiralcraft.log.ClassLog;
 import spiralcraft.log.Level;
 import spiralcraft.util.IteratorEnumeration;
 import spiralcraft.util.ListMap;
+import spiralcraft.util.URIUtil;
 import spiralcraft.util.string.StringUtil;
 import spiralcraft.vfs.AlreadyRegisteredException;
 
@@ -759,7 +760,7 @@ class JarResource
   @Override
   public URL getResource()
     throws IOException
-  { return new URL("jar:file:///"+module.path.replace('\\','/')+"!/"+name);
+  { return new URL("jar:"+module.uri+"!/"+name);
   }
 }
 
@@ -776,7 +777,7 @@ class FileResource
   @Override
   public URL getResource()
     throws IOException
-  { return new URL("file:/"+module.path+"/"+name);
+  { return new URL("file:/"+URIUtil.addPathSegment(module.uri,name));
   }
 
 }

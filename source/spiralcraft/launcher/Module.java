@@ -15,11 +15,13 @@ package spiralcraft.launcher;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.util.HashMap;
 
 public abstract class Module
 {
   protected String path;
+  protected URI uri;
   protected String name;
   protected long lastModified;
   protected HashMap<String,Resource> resources
@@ -29,6 +31,7 @@ public abstract class Module
     throws IOException
   { 
     path=file.getAbsolutePath();
+    uri=file.getAbsoluteFile().toURI();
     name=file.getName();
     lastModified=file.lastModified();
     catalogResources();
