@@ -15,6 +15,21 @@
     
     <detail>
       <scm:Change>
+        <revision>-dev3
+        </revision>
+    
+        <notes>
+          <scm:Note>Double check that specified external class libraries
+            exist before adding them to the classpath
+          </scm:Note>
+        </notes>
+       
+        <path>source/spiralcraft/launcher/ApplicationEnvironment.java
+        </path>
+        
+      </scm:Change>
+
+      <scm:Change>
         <revision>-dev2
         </revision>
     
