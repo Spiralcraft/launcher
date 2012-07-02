@@ -473,6 +473,9 @@ public class ApplicationEnvironment
     try
     { 
       Resource resource=Resolver.getInstance().resolve(classlib);
+      if (!resource.exists())
+      { throw new IllegalArgumentException(resource.getURI()+" does not exist");
+      }
       // XXX Relative to what?
       
       
@@ -484,6 +487,9 @@ public class ApplicationEnvironment
 
     }
     catch (UnresolvableURIException x)
+    { throw new IllegalArgumentException(classlib,x);
+    }
+    catch (IOException x)
     { throw new IllegalArgumentException(classlib,x);
     }
     
