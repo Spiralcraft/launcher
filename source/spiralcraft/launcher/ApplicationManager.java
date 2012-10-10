@@ -18,10 +18,12 @@ package spiralcraft.launcher;
 //import spiralcraft.log.ClassLogger;
 
 import spiralcraft.util.ArrayUtil;
+import spiralcraft.vfs.Container;
 import spiralcraft.vfs.Resolver;
 import spiralcraft.vfs.Resource;
 import spiralcraft.vfs.UnresolvableURIException;
 
+import spiralcraft.bundle.Library;
 import spiralcraft.common.ContextualException;
 import spiralcraft.data.persist.AbstractXmlObject;
 import spiralcraft.cli.BeanArguments;
@@ -96,11 +98,40 @@ public class ApplicationManager
 //    _userId=userId;
     _codebase=codebase;
     _codebaseEnvironmentURI=_codebase.toURI().resolve("env/");
+    Library library=resolveLibrary();
+    if (library!=null)
+    { Library.set(library);
+    }
     _catalog=
       new LibraryCatalog
         (new File(_codebase,"lib")
         );
+    
   }
+
+  
+  /**
+   * Map the contents of all packages contained in context:/packages into
+   *   the contextResourceMap
+   * 
+   * @param contextResourceMap
+   */
+  private Library resolveLibrary()
+  {
+    try
+    {
+      Resource libraryResource
+        =Resolver.getInstance().resolve(_codebase.toURI().resolve("packages/"));
+      Container container=libraryResource.asContainer();
+      if (container!=null)
+      { return new Library(container);
+      }
+    }
+    catch (UnresolvableURIException x)
+    { x.printStackTrace();
+    }
+    return null;
+  }    
   
   public void setViewTitle(String title)
   { this.title=title;
