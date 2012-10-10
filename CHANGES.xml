@@ -15,6 +15,20 @@
     
     <detail>
       <scm:Change>
+        <revision>-dev4
+        </revision>
+    
+        <notes>
+          <scm:Note>Make bundle packages available to additional classpath
+          </scm:Note>
+        </notes>
+       
+        <path>source/spiralcraft/launcher/ApplicationManager.java
+        </path>
+        
+      </scm:Change>
+
+      <scm:Change>
         <revision>-dev3
         </revision>
     
