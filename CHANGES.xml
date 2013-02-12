@@ -15,6 +15,21 @@
     
     <detail>
       <scm:Change>
+        <revision>-dev5
+        </revision>
+    
+        <notes>
+          <scm:Note>More specific error message when a bogus library dir is
+            configured.
+          </scm:Note>
+        </notes>
+       
+        <path>source/spiralcraft/launcher/ApplicationEnvironment.java
+        </path>
+        
+      </scm:Change>
+
+      <scm:Change>
         <revision>-dev4
         </revision>
     
