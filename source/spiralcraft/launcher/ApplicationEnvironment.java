@@ -502,7 +502,7 @@ public class ApplicationEnvironment
       Resource resource=Resolver.getInstance().resolve(libdir);
       Container container=resource.asContainer();
       if (container==null)
-      { throw new IllegalArgumentException("Expected a directory of jar files");
+      { throw new IllegalArgumentException("Expected a directory of jar files at "+resource.getURI());
       }
       
       for (Resource jar:container.getChildren())
