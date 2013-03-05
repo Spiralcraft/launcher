@@ -71,7 +71,11 @@ public class LauncherClassLoader
    * </p>
    */
   public LauncherClassLoader()
-  { super(LauncherClassLoader.class.getClassLoader());
+  { 
+    super(LauncherClassLoader.class.getClassLoader()!=null
+         ?LauncherClassLoader.class.getClassLoader()
+         :ClassLoader.getSystemClassLoader()
+         );
   }
 
   /**
