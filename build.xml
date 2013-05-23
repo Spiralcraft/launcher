@@ -168,6 +168,12 @@
 
   <target name="native-console-mac" if="isMac">
     <echo>Native Mac console wrapper</echo>
+    <taskdef name="launch4j"
+      onerror="report"
+      classname="net.sf.launch4j.ant.Launch4jTask"
+      classpath="${common-build.dir}/zip/launch4j/launch4j.jar:${common-build.dir}/zip/launch4j/lib/xstream.jar"
+    />  
+  	
     <launch4j>
       <config
         headerType="console"
