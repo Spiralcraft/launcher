@@ -22,5 +22,7 @@
     <dependency org="spiralcraft" name="gui" rev="[0.4.17-dev1,0.5-dev[" 
       conf="compile->default"
     />
+    
+    <dependency org="launch4j" name="launch4j" rev="3.2u1"/>
   </dependencies>
 </ivy-module>

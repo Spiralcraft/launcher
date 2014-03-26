@@ -15,6 +15,17 @@
     
     <detail>
       <scm:Change>
+        <revision>-dev8
+        </revision>
+    
+        <notes>
+          <scm:Note>Build script updates to support git and sandbox build
+          </scm:Note>
+        </notes>
+        
+      </scm:Change>
+
+      <scm:Change>
         <revision>-dev6
         </revision>
     
