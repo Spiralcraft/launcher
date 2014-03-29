@@ -10,5 +10,8 @@ Usage:
        The root directory of bootup Spiralcraft resources
     --codebase [directory]
        Look in ${codebase}/lib for application specific libraries/jars
+    --lock [filename]
+       Use the specified file to prevent multiple instances of the process
+         from running.
        
        

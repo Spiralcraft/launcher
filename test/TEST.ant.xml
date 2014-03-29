@@ -47,5 +47,14 @@
       <arg value="versions"/>
     </java>
     
+    <echo message="lockfile-test"/>
+    <java
+      jar="../lib/spiralcraft.jar"
+      fork="true"
+      >
+      <arg value="--lock"/>
+      <arg value="spiralcraft.lck"/>
+      <arg value="versions"/>
+    </java>
   </target>
 </project>

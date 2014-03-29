@@ -18,14 +18,18 @@ import java.io.File;
 import java.io.PrintStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
 import java.util.LinkedList;
 import java.util.ArrayList;
-
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
-
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.OpenOption;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.StringTokenizer;
 
 /**
@@ -61,6 +65,9 @@ public class Spiralcraft
   
   
   private String logFile=null;
+  private String lockFile=null;
+  @SuppressWarnings("unused")
+  private FileLock lock;
   
   static
   {
@@ -125,6 +132,9 @@ public class Spiralcraft
           GUI_REQUESTED=true;
           EXECUTION_CONTEXT_URI=GUI_EXECUTION_CONTEXT_URI;
         }
+        else if (option=="-lock")
+        { lockFile=args[++i];
+        }
         else
         { extraArgs.add(args[i]);
         }
@@ -146,11 +156,42 @@ public class Spiralcraft
     return new String[0];
   }
 
+  private void checkLock()
+  {
+    try
+    {
+      if (lockFile!=null)
+      {
+        Path lockPath=FileSystems.getDefault().getPath(lockFile,new String[0]);
+        Files.deleteIfExists(lockPath);
+        FileChannel lockChan=FileChannel.open
+            (lockPath
+            ,new OpenOption[] 
+                {StandardOpenOption.CREATE
+                ,StandardOpenOption.WRITE
+                ,StandardOpenOption.READ
+                ,StandardOpenOption.SYNC
+                ,StandardOpenOption.DELETE_ON_CLOSE
+                }
+            );
+        lock=lockChan.lock(0L,Long.MAX_VALUE,true);
+      }
+    }
+    catch (IOException x)
+    { throw new IllegalStateException("Could not lock "+lockFile,x);
+    }
+    if (DEBUG)
+    { debug("Locked file "+lockFile);
+    }
+  }
+  
   /**
    * Create standard system properties from known information
    */
   private void initializeEnvironment()
   {
+    checkLock();
+    
     if (logFile!=null)
     { 
       try
