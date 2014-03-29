@@ -15,6 +15,25 @@
     
     <detail>
       <scm:Change>
+        <revision>-dev9
+        </revision>
+    
+        <notes>
+          <scm:Note>Added --lock option to the launcher as a mechanism to
+            prevent multiple processes from running the same "instance" 
+            simultaneously.
+          </scm:Note>
+        </notes>
+        
+        <resources>
+          <URI>main-source/spiralcraft/main/Spiralcraft.java
+          </URI>
+          <URI>source/spiralcraft/launcher/builtins/usage.txt
+          </URI>
+        </resources>
+      </scm:Change>
+
+      <scm:Change>
         <revision>-dev8
         </revision>
     
