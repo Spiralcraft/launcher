@@ -15,6 +15,16 @@
     
     <detail>
       <scm:Change>
+        <revision>-dev10
+        </revision>
+    
+        <notes>
+          <scm:Note>Move launch4j dependency out of default target
+          </scm:Note>
+        </notes>
+      </scm:Change>
+
+      <scm:Change>
         <revision>-dev9
         </revision>
     
