@@ -9,7 +9,7 @@
   />
   <property name="organization" value="spiralcraft"/>
   <property name="module" value="launcher"/>
-  <property name="buildVersion" value="0.4.17-dev10"/>
+  <property name="buildVersion" value="0.4.17-dev11"/>
   <property name="build-build.target" value="native-build"/>
   <property name="build.status" value="milestone"/>
 
@@ -106,11 +106,7 @@
 
   <target name="native-gui-mac" if="isMac" >
     <echo>Native Mac gui wrapper</echo>
-
-    <taskdef name="jarbundler" 
-      classname="net.sourceforge.jarbundler.JarBundler"
-      classpath="../../depends/sourceforge/jarbundler/2.2.0/jarbundler.jar"
-    />    
+    
       
     <jarbundler
       dir="."
