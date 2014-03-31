@@ -3,11 +3,6 @@
   <!-- Copy and customize the following local settings into build-local.xml 
   -->
   
-  <!-- 
-    <project name="build-local">
-      <property name="launch4j.dir" value=" PATH-TO-LAUNCH4J "/>
-    </project>  
-  -->
 
   <property name="classpath" 
   	 value="lib/spiralcraft.jar:lib/spiralcraft-core.jar"
@@ -77,7 +72,7 @@
   </target>
 
       
-  <target name="native"  depends="native-console,native-gui"/>
+  <target name="native"  depends="unpack-launch4j,native-console,native-gui"/>
 	
   <target name="launch4j-error">
     <echo>Property "launch4j.dir" (${launch4j.dir}) 
@@ -89,11 +84,6 @@
     
   <target name="native-gui-windows" if="isWindows">
     <echo>Native Windows gui wrapper</echo>
-    <taskdef name="launch4j"
-      onerror="report"
-      classname="net.sf.launch4j.ant.Launch4jTask"
-      classpath="${common-build.dir}/zip/launch4j/launch4j.jar:${common-build.dir}/zip/launch4j/lib/xstream.jar"
-    />        
     <launch4j>
       <config
         headerType="gui"
@@ -116,11 +106,7 @@
 
   <target name="native-gui-mac" if="isMac" >
     <echo>Native Mac gui wrapper</echo>
-    <taskdef name="launch4j"
-      onerror="report"
-      classname="net.sf.launch4j.ant.Launch4jTask"
-      classpath="${common-build.dir}/zip/launch4j/launch4j.jar:${common-build.dir}/zip/launch4j/lib/xstream.jar"
-    />  
+
     <taskdef name="jarbundler" 
       classname="net.sourceforge.jarbundler.JarBundler"
       classpath="../../depends/sourceforge/jarbundler/2.2.0/jarbundler.jar"
@@ -139,19 +125,7 @@
  
   <target name="native-console-windows" if="isWindows">
     <echo>Native Windows console wrapper</echo>
-    <if>
-      <not>
-        <available file="zip/launch4j"/>
-      </not>
-      <then>
-        <unzip src="zip/launch4j-win32.zip" dest="zip"/>
-      </then>
-    </if>
-    <taskdef name="launch4j"
-      onerror="report"
-      classname="net.sf.launch4j.ant.Launch4jTask"
-      classpath="zip/launch4j/launch4j.jar:zip/launch4j/lib/xstream.jar"
-    />  
+
     <launch4j>
       <config
         headerType="console"
@@ -181,11 +155,7 @@
 
   <target name="native-console-mac" if="isMac">
     <echo>Native Mac console wrapper</echo>
-    <taskdef name="launch4j"
-      onerror="report"
-      classname="net.sf.launch4j.ant.Launch4jTask"
-      classpath="${common-build.dir}/zip/launch4j/launch4j.jar:${common-build.dir}/zip/launch4j/lib/xstream.jar"
-    />  
+ 
   	
     <launch4j>
       <config
