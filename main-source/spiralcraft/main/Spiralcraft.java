@@ -22,7 +22,10 @@ import java.util.LinkedList;
 import java.util.ArrayList;
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
+import java.net.URLConnection;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.file.FileSystems;
@@ -74,6 +77,21 @@ public class Spiralcraft
     if (System.getProperty("swing.defaultlaf")==null)
     { System.setProperty("swing.defaultlaf",defaultlaf);
     }
+    
+    
+    // Fix broken JAR caching mechanism by disabling URLConnection caching
+    try 
+    {
+      URL url = new URL("jar:file://dummy.jar!/");
+      URLConnection uConn = url.openConnection();
+      uConn.setDefaultUseCaches(false);
+    } 
+    catch (MalformedURLException e) 
+    {
+    } 
+    catch (IOException e) 
+    {
+    }    
   }
   
   /**
@@ -338,19 +356,26 @@ public class Spiralcraft
       try
       {
         Method mainMethod=
-          mainClass.getMethod("exec",new Class[] {String[].class});
+          mainClass.getMethod("exec",new Class<?>[] {String[].class});
         if (mainMethod!=null)
         { 
           ClassLoader oldLoader=Thread.currentThread().getContextClassLoader();
+          Class<?> disposableContext
+            =classLoader.loadClass("spiralcraft.common.DisposableContext");
           try
           { 
             Thread.currentThread().setContextClassLoader(classLoader);
+            disposableContext.getMethod("push").invoke(null);
             mainMethod.invoke(null,new Object[] {args});
           }
           finally
-          { Thread.currentThread().setContextClassLoader(oldLoader);
+          { 
+            disposableContext.getMethod("pop").invoke(null);
+            disposableContext=null;
+            Thread.currentThread().setContextClassLoader(oldLoader);
           }
         }
+        mainMethod=null;
         return 0;
       }
       catch (InvocationTargetException x)
@@ -367,12 +392,15 @@ public class Spiralcraft
         return 1;
       }
       finally
-      { classLoader.shutdown();
+      { 
+        classLoader.shutdown();
+        mainClass=null;
       }
     }
     else
     { 
       classLoader.shutdown();
+      mainClass=null;
       return 1;
     }
     
