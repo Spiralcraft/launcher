@@ -48,14 +48,20 @@ public class JarClassResource
   { return _file.getPath();
   }
   
+  private void assertOpen()
+  { 
+    if (closed)
+    { throw new IllegalStateException("JarClassResource: "+_file+" is closed");
+    }
+  }
+  
   @Override
   InputStream getResourceAsStream(String path)
   { 
+    assertOpen();
     try
     {
-      if (_jarFile==null)
-      { _jarFile=new JarFile(_file);
-      }
+      openJar();
   
       JarEntry jarEntry=_jarFile.getJarEntry(path);
       if (jarEntry==null)
@@ -80,12 +86,10 @@ public class JarClassResource
   @Override
   public URL getResource(String path)
   {
+    assertOpen();
     try
     { 
-      if (_jarFile==null)
-      { _jarFile=new JarFile(_file);
-      }
-      
+      openJar();
       JarEntry jarEntry=_jarFile.getJarEntry(path);
       
       if (jarEntry==null)
@@ -103,9 +107,8 @@ public class JarClassResource
   byte[] loadData(String path)
     throws IOException
   {
-    if (_jarFile==null)
-    { _jarFile=new JarFile(_file);
-    }
+    assertOpen();
+    openJar();
 
     BufferedInputStream in = null;
     try
@@ -137,6 +140,17 @@ public class JarClassResource
     }
   }
   
+  private void openJar()
+    throws IOException
+  {
+    if (_jarFile==null)
+    { 
+      _jarFile=new JarFile(_file,false,JarFile.OPEN_READ);
+      // System.err.println("Opened jar "+_jarFile.getName());
+    }
+    
+  }
+  
   @Override
   public void shutdown()
   { 
@@ -145,7 +159,9 @@ public class JarClassResource
 
       closed=true;
       if (_jarFile!=null)
-      { _jarFile.close();
+      { 
+        // System.err.println("Closing jar "+_jarFile.getName());
+        _jarFile.close();
       }
       _jarFile=null;
     }

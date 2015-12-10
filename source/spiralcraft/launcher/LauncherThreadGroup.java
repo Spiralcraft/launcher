@@ -35,6 +35,8 @@ public class LauncherThreadGroup
     catch (InterruptedException x)
     {
     }
+    thread.setContextClassLoader(null);
+    thread=null;
   }
   
   public void join()
@@ -51,10 +53,13 @@ public class LauncherThreadGroup
         catch (InterruptedException x)
         { x.printStackTrace();
         }
+        thread.setContextClassLoader(null);
       }
       if (threads.length==0)
       { break;
       }
+      
+      threads=null;
     }
   }
 }

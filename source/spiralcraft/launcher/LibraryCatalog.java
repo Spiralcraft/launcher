@@ -528,13 +528,22 @@ class JarModule
     }
   }
 
+  private synchronized void openJar()
+    throws IOException
+  {
+    if (jarFile==null)
+    {
+      jarFile=
+          new JarFile(new File(path),false,JarFile.OPEN_READ);
+      // ClassLog.getInstance(getClass()).fine("Opened "+jarFile.getName());
+    }
+  }
+  
   @Override
   public void catalogResources()
     throws IOException
   {
-    
-    jarFile=
-      new JarFile(path);
+    openJar();
     try
     {
       Enumeration<JarEntry> entries=jarFile.entries();
@@ -556,6 +565,7 @@ class JarModule
     }
     finally
     { 
+      // ClassLog.getInstance(getClass()).fine("Closing after index "+jarFile.getName());
       jarFile.close();
       jarFile=null;
     }
@@ -569,7 +579,7 @@ class JarModule
   { 
     if (openCount==0)
     { 
-      jarFile=new JarFile(path);
+      openJar();
       readManifest();
     }
     openCount++;
@@ -581,7 +591,10 @@ class JarModule
   {
     openCount--;
     if (openCount==0)
-    { jarFile.close();
+    { 
+      // ClassLog.getInstance(getClass()).fine("Closing "+jarFile.getName());
+      jarFile.close();
+      jarFile=null;
     }
   }
 
@@ -591,7 +604,10 @@ class JarModule
   { 
     if (jarFile!=null)
     { 
+      // ClassLog.getInstance(getClass()).fine("Force closing "+jarFile.getName());
+      
       jarFile.close();
+      jarFile=null;
       openCount=0;
         
     }
@@ -601,24 +617,18 @@ class JarModule
     throws IOException
   {
     BufferedInputStream in=null;
+    open();
     try
     {
-      open();
-      try
-      {
-        in = new BufferedInputStream(jarFile.getInputStream(entry));
+      in = new BufferedInputStream(jarFile.getInputStream(entry));
 
-        byte[] data = new byte[(int) entry.getSize()];
-        in.read(data);
-        in.close();
-        return data;
-      }
-      finally
-      { close();
-      }
-      
+      byte[] data = new byte[(int) entry.getSize()];
+      in.read(data);
+      in.close();
+      in=null;
+      return data;
     }
-    catch (IOException x)
+    finally
     { 
       if (in!=null)
       {
@@ -627,9 +637,12 @@ class JarModule
         }
         catch (IOException y)
         { }
+        in=null;
       }
-      throw x;
+      
+      close();
     }
+
   }
 
   private void readManifest()
@@ -678,7 +691,11 @@ class NativeLibrary
     { name=name.substring(0,name.length()-3);
     }
   }
-
+  
+  public boolean isModule(String moduleName)
+  { return false;
+  }
+ 
   @Override
   public void catalogResources()
     throws IOException

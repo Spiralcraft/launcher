@@ -110,6 +110,10 @@ public class ApplicationEnvironment
     _classLoader=new LibraryClassLoader(manager.getLibraryCatalog());
     _classLoader.setDebug(debug);
   }
+  
+  void dispose()
+  { _classLoader.shutdown();
+  }
 
   public void setDebug(boolean debug)
   { this.debug=debug;
@@ -276,12 +280,15 @@ public class ApplicationEnvironment
         {
           Method mainMethod
             =clazz.getMethod
-              (_mainMethodName,new Class[] {HashMap.class,String[].class});
+              (_mainMethodName,new Class<?>[] {HashMap.class,String[].class});
 
+          Class<?> disposableContext=classLoader.loadClass("spiralcraft.common.DisposableContext");
           try
           {
             pushExecutionContext();
-
+            
+            disposableContext.getMethod("push").invoke(null);
+            
             HashMap<String,Object> contextMap=new HashMap<String,Object>();
             contextMap.put("in",inStream);
             contextMap.put("out",outStream);
@@ -296,18 +303,20 @@ public class ApplicationEnvironment
                 ,Resolver.getInstance().resolve(focusURI).getURI()
                 );
             }
-
+            // log.fine("Classloader is "+classLoader);
             mainMethod.invoke(null,new Object[] {contextMap,_mainArguments});
           }
           finally
-          { popExecutionContext();
+          { 
+            disposableContext.getMethod("pop").invoke(null);
+            popExecutionContext();
           }
         }
         catch (NoSuchMethodException x)
         {
           log.warning("Not using Executor.exec(contextMap,args)");
           Method mainMethod
-          =clazz.getMethod(_mainMethodName,new Class[] {String[].class});
+          =clazz.getMethod(_mainMethodName,new Class<?>[] {String[].class});
 
           mainMethod.invoke(null,new Object[] {_mainArguments});
           

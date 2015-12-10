@@ -15,6 +15,7 @@
 package spiralcraft.launcher;
 
 import spiralcraft.common.ContextualException;
+import spiralcraft.common.DisposableContext;
 import spiralcraft.data.persist.AbstractXmlObject;
 import spiralcraft.exec.ExecutionContext;
 import spiralcraft.main.Spiralcraft;
@@ -86,7 +87,17 @@ public class Main
   public static void exec(final String[] args)
     throws Throwable
   {
-
+    DisposableContext.push();
+    try
+    { execInContext(args);
+    }
+    finally
+    { DisposableContext.pop();
+    }
+  }
+  
+  private static void execInContext(final String[] args)
+  {
     if (Spiralcraft.DEBUG)
     { 
       print

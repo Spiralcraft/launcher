@@ -236,6 +236,9 @@ public class ApplicationManager
           ,x.getCause()
           );
       }
+      finally
+      { environment.dispose();
+      }
     }
     catch (ContextualException x)
     { throw new LaunchException("Error binding "+applicationURI,x);
