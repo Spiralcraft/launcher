@@ -44,7 +44,7 @@ public abstract class Module
   public boolean isModule(String moduleName)
   { 
     // XXX For now, use exact name = HACK
-    return name.equals(moduleName) && !(this instanceof NativeLibrary);
+    return name.equals(moduleName);
   }
 
   public abstract String[] getLibraryDependencies();
