@@ -15,6 +15,47 @@
     
     <detail>
       <scm:Change>
+        <revision>-dev12
+        </revision>
+    
+        <notes>
+          <scm:Note>Turn off default URLConnection caching to prevent
+            held-lock of app jars when Java platform decides to use
+            a jar URL to open classpath resources.
+          </scm:Note>
+        </notes>
+        
+        <path>main-source/spiralcraft/main/Spiralcraft.java
+        </path>
+      </scm:Change>
+      <scm:Change>
+        <revision>-dev12
+        </revision>
+    
+        <notes>
+          <scm:Note>Tighten up Classloading semantics to ensure that libs
+            are properly released when Classloaders are closed and Classloaders
+            are GC'd.
+          </scm:Note>
+        </notes>
+        
+        <resources>
+          <URI>main-source/spiralcraft/main/JarClassResource.java
+          </URI>
+          <URI>source/spiralcraft/launcher/ApplicationEnvironment.java
+          </URI>
+          <URI>source/spiralcraft/launcher/ApplicationManager.java
+          </URI>
+          <URI>source/spiralcraft/launcher/LauncherThreadGroup.java
+          </URI>
+          <URI>source/spiralcraft/launcher/LibraryCatalog.java
+          </URI>
+          <URI>source/spiralcraft/launcher/Main.java
+          </URI>
+        </resources>
+      </scm:Change>
+
+      <scm:Change>
         <revision>-dev10
         </revision>
     

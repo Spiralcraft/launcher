@@ -9,9 +9,8 @@
   />
   <property name="organization" value="spiralcraft"/>
   <property name="module" value="launcher"/>
-  <property name="buildVersion" value="0.4.17-dev11"/>
+  <property file="version.properties"/>
   <property name="build-build.target" value="native-build"/>
-  <property name="build.status" value="milestone"/>
 
   <property name="ivy-resolve-conf" value="compile"/>
   <property name="ivy.retrieve-zip" value="true"/>
@@ -72,7 +71,8 @@
   </target>
 
       
-  <target name="native"  depends="unpack-launch4j,native-console,native-gui"/>
+  <target name="native"  depends="unpack-launch4j,native-console,native-gui"
+  />
 	
   <target name="launch4j-error">
     <echo>Property "launch4j.dir" (${launch4j.dir}) 
