@@ -14,6 +14,43 @@
     </date>
     
     <detail>
+
+      <scm:Change>
+        <revision>-dev13
+        </revision>
+    
+        <notes>
+          <scm:Note>Clean up shutdown sequence to redirect console streams
+            before console closes.
+          </scm:Note>
+        </notes>
+        
+        <path>source/spiralcraft.launcher
+        </path>
+        
+        <resources>
+          <URI>RootGuiConsole.assy.xml
+          </URI>
+          <URI>ExecutionContextService.java
+          </URI>
+        </resources>
+      </scm:Change>
+
+      <scm:Change>
+        <revision>-dev13
+        </revision>
+    
+        <notes>
+          <scm:Note>Turn off default URLConnection caching to prevent
+            held-lock of app jars when Java platform decides to use
+            a jar URL to open classpath resources.
+          </scm:Note>
+        </notes>
+        
+        <path>main-source/spiralcraft/main/Spiralcraft.java
+        </path>
+      </scm:Change>
+
       <scm:Change>
         <revision>-dev12
         </revision>
