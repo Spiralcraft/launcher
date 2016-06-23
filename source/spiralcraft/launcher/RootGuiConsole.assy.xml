@@ -1,15 +1,16 @@
-<ExecutionContextService>
+<ExecutionContextService
+  xmlns:swing="class:/spiralcraft/gui/swing/"
+  xmlns:awt="class:/spiralcraft/gui/awt/"
+  xmlns:task="class:/spiralcraft/task/"
+  xmlns:j="class:/java/lang/"
+  xmlns:launcher="class:/spiralcraft/launcher/"
+  xmlns:console="class:/spiralcraft/gui/swing/console/"
+  xmlns:jawt="class:/java/awt/"
+  xmlns:appkit="class:/spiralcraft/app/kit/"
+  xmlns:app="class:/spiralcraft/app/"
+  >
   <services>
     <awt:AWTService 
-      xmlns:swing="class:/spiralcraft/gui/swing/"
-      xmlns:awt="class:/spiralcraft/gui/awt/"
-      xmlns:task="class:/spiralcraft/task/"
-      xmlns:j="class:/java/lang/"
-      xmlns:launcher="class:/spiralcraft/launcher/"
-      xmlns:console="class:/spiralcraft/gui/swing/console/"
-      xmlns:jawt="class:/java/awt/"
-      xmlns:appkit="class:/spiralcraft/app/kit/"
-      xmlns:app="class:/spiralcraft/app/"
       >
       
       <preferencesURI>.spiralcraft-launcher/gui-console.prefs.xml
@@ -62,7 +63,7 @@
                         <appkit:TriggerHandler>
                           <messageType x="[@app:InitializeMessage].@TYPE"/>
                           <x>
-                            { [launcher:ExecutionContextService].outStream=[console:DocumentIO].createStream()
+                            @{ [launcher:ExecutionContextService].outStream=[console:DocumentIO].createStream()
                             , [launcher:ExecutionContextService].errStream=[console:DocumentIO].createStream([@jawt:Color].(128,0,0))
                             }
                           </x>
@@ -76,7 +77,7 @@
             </swing:BoxControl>
               
           </content>
-          <onWindowClosing x="[*task:Eval{`[@j:System].@exit(0)`}]"/>
+          <onClose x="@{ [launcher:ExecutionContextService].stop(), [@j:System].@exit(0) }"/>
           <debug>false
           </debug>
         </swing:FrameControl>
@@ -84,4 +85,16 @@
     </awt:AWTService>
   
   </services>
+  <messageHandlers>
+    <appkit:TriggerHandler>
+      <messageType x="[@app:DisposeMessage].@TYPE"/>
+      <x>
+        @{ @log("Shutting down GUI console streams")
+        , [launcher:ExecutionContextService].outStream=null
+        , [launcher:ExecutionContextService].errStream=null
+        }
+      </x>
+    </appkit:TriggerHandler>
+  
+  </messageHandlers>
 </ExecutionContextService>

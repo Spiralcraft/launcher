@@ -25,6 +25,8 @@ import spiralcraft.app.kit.SimpleState;
 import spiralcraft.app.kit.StandardDispatcher;
 import spiralcraft.common.LifecycleException;
 import spiralcraft.exec.ExecutionContext;
+import spiralcraft.io.InputStreamReference;
+import spiralcraft.io.PrintStreamReference;
 import spiralcraft.service.Service;
 
 /**
@@ -40,9 +42,9 @@ public class ExecutionContextService
 {
 
   
-  private PrintStream outStream;
-  private PrintStream errStream;
-  private InputStream inStream;
+  private volatile PrintStream outStream;
+  private volatile PrintStream errStream;
+  private volatile InputStream inStream;
   
   private SimpleState rootState;
 
@@ -60,25 +62,58 @@ public class ExecutionContextService
   { this.inStream=inStream;
   }
 
+  
   @Override
   public void push()
   {
     ExecutionContext.pushInstance
       (new ExecutionContext(ExecutionContext.getInstance())
       {
-        @Override
-        public PrintStream out()
-        { return outStream!=null?outStream:super.out();
-        }
+        private final ExecutionContext delegate=ExecutionContext.getInstance();
+        private final PrintStreamReference out
+          =new PrintStreamReference(true)
+          {
+
+            @Override
+            protected PrintStream get()
+            { return outStream!=null?outStream:delegate.out();
+            }
+          
+          };
+            
+        private final PrintStreamReference err
+          =new PrintStreamReference(true)
+          {
+
+            @Override
+            protected PrintStream get()
+            { return errStream!=null?errStream:delegate.err();
+            }
+          
+          };
+        
+        private final InputStreamReference in
+          =new InputStreamReference()
+          { 
+            protected InputStream get()
+            { return inStream!=null?inStream:delegate.in();
+            }
+          
+          };
 
         @Override
+        public PrintStream out()
+        { return out;
+        }
+        
+        @Override
         public PrintStream err()
-        { return errStream!=null?errStream:super.err();
+        { return err;
         }
 
         @Override
         public InputStream in()
-        { return inStream!=null?inStream:super.in();
+        { return in;
         }
         
       }
