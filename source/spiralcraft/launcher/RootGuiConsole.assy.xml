@@ -80,7 +80,7 @@
           <onClose>
             @{ [launcher:ExecutionContextService].dispose() }
           </onClose>
-          <debug>true
+          <debug>false
           </debug>
         </swing:FrameControl>
       </views>
@@ -99,6 +99,6 @@
     </appkit:TriggerHandler>
   
   </messageHandlers>
-  <debug>true
+  <debug>false
   </debug>
 </ExecutionContextService>
