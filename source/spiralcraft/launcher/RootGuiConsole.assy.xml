@@ -77,8 +77,10 @@
             </swing:BoxControl>
               
           </content>
-          <onClose x="@{ [launcher:ExecutionContextService].stop(), [@j:System].@exit(0) }"/>
-          <debug>false
+          <onClose>
+            @{ [launcher:ExecutionContextService].dispose() }
+          </onClose>
+          <debug>true
           </debug>
         </swing:FrameControl>
       </views>
@@ -97,4 +99,6 @@
     </appkit:TriggerHandler>
   
   </messageHandlers>
+  <debug>true
+  </debug>
 </ExecutionContextService>

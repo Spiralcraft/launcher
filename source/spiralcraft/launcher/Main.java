@@ -162,7 +162,7 @@ public class Main
     
     try
     {
-      LauncherThreadGroup group
+      final LauncherThreadGroup group
         =new LauncherThreadGroup();
         
       group.run
@@ -188,6 +188,7 @@ public class Main
                     ,null
                     ,new BeanFocus<ApplicationManager>(applicationManager)
                     );
+                exContext.get().setLauncherGroup(group);
                 exContext.get().push();
                 
               }

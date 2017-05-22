@@ -1,0 +1,5 @@
+<service:Daemon
+  xmlns:service="class:/spiralcraft/service/"
+  >
+
+</service:Daemon>

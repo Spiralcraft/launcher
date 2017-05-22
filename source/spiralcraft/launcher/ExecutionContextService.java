@@ -50,6 +50,8 @@ public class ExecutionContextService
 
   private volatile boolean stopped=false;
   
+  private LauncherThreadGroup launcherGroup;
+  
   public void setOutStream(PrintStream outStream)
   { this.outStream=outStream;
   }
@@ -153,6 +155,17 @@ public class ExecutionContextService
     stopped=false;
   }
   
+  public void dispose()
+  {
+    launcherGroup.finish();
+    new StandardDispatcher(true,new StateFrame())
+      .dispatch(DisposeMessage.INSTANCE,this,rootState,null);
+  }
+  
+  public void setLauncherGroup(LauncherThreadGroup group)
+  { this.launcherGroup=group;
+  }
+  
   private void shutdownHook()
   {
     try
@@ -168,9 +181,8 @@ public class ExecutionContextService
     throws LifecycleException
   { 
     if (!stopped)
-    {
-      new StandardDispatcher(true,new StateFrame())
-        .dispatch(DisposeMessage.INSTANCE,this,rootState,null);
+    { 
+      dispose();
       super.stop();
       stopped=true;
     }

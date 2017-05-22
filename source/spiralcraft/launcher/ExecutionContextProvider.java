@@ -26,4 +26,6 @@ public interface ExecutionContextProvider
   public void push();
   
   public void pop();
+  
+  void setLauncherGroup(LauncherThreadGroup group);
 }

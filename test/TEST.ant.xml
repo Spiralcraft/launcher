@@ -57,4 +57,15 @@
       <arg value="versions"/>
     </java>
   </target>
+  
+  <target name="gui-console-test" description="Test gui console">
+    <java
+      jar="../lib/spiralcraft.jar"
+      fork="true"
+      >
+      <arg value="--gui"/>
+      <arg value="exec"/>
+      <arg value="DummyDaemon"/>
+    </java>
+  </target>
 </project>

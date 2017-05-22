@@ -14,23 +14,34 @@
 //
 package spiralcraft.launcher;
 
+import java.util.LinkedList;
+
 public class LauncherThreadGroup
   extends ThreadGroup
 {
   private static volatile int NEXT_ID=0;
+  private volatile boolean finished=false;
+  private LinkedList<Thread> launchThreads=new LinkedList<>();
   
   public LauncherThreadGroup()
   { super("spiralcraft-launcher");
   }
   
+  void finish()
+  { finished=true;
+  }
   
   public void run(Runnable runnable)
   {
     Thread thread=new Thread(this,runnable,"launch-"+(NEXT_ID++));
+    launchThreads.add(thread);
     thread.setDaemon(true);
     thread.start();
     try
-    { thread.join();
+    {
+      while (!finished && thread.isAlive())
+      { thread.join(100);
+      }
     }
     catch (InterruptedException x)
     {

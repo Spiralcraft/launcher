@@ -16,6 +16,32 @@
     <detail>
 
       <scm:Change>
+        <revision>-dev14
+        </revision>
+    
+        <notes>
+          <scm:Note>Clean up shutdown sequence to permit natural VM shutdown.
+          </scm:Note>
+        </notes>
+        
+        <path>source/spiralcraft/launcher
+        </path>
+        
+        <resources>
+          <URI>RootGuiConsole.assy.xml
+          </URI>
+          <URI>ExecutionContextService.java
+          </URI>
+          <URI>ExecutionContextProvider.java
+          </URI>
+          <URI>LauncherThreadGroup.java
+          </URI>
+          <URI>Main.java
+          </URI>
+        </resources>
+      </scm:Change>
+
+      <scm:Change>
         <revision>-dev13
         </revision>
     
