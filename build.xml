@@ -9,7 +9,12 @@
   />
   <property name="organization" value="spiralcraft"/>
   <property name="module" value="launcher"/>
+
   <property file="version.properties"/>
+
+  <property name="spiralcraft.javac.target" value="1.8"/>
+  <property name="spiralcraft.javac.source" value="1.8"/>
+
   <property name="build-build.target" value="native-build"/>
 
   <property name="ivy-resolve-conf" value="compile"/>
