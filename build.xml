@@ -42,6 +42,8 @@
       compiler="modern"
       fork="true"
       includeAntRuntime="false"
+      source="${spiralcraft.javac.source}"
+      target="${spiralcraft.javac.target}"
       >
       <compilerarg value="-Xlint"/>
     </javac>
