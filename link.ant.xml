@@ -1,0 +1,21 @@
+<project  basedir="." default="link">
+  <target name="link">
+    <delete dir="linked-image"/>
+    <echo message="${java.home}"/>
+    <property name="jar-exe" location="${java.home}/bin/jar.exe"/>
+    <property name="jlink-exe" location="${java.home}/bin/jlink.exe"/>
+    <property name="lib-dir" location="lib"/>
+    <exec executable="${jar-exe}">
+      <arg value="--describe-module"/>
+      <arg value="--file=${lib-dir}/spiralcraft.jar"/>
+    </exec>
+    <exec executable="${jlink-exe}">
+      <arg value="--output"/>
+      <arg value="linked-image"/>
+      <arg value="--module-path"/>
+      <arg value="${lib-dir};${java.home}/jmods"/>
+      <arg value="--add-modules"/>
+      <arg value="spiralcraft"/>
+    </exec>
+  </target>
+</project>

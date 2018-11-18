@@ -52,7 +52,7 @@ import java.util.StringTokenizer;
  */
 public class Spiralcraft
 {
-
+  public static String VERSION="201811171610";
   // Debug flag for use by loader infrastructure
   public static boolean DEBUG=false;
   public static PrintStream err=System.err;
@@ -61,7 +61,9 @@ public class Spiralcraft
   public static URI GUI_EXECUTION_CONTEXT_URI
     =URI.create("class:/spiralcraft/launcher/RootGuiConsole");
   public static String defaultlaf
-    ="com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel";
+    =Double.valueOf(System.getProperty("java.specification.version"))<9.0
+      ?"com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel"
+      :"javax.swing.plaf.nimbus.NimbusLookAndFeel";
 
   private String _spiralcraftHome=null;
   private String _codebase=null;
@@ -134,7 +136,10 @@ public class Spiralcraft
         { 
           DEBUG=true;
           debug("Spiralcraft boot debugging activated");
-          
+          debug("java.specification.version="+Double.valueOf(System.getProperty("java.specification.version")));
+          debug("Spiralcraft.class version tag="+VERSION);
+          debug("computed default laf="+defaultlaf);
+          debug("swing.defaultlaf="+System.getProperty("swing.defaultlaf"));
         }
         else if (option=="-spiralcraft.home")
         { _spiralcraftHome=args[++i];

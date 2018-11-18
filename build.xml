@@ -12,8 +12,8 @@
 
   <property file="version.properties"/>
 
-  <property name="spiralcraft.javac.target" value="1.8"/>
-  <property name="spiralcraft.javac.source" value="1.8"/>
+  <property name="spiralcraft.javac.target" value="9"/>
+  <property name="spiralcraft.javac.source" value="9"/>
 
   <property name="build-build.target" value="native-build"/>
 
@@ -47,7 +47,19 @@
       >
       <compilerarg value="-Xlint"/>
     </javac>
-    
+    <javac 
+      srcdir="mod-source" 
+      destdir="main-out"
+      debug="true"
+      deprecation="true"
+      compiler="modern"
+      fork="true"
+      includeAntRuntime="false"
+      source="${spiralcraft.javac.source}"
+      target="${spiralcraft.javac.target}"
+      >
+      <compilerarg value="-Xlint"/>
+    </javac>
     <copy toDir="main-out"
       preservelastmodified="true"
       failonerror="true"
@@ -58,6 +70,12 @@
         >
         
       </fileset>
+      <fileset
+        dir="mod-source"
+        excludes="**/*.class,**/*.java"
+        >
+        
+      </fileset>      
     </copy>
     
     <stampVersion dir="main-out/META-INF/spiralcraft-scm"/>

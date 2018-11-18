@@ -7,3 +7,5 @@ bin
 packages
 zip
 .spiralcraft-launcher
+/linked-image/
+/.settings/
