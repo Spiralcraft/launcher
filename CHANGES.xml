@@ -16,6 +16,30 @@
     <detail>
 
       <scm:Change>
+        <revision>-dev18
+        </revision>
+    
+        <notes>
+          <scm:Note>Move to JDK 9+ and begin modularizing launcher for native packaging
+          </scm:Note>
+        </notes>
+        
+        <path>
+        </path>
+        
+        <resources>
+          <URI>mod-source/module-info.java
+          </URI>
+          <URI>main-source/spiralcraft/main/Spiralcraft
+          </URI>
+          <URI>link.ant.xml
+          </URI>
+          <URI>build.xml
+          </URI>
+        </resources>
+      </scm:Change>
+
+      <scm:Change>
         <revision>-dev14
         </revision>
     
