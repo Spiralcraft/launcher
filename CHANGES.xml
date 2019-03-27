@@ -16,6 +16,26 @@
     <detail>
 
       <scm:Change>
+        <revision>-dev19
+        </revision>
+    
+        <notes>
+          <scm:Note>Tweak module definition to require standard modules
+          </scm:Note>
+        </notes>
+        
+        <path>
+        </path>
+        
+        <resources>
+          <URI>mod-source/module-info.java
+          </URI>
+          <URI>link.ant.xml
+          </URI>
+        </resources>
+      </scm:Change>
+
+      <scm:Change>
         <revision>-dev18
         </revision>
     
