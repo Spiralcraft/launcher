@@ -12,8 +12,8 @@
 
   <property file="version.properties"/>
 
-  <property name="spiralcraft.javac.target" value="9"/>
-  <property name="spiralcraft.javac.source" value="9"/>
+  <property name="spiralcraft.javac.target" value="13"/>
+  <property name="spiralcraft.javac.source" value="13"/>
 
   <property name="build-build.target" value="native-build"/>
 
