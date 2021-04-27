@@ -16,6 +16,19 @@
     <detail>
 
       <scm:Change>
+        <revision>-dev20
+        </revision>
+    
+        <notes>
+          <scm:Note>Option to use dir of .env file as the context root
+          </scm:Note>
+        </notes>
+        
+        <path>/source/spiralcraft/launcher/ApplicationEnvironment.java
+        </path>
+      </scm:Change>
+
+      <scm:Change>
         <revision>-dev19
         </revision>
     
