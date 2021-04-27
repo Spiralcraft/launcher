@@ -17,8 +17,6 @@ package spiralcraft.launcher;
 import java.io.IOException;
 import java.io.PrintStream;
 
-import spiralcraft.launcher.ApplicationEnvironment;
-import spiralcraft.launcher.LaunchException;
 
 /**
  * <p>Runs a routine that outputs information to the standard output
