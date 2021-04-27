@@ -24,9 +24,12 @@ import java.util.HashMap;
 
 import spiralcraft.classloader.Loader;
 import spiralcraft.cli.Arguments;
+import spiralcraft.common.declare.Declarable;
+import spiralcraft.common.declare.DeclarationInfo;
 import spiralcraft.exec.ExecutionContext;
 import spiralcraft.log.ClassLog;
 import spiralcraft.util.ArrayUtil;
+import spiralcraft.util.URIUtil;
 import spiralcraft.util.string.StringUtil;
 
 import spiralcraft.vfs.Container;
@@ -76,9 +79,11 @@ import spiralcraft.vfs.UnresolvableURIException;
  * </p>
  */
 public class ApplicationEnvironment
+  implements Declarable
 {
   protected final ClassLog log
     =ClassLog.getInstance(getClass());
+  protected DeclarationInfo declarationInfo;
   
   protected LibraryClassLoader _classLoader;
   protected ApplicationManager _applicationManager;
@@ -89,6 +94,7 @@ public class ApplicationEnvironment
   private String[] _modules;
   private boolean debug;
   private Resource[] _additionalClasspath;
+  private boolean contextRoot;
   
   // Stream redirects- will be closed when done
   protected URI out;
@@ -105,7 +111,7 @@ public class ApplicationEnvironment
    *   codebase.
    */
   void resolve(ApplicationManager manager)
-  { 
+  {     
     _applicationManager=manager;
     _classLoader=new LibraryClassLoader(manager.getLibraryCatalog());
     _classLoader.setDebug(debug);
@@ -222,6 +228,14 @@ public class ApplicationEnvironment
   }
   
   /**
+   * Use the location of the .env file as the context root / working dir for the app
+   * @param contextRoot
+   */
+  public void setContextRoot(boolean contextRoot)
+  { this.contextRoot=contextRoot;
+  }
+  
+  /**
    * Load the codebase and execute a command. 
    */
   public void exec(String[] args)
@@ -293,6 +307,12 @@ public class ApplicationEnvironment
             contextMap.put("in",inStream);
             contextMap.put("out",outStream);
             contextMap.put("err",errStream);
+            if (focusURI==null && contextRoot)
+            { 
+              if (declarationInfo!=null && declarationInfo.getLocation()!=null)
+              { focusURI=URIUtil.toParentPath(declarationInfo.getLocation());
+              }
+            }
             if (focusURI==null)
             { contextMap.put("focusURI",ExecutionContext.getInstance().focusURI());
             }
@@ -531,6 +551,17 @@ public class ApplicationEnvironment
     catch (IOException x)
     { throw new IllegalArgumentException(libdir,x);
     }    
+  }
+
+  @Override
+  public void setDeclarationInfo(
+    DeclarationInfo declarationInfo)
+  { this.declarationInfo=declarationInfo;
+  }
+
+  @Override
+  public DeclarationInfo getDeclarationInfo()
+  { return this.declarationInfo;
   }
   
   
